@@ -15,8 +15,9 @@
 #'
 #' @import Nozzle.R1
 #' @import VennDiagram
+#' @importFrom grid grid.draw
 #' @import tidyr
-#' @importFrom plyr dlply ddply
+#' @importFrom plyr . dlply ddply
 #' @import dplyr
 #' @import RColorBrewer
 #' @import ggplot2
@@ -35,8 +36,8 @@
 ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
                        PSMcutoff=TRUE, PSMthreshold=3, isdatafitted=TRUE) {
   # provide the fitted data
-  print("Make sure you provide the scaled data with fitting parameters as input
-        for maximal utilization of this QC function")
+  cat("Make sure you provide the scaled data with fitting parameters as input ")
+  cat("for maximal utilization of this QC function. \n")
 
   dataname <- deparse(substitute(data))
   outdir <- data$outdir[1]
@@ -83,7 +84,7 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
       margin = 0.1
     )
     png(paste0(outdir,"/",foldername,"/",plotname), width=8, height=8, units="in", res=200)
-    grid.draw(vennplot)
+    grid::grid.draw(vennplot)
     dev.off()
   }
 

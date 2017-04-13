@@ -30,5 +30,5 @@ ms_ITDR_scaling <- function(data, nread=10, abdnorm=TRUE, reftolowest=TRUE,
                             filename="ITDR_normalization_factors.txt") {
 
   ms_isothermal_scaling(data, nread, abdnorm, reftolowest, remloadc, loadcname,
-                        writefactortofile, bottom_label, filename)
+                        writefactortofile, bottomlabel, filename)
 }

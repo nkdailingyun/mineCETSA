@@ -125,8 +125,8 @@ ms_innerplotmedian <- function(mediandata, filename, xlabel, ylabel, isothermals
   #scalemdata <- melt(scalemdata, id.vars=c("id", "set", "condition"), variable.name="treatment", value.name="reading")
   # data <- rbind(mdata, scalemdata)
   # data$set <- factor(data$set, levels=c("Pre-normalization", "Post-normalization"))
-  mediandata$treatment <- factor(mediandata$treatment,
-                                 levels=sort(as.numeric(unique(mediandata$treatment)), decreasing=FALSE))
+  # mediandata$treatment <- factor(mediandata$treatment,
+  #                                levels=sort(as.numeric(unique(mediandata$treatment)), decreasing=FALSE))
   q <- ggplot(mediandata, aes(x = treatment, y = reading))
   if (isothermalstyle) {
     q <- q + coord_cartesian(ylim=c(0,2)) + scale_y_continuous(breaks=seq(0,2,0.5))
@@ -135,10 +135,11 @@ ms_innerplotmedian <- function(mediandata, filename, xlabel, ylabel, isothermals
   }
   q <- q + labs(x=xlabel, y=ylabel) + geom_point(aes(group = condition, colour = condition)) +
     geom_line(aes(group = condition, colour = condition)) + facet_grid( .~set) +
-    theme(text=element_text(size=20), axis.text.x = element_text(angle=45,hjust=1), aspect.ratio=1)
+    theme(text=element_text(size=20), axis.text.x = element_text(angle=45,hjust=1),
+          aspect.ratio=1, legend.position="bottom")
   if (length(outdir)) {
-    ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),filename), q, height=6, width=11)
+    ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),filename), q, height=6, width=12)
   } else {
-    ggsave(file=paste0(format(Sys.time(), "%y%m%d_%H%M_"),filename), q, height=6, width=11)
+    ggsave(file=paste0(format(Sys.time(), "%y%m%d_%H%M_"),filename), q, height=6, width=12)
   }
 }

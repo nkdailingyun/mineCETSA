@@ -27,7 +27,9 @@
 #' @import tidyr
 #' @import RColorBrewer
 #' @import scales
-#' @importFrom gridExtra grid.arrange
+#' @importFrom plyr . dlply
+#' @importFrom grid unit.c
+#' @importFrom gridExtra grid.arrange arrangeGrob
 #' @import ggplot2
 #' @keywords internal
 #'
@@ -204,7 +206,7 @@ ms_isothermal_innerplot <- function(data, legenddata, nread, nreplicate, loess,
     return(q)
   }
 
-  plots <- dlply(data_l, .(id), .fun = plotting)
+  plots <- plyr::dlply(data_l, .(id), .fun = plotting)
   plotlegend <- ms_legend(legenddata, nread, nreplicate, presetcolor, colorpanel)
   legend <- plotlegend$legend
   lheight <- plotlegend$lheight
@@ -223,7 +225,7 @@ ms_isothermal_innerplot <- function(data, legenddata, nread, nreplicate, loess,
                 left="Non-denatured protein fraction",bottom=bottom_label)),
       legend,
       ncol = 1,
-      heights = unit.c(unit(1, "npc") - lheight, lheight))
+      heights = grid::unit.c(unit(1, "npc") - lheight, lheight))
 
   })
 

@@ -71,7 +71,7 @@ ms_isothermal_scaling <- function(data, nread, abdnorm, reftolowest, remloadc,
     rdata <- data[ ,-abdcol]
     # calculate median for protein ratio data
     mdata1 <- ms_innerscale(rdata, nread, sumf=FALSE)
-    mdata1$set <- "Pre-Abundance adjustmemt"
+    mdata1$set <- "Pre-Abundance adjustment"
     # Apply correction factors to adjust the raw protein ratio in each channel
     outdata <- rdata
     for (i in 1:niter) {
@@ -85,9 +85,9 @@ ms_isothermal_scaling <- function(data, nread, abdnorm, reftolowest, remloadc,
     rdata <- outdata # adundance adjusted ratio generated.
     # calculate median for protein ratio data
     mdata2 <- ms_innerscale(rdata, nread, sumf=FALSE)
-    mdata2$set <- "Post-Abundance adjustmemt"
+    mdata2$set <- "Post-Abundance adjustment"
     mdata <- rbind(mdata1, mdata2)
-    setorder <- c("Pre-Abundance adjustmemt", "Post-Abundance adjustmemt")
+    setorder <- c("Pre-Abundance adjustment", "Post-Abundance adjustment")
   } else {
     abdcol <- grep("Abundance", names(data), value=FALSE)
     if (length(abdcol)) {
@@ -115,14 +115,14 @@ ms_isothermal_scaling <- function(data, nread, abdnorm, reftolowest, remloadc,
     rdata <- cbind(rdata[ ,c(1:3)], int_data, rdata[ ,c((nread+4):(ncol(rdata)))])
   }
 
-  # # calculate median for protein ratio data
-  # mdata <- ms_innerscale(rdata, nread, sumf=FALSE)
+  # calculate median for protein ratio data
+  mdata_new <- ms_innerscale(rdata, nread, sumf=FALSE)
 
-  labels <- mdata$condition
-  mrow <- nrow(mdata)
+  labels <- mdata_new$condition
+  mrow <- nrow(mdata_new)
 
   # Calculation of Normalization factors (1/ overall median at each dose point).
-  Normfactor <- 1/ mdata[ ,4:(nread+3)]
+  Normfactor <- 1/ mdata_new[ ,4:(nread+3)]
 
   # Apply correction factors (1/ overall median) to every value of each individual dataset
   uniqueCondition <- unique(rdata$condition)
@@ -138,7 +138,8 @@ ms_isothermal_scaling <- function(data, nread, abdnorm, reftolowest, remloadc,
   }
   ms_innerplotbox(outdata[ ,c(1,3,4:(nread+3))],
                   filename=paste0(dataname,"_Normalized_ratio_wholeset_trend.pdf"),
-                  xlabel=bottomlabel, ylabel="Normalized Ratio", isratio=TRUE, isothermalstyle=TRUE, outdir=outdir)
+                  xlabel=bottomlabel, ylabel="Normalized Ratio", isratio=TRUE,
+                  isothermalstyle=TRUE, outdir=outdir)
   #return(outdata)
   # Print Normalization Factors into file:
   Normfactor$condition <- labels
@@ -162,10 +163,12 @@ ms_isothermal_scaling <- function(data, nread, abdnorm, reftolowest, remloadc,
   scalemdata$set <- "Post-normalization Ratio"
   setorder <- c(setorder, "Post-normalization Ratio")
 
-  mdata <- tidyr::gather(mdata, treatment, reading, -id, -set, -condition)
-  scalemdata <- tidyr::gather(scalemdata, treatment, reading, -id, -set, -condition)
+  mdata <- tidyr::gather(mdata[ ,-c(1,2)], treatment, reading, -set, -condition)
+  scalemdata <- tidyr::gather(scalemdata[ ,-c(1,2)], treatment, reading, -set, -condition)
   mediandata <- rbind(mdata, scalemdata)
   mediandata$set <- factor(mediandata$set, levels=setorder)
+  mediandata$treatment <- factor(mediandata$treatment,
+                                 levels=sort(as.numeric(unique(mediandata$treatment)), decreasing=FALSE))
   ms_innerplotmedian(mediandata, filename=paste0(dataname, "_scaling_median.pdf"),
                      xlabel=bottomlabel, ylabel="Median value of soluble proteins",
                      isothermalstyle=TRUE, outdir=outdir)

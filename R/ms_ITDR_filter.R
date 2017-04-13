@@ -152,12 +152,10 @@ ms_ITDR_filter <- function(data, nread=10, fcthreshold=0.3, R2threshold=0.8,
     }
     data_rem_p <- data[-c(fkeep1,fkeep2), ]
     #print(intersect(data_good_p$id, data_good_single_p$id))
-    print(paste0("The number of proteins with replicative significant
-                 shifts in ", dataname, " :"))
+    print(paste0("The number of proteins with replicative significant shifts in ", dataname, " :"))
     print(length(unique(data_good_p$id)))
 
-    print(paste0("The number of proteins with solo significant
-                 shifts in ", dataname, " :"))
+    print(paste0("The number of proteins with solo significant shifts in ", dataname, " :"))
     print(length(unique(data_good_single_p$id)))
   } else {
     nkeep1 <- data_good_tem$id
