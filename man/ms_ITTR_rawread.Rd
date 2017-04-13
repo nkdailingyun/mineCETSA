@@ -14,6 +14,8 @@ ms_ITTR_rawread(filevector, fchoose = FALSE, time = c(0, 10, 20, 30, 45, 60,
 
 \item{fchoose}{whether to choose file interactively, default set to FALSE}
 
+\item{time}{a vector of times of treatments applied to ITTR samples, in the same order as channels}
+
 \item{nread}{number of reading channels, should match the number of channels used, default value 10}
 
 \item{abdread}{whether to read in protein abundance data, default set to TRUE}
@@ -23,8 +25,6 @@ ms_ITTR_rawread(filevector, fchoose = FALSE, time = c(0, 10, 20, 30, 45, 60,
 \item{refchannel}{names of reference channel used in Proteome Discoverer search, default value 126}
 
 \item{channels}{names of the read-in channels, default value c("126","127N","127C","128N","128C","129N","129C","130N","130C","131")}
-
-\item{dose}{a vector of times of treatments applied to ITTR samples, in the same order as channels}
 }
 \value{
 a dataframe
@@ -42,5 +42,5 @@ Function to parse and read in ITTR data from tab delimited files exported from P
 
 }
 \seealso{
-[ms_ITDR_rawread] for dose response data
+\code{\link{ms_ITDR_rawread}} for dose response data
 }

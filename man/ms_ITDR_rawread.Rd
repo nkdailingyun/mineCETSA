@@ -42,5 +42,5 @@ Function to parse and read in ITDR data from tab delimited files exported from P
 
 }
 \seealso{
-[ms_ITTR_rawread] for time response data
+\code{\link{ms_ITTR_rawread}} for time response data
 }

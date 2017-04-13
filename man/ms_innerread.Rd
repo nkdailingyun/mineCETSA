@@ -4,7 +4,7 @@
 \alias{ms_innerread}
 \title{ms_innerread}
 \usage{
-\method{read}{in}(file, fchoose, treatment, nread, abdread, PD21, refchannel,
+ms_innerread(file, fchoose, treatment, nread, abdread, PD21, refchannel,
   channels)
 }
 \arguments{

@@ -1,16 +1,19 @@
-#' @title ms_ITTR_rawread
-#' @description Function to parse and read in ITTR data from tab delimited files exported from Proteome Discoverer
+#' ms_ITTR_rawread
+#'
+#' Function to parse and read in ITTR data from tab delimited files exported from Proteome Discoverer
 #'
 #' @param filevector a file name or a vector of filenems to import
 #' @param fchoose whether to choose file interactively, default set to FALSE
-#' @param dose a vector of times of treatments applied to ITTR samples, in the same order as channels
+#' @param time a vector of times of treatments applied to ITTR samples, in the same order as channels
 #' @param nread number of reading channels, should match the number of channels used, default value 10
 #' @param abdread whether to read in protein abundance data, default set to TRUE
 #' @param PD21 whether the data is searched using Proteome Discoverer 2.1, default set to TRUE
 #' @param refchannel names of reference channel used in Proteome Discoverer search, default value 126
 #' @param channels names of the read-in channels, default value c("126","127N","127C","128N","128C","129N","129C","130N","130C","131")
-#' @seealso [ms_ITDR_rawread] for dose response data
-#' @importFrom plyr mutate
+#'
+#' @seealso \code{\link{ms_ITDR_rawread}} for dose response data
+#'
+#' @import dplyr
 #' @export
 #' @return a dataframe
 #' @examples \dontrun{

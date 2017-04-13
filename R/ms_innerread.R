@@ -1,5 +1,6 @@
-#' @title ms_innerread
-#' @description Internal function to parse and read in data from tab delimited files exported from Proteome Discoverer
+#' ms_innerread
+#'
+#' Internal function to parse and read in data from tab delimited files exported from Proteome Discoverer
 #'
 #' @param file file name to import
 #' @param fchoose whether to choose file interactively
@@ -10,10 +11,11 @@
 #' @param refchannel names of reference channel used in Proteome Discoverer search, such as 126
 #' @param channels names of the read-in channels
 #' @param ... other arguments ignored (for compatibility with generic)
+#'
 #' @keywords internal
-#' @method read in
+#'
 #' @importFrom readr read_tsv
-#' @export
+#'
 #' @return a dataframe
 #' @examples \dontrun{
 #'  ms_innerread("file.txt")
