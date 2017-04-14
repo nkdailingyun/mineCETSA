@@ -109,6 +109,10 @@ ms_ITTR_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondpro
 
   # to concatenate id and description
   nrowdata <- nrow(data)
+  if ( nrowdata==0 ) {
+    print("Make sure there are more than one experimental condition in dataset.")
+    stop("Otherwise specify remsinglecondprot==FALSE !")
+  }
   getGeneName <- function(x) {return (strsplit(strsplit(x, "GN=")[[1]][2], " ")[[1]][1])}
   getProteinName <- function(x) {return (strsplit(x, " OS")[[1]][1])}
   if (printGeneName) {
