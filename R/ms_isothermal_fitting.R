@@ -33,7 +33,7 @@ ms_ITDR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
   outdir <- data$outdir[1]
   data$outdir <- NULL
 
-  nrowdata= nrow(data)
+  nrowdata <- nrow(data)
   nametempvector <- names(data[4:(nread+3)])
   # Calculate EC value, R2, Slope
   ECresult <- NULL
@@ -105,7 +105,7 @@ ms_ITDR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
     data$outdir <- outdir
     Fitted$outdir <- outdir
   }
-  if (keepfittedvalue){
+  if (keepfittedvalue) {
     return(list(Rawdata=data, Fitteddata=Fitted))
   } else {
     return(data)
@@ -147,7 +147,7 @@ ms_ITTR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
   outdir <- data$outdir[1]
   data$outdir <- NULL
 
-  nrowdata= nrow(data)
+  nrowdata <- nrow(data)
   nametempvector <- names(data[4:(nread+3)])
   # Calculate EC value, R2, Slope
   ETresult <- NULL
@@ -219,7 +219,7 @@ ms_ITTR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
     data$outdir <- outdir
     Fitted$outdir <- outdir
   }
-  if (keepfittedvalue){
+  if (keepfittedvalue) {
     return(list(Rawdata=data, Fitteddata=Fitted))
   } else {
     return(data)

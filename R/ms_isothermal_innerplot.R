@@ -207,7 +207,7 @@ ms_isothermal_innerplot <- function(data, legenddata, nread, nreplicate, loess,
   }
 
   plots <- plyr::dlply(data_l, .(id), .fun = plotting)
-  plotlegend <- ms_legend(legenddata, nread, nreplicate, presetcolor, colorpanel)
+  plotlegend <- ms_isothermal_legend(legenddata, nread, nreplicate, presetcolor, colorpanel)
   legend <- plotlegend$legend
   lheight <- plotlegend$lheight
 
