@@ -1,0 +1,209 @@
+id	description	condition	20	5	1.25	0.3123	0.078125	0.019531	0.004883	0.001221	0.000305	0	Abundance_20	Abundance_5	Abundance_1.25	Abundance_0.3123	Abundance_0.078125	Abundance_0.019531	Abundance_0.004883	Abundance_0.001221	Abundance_0.000305	Abundance_0	sumUniPeps	sumPSMs	countNum
+A6NNZ2	Tubulin beta-8 chain-like protein LOC260334 OS=Homo sapiens PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	97	NA
+P06753-5	Isoform 5 of Tropomyosin alpha-3 chain OS=Homo sapiens GN=TPM3	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	0	51	NA
+Q9Y4G6	Talin-2 OS=Homo sapiens GN=TLN2 PE=1 SV=4	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	11	NA
+Q9H074	Polyadenylate-binding protein-interacting protein 1 OS=Homo sapiens GN=PAIP1 PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	8	NA
+Q58FG1	Putative heat shock protein HSP 90-alpha A4 OS=Homo sapiens GN=HSP90AA4P PE=5 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	24	NA
+Q9H0B6	Kinesin light chain 2 OS=Homo sapiens GN=KLC2 PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	7	NA
+Q9BTE6-3	Isoform 3 of Alanyl-tRNA editing protein Aarsd1 OS=Homo sapiens GN=AARSD1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+Q9HCK5	Protein argonaute-4 OS=Homo sapiens GN=AGO4 PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+Q5T8P6	RNA-binding protein 26 OS=Homo sapiens GN=RBM26 PE=1 SV=3	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+Q92766-2	Isoform 2 of Ras-responsive element-binding protein 1 OS=Homo sapiens GN=RREB1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+Q13555-6	Isoform 6 of Calcium/calmodulin-dependent protein kinase type II subunit gamma OS=Homo sapiens GN=CAMK2G	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+Q6KC79	Nipped-B-like protein OS=Homo sapiens GN=NIPBL PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96E11	Ribosome-recycling factor, mitochondrial OS=Homo sapiens GN=MRRF PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96B45	UPF0693 protein C10orf32 OS=Homo sapiens GN=C10orf32 PE=3 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96LB3	Intraflagellar transport protein 74 homolog OS=Homo sapiens GN=IFT74 PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96F63	Coiled-coil domain-containing protein 97 OS=Homo sapiens GN=CCDC97 PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96D46	60S ribosomal export protein NMD3 OS=Homo sapiens GN=NMD3 PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O60516	Eukaryotic translation initiation factor 4E-binding protein 3 OS=Homo sapiens GN=EIF4EBP3 PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q13496	Myotubularin OS=Homo sapiens GN=MTM1 PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q32MK0	Myosin light chain kinase 3 OS=Homo sapiens GN=MYLK3 PE=2 SV=3	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+Q15139	Serine/threonine-protein kinase D1 OS=Homo sapiens GN=PRKD1 PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9H0R8-2	Isoform 2 of Gamma-aminobutyric acid receptor-associated protein-like 1 OS=Homo sapiens GN=GABARAPL1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+Q96CF2	Charged multivesicular body protein 4c OS=Homo sapiens GN=CHMP4C PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q969L4	U7 snRNA-associated Sm-like protein LSm10 OS=Homo sapiens GN=LSM10 PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BW19	Kinesin-like protein KIFC1 OS=Homo sapiens GN=KIFC1 PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9UJ41	Rab5 GDP/GTP exchange factor OS=Homo sapiens GN=RABGEF1 PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O75362	Zinc finger protein 217 OS=Homo sapiens GN=ZNF217 PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96GC5	39S ribosomal protein L48, mitochondrial OS=Homo sapiens GN=MRPL48 PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9NZB2-6	Isoform F of Constitutive coactivator of PPAR-gamma-like protein 1 OS=Homo sapiens GN=FAM120A	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P46776	60S ribosomal protein L27a OS=Homo sapiens GN=RPL27A PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+Q9H3M7	Thioredoxin-interacting protein OS=Homo sapiens GN=TXNIP PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BSW2-2	Isoform 2 of EF-hand calcium-binding domain-containing protein 4B OS=Homo sapiens GN=CRACR2A	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BWJ5	Splicing factor 3B subunit 5 OS=Homo sapiens GN=SF3B5 PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96FK6	WD repeat-containing protein 89 OS=Homo sapiens GN=WDR89 PE=2 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O43823	A-kinase anchor protein 8 OS=Homo sapiens GN=AKAP8 PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O75152	Zinc finger CCCH domain-containing protein 11A OS=Homo sapiens GN=ZC3H11A PE=1 SV=3	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q13066	G antigen 2B/2C OS=Homo sapiens GN=GAGE2B PE=2 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O60934	Nibrin OS=Homo sapiens GN=NBN PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P35613	Basigin OS=Homo sapiens GN=BSG PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q5W0B1	RING finger protein 219 OS=Homo sapiens GN=RNF219 PE=1 SV=1	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q99766	ATP synthase subunit s, mitochondrial OS=Homo sapiens GN=ATP5S PE=1 SV=3	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q6P1L5	Protein FAM117B OS=Homo sapiens GN=FAM117B PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P52434-4	Isoform 4 of DNA-directed RNA polymerases I, II, and III subunit RPABC3 OS=Homo sapiens GN=POLR2H	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8TCG1	Protein CIP2A OS=Homo sapiens GN=KIAA1524 PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q92625	Ankyrin repeat and SAM domain-containing protein 1A OS=Homo sapiens GN=ANKS1A PE=1 SV=4	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P15923-2	Isoform E47 of Transcription factor E2-alpha OS=Homo sapiens GN=TCF3	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8TD16-2	Isoform 2 of Protein bicaudal D homolog 2 OS=Homo sapiens GN=BICD2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9Y2L5	Trafficking protein particle complex subunit 8 OS=Homo sapiens GN=TRAPPC8 PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8N371-3	Isoform 3 of Lysine-specific demethylase 8 OS=Homo sapiens GN=KDM8	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BX66	Sorbin and SH3 domain-containing protein 1 OS=Homo sapiens GN=SORBS1 PE=1 SV=3	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BTV6	Diphthine methyltransferase OS=Homo sapiens GN=DPH7 PE=1 SV=2	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q99592-2	Isoform 2 of Zinc finger and BTB domain-containing protein 18 OS=Homo sapiens GN=ZBTB18	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q99523	Sortilin OS=Homo sapiens GN=SORT1 PE=1 SV=3	drug.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q13509	Tubulin beta-3 chain OS=Homo sapiens GN=TUBB3 PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	199	NA
+P51610	Host cell factor 1 OS=Homo sapiens GN=HCFC1 PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	46	NA
+Q14980	Nuclear mitotic apparatus protein 1 OS=Homo sapiens GN=NUMA1 PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	42	NA
+O43852-4	Isoform 4 of Calumenin OS=Homo sapiens GN=CALU	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	42	NA
+Q8WUD1	Ras-related protein Rab-2B OS=Homo sapiens GN=RAB2B PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	7	NA
+P0DMM9-3	Isoform 3 of Sulfotransferase 1A3 OS=Homo sapiens GN=SULT1A3	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+O15131	Importin subunit alpha-6 OS=Homo sapiens GN=KPNA5 PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+Q9BYD1	39S ribosomal protein L13, mitochondrial OS=Homo sapiens GN=MRPL13 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	2	NA
+P78356	Phosphatidylinositol 5-phosphate 4-kinase type-2 beta OS=Homo sapiens GN=PIP4K2B PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+Q16563	Synaptophysin-like protein 1 OS=Homo sapiens GN=SYPL1 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8IXQ3	Uncharacterized protein C9orf40 OS=Homo sapiens GN=C9orf40 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9NUY8	TBC1 domain family member 23 OS=Homo sapiens GN=TBC1D23 PE=1 SV=3	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q12824	SWI/SNF-related matrix-associated actin-dependent regulator of chromatin subfamily B member 1 OS=Homo sapiens GN=SMARCB1 PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O75771-8	Isoform 8 of DNA repair protein RAD51 homolog 4 OS=Homo sapiens GN=RAD51D	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q6ZN55-2	Isoform 2 of Zinc finger protein 574 OS=Homo sapiens GN=ZNF574	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q6ZRS2	Helicase SRCAP OS=Homo sapiens GN=SRCAP PE=1 SV=3	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	2	NA
+Q9P0W2	SWI/SNF-related matrix-associated actin-dependent regulator of chromatin subfamily E member 1-related OS=Homo sapiens GN=HMG20B PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9UK53	Inhibitor of growth protein 1 OS=Homo sapiens GN=ING1 PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q01804	OTU domain-containing protein 4 OS=Homo sapiens GN=OTUD4 PE=1 SV=4	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9NVM6	DnaJ homolog subfamily C member 17 OS=Homo sapiens GN=DNAJC17 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+O14795-2	Isoform 2 of Protein unc-13 homolog B OS=Homo sapiens GN=UNC13B	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8NG48	Protein Lines homolog OS=Homo sapiens GN=LINS PE=2 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8N8R5	UPF0565 protein C2orf69 OS=Homo sapiens GN=C2orf69 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8IY33	MICAL-like protein 2 OS=Homo sapiens GN=MICALL2 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P00747	Plasminogen OS=Homo sapiens GN=PLG PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+Q9BQI3	Eukaryotic translation initiation factor 2-alpha kinase 1 OS=Homo sapiens GN=EIF2AK1 PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O95202	LETM1 and EF-hand domain-containing protein 1, mitochondrial OS=Homo sapiens GN=LETM1 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96FN9	Probable D-tyrosyl-tRNA(Tyr) deacylase 2 OS=Homo sapiens GN=DTD2 PE=2 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O95363	Phenylalanine--tRNA ligase, mitochondrial OS=Homo sapiens GN=FARS2 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96JB3	Hypermethylated in cancer 2 protein OS=Homo sapiens GN=HIC2 PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96IF1	LIM domain-containing protein ajuba OS=Homo sapiens GN=AJUBA PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8TB03	Uncharacterized protein CXorf38 OS=Homo sapiens GN=CXorf38 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96M02	Centrosomal protein C10orf90 OS=Homo sapiens GN=C10orf90 PE=2 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P27824-2	Isoform 2 of Calnexin OS=Homo sapiens GN=CANX	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8NCE0	tRNA-splicing endonuclease subunit Sen2 OS=Homo sapiens GN=TSEN2 PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P63220	40S ribosomal protein S21 OS=Homo sapiens GN=RPS21 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q01196-8	Isoform AML-1G of Runt-related transcription factor 1 OS=Homo sapiens GN=RUNX1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9Y4C2	TRPM8 channel-associated factor 1 OS=Homo sapiens GN=TCAF1 PE=1 SV=3	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8IUQ4-2	Isoform 2 of E3 ubiquitin-protein ligase SIAH1 OS=Homo sapiens GN=SIAH1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9NWM8	Peptidyl-prolyl cis-trans isomerase FKBP14 OS=Homo sapiens GN=FKBP14 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q6I9Y2	THO complex subunit 7 homolog OS=Homo sapiens GN=THOC7 PE=1 SV=3	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96EZ8-2	Isoform 2 of Microspherule protein 1 OS=Homo sapiens GN=MCRS1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9UHA3	Probable ribosome biogenesis protein RLP24 OS=Homo sapiens GN=RSL24D1 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q15506	Sperm surface protein Sp17 OS=Homo sapiens GN=SPA17 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9NS91	E3 ubiquitin-protein ligase RAD18 OS=Homo sapiens GN=RAD18 PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P33981	Dual specificity protein kinase TTK OS=Homo sapiens GN=TTK PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9UIV1	CCR4-NOT transcription complex subunit 7 OS=Homo sapiens GN=CNOT7 PE=1 SV=3	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O00311	Cell division cycle 7-related protein kinase OS=Homo sapiens GN=CDC7 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q1MSJ5	Centrosome and spindle pole-associated protein 1 OS=Homo sapiens GN=CSPP1 PE=1 SV=4	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q86YV9	Hermansky-Pudlak syndrome 6 protein OS=Homo sapiens GN=HPS6 PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9H4B0	Probable tRNA N6-adenosine threonylcarbamoyltransferase, mitochondrial OS=Homo sapiens GN=OSGEPL1 PE=2 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P49674	Casein kinase I isoform epsilon OS=Homo sapiens GN=CSNK1E PE=1 SV=1	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P54803	Galactocerebrosidase OS=Homo sapiens GN=GALC PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q14865	AT-rich interactive domain-containing protein 5B OS=Homo sapiens GN=ARID5B PE=1 SV=3	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O43422	52 kDa repressor of the inhibitor of the protein kinase OS=Homo sapiens GN=PRKRIR PE=1 SV=2	drug.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9UPN9-2	Isoform Beta of E3 ubiquitin-protein ligase TRIM33 OS=Homo sapiens GN=TRIM33	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	25	NA
+P09493-7	Isoform 7 of Tropomyosin alpha-1 chain OS=Homo sapiens GN=TPM1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	0	45	NA
+P09493-5	Isoform 5 of Tropomyosin alpha-1 chain OS=Homo sapiens GN=TPM1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	0	45	NA
+Q96RL7	Vacuolar protein sorting-associated protein 13A OS=Homo sapiens GN=VPS13A PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P41134	DNA-binding protein inhibitor ID-1 OS=Homo sapiens GN=ID1 PE=1 SV=3	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8N0X4	Citrate lyase subunit beta-like protein, mitochondrial OS=Homo sapiens GN=CLYBL PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BW66-3	Isoform 3 of Cyclin-dependent kinase 2-interacting protein OS=Homo sapiens GN=CINP	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q53HL2	Borealin OS=Homo sapiens GN=CDCA8 PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O75177	Calcium-responsive transactivator OS=Homo sapiens GN=SS18L1 PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9NVS2-2	Isoform 2 of 28S ribosomal protein S18a, mitochondrial OS=Homo sapiens GN=MRPS18A	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P13056	Nuclear receptor subfamily 2 group C member 1 OS=Homo sapiens GN=NR2C1 PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q92979	Ribosomal RNA small subunit methyltransferase NEP1 OS=Homo sapiens GN=EMG1 PE=1 SV=4	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+A0AVK6	Transcription factor E2F8 OS=Homo sapiens GN=E2F8 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9HCP0	Casein kinase I isoform gamma-1 OS=Homo sapiens GN=CSNK1G1 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9H160	Inhibitor of growth protein 2 OS=Homo sapiens GN=ING2 PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P05165	Propionyl-CoA carboxylase alpha chain, mitochondrial OS=Homo sapiens GN=PCCA PE=1 SV=4	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+A2RUC4	tRNA wybutosine-synthesizing protein 5 OS=Homo sapiens GN=TYW5 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q06330	Recombining binding protein suppressor of hairless OS=Homo sapiens GN=RBPJ PE=1 SV=3	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q6P1K1	Heme transporter HRG1 OS=Homo sapiens GN=SLC48A1 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9P2N6	KAT8 regulatory NSL complex subunit 3 OS=Homo sapiens GN=KANSL3 PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q6ZU65	Ubinuclein-2 OS=Homo sapiens GN=UBN2 PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8NI36	WD repeat-containing protein 36 OS=Homo sapiens GN=WDR36 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O43542	DNA repair protein XRCC3 OS=Homo sapiens GN=XRCC3 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q92747	Actin-related protein 2/3 complex subunit 1A OS=Homo sapiens GN=ARPC1A PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q86X02	Cerebellar degeneration-related protein 2-like OS=Homo sapiens GN=CDR2L PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q16526	Cryptochrome-1 OS=Homo sapiens GN=CRY1 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96EN9	Uncharacterized protein C19orf60 OS=Homo sapiens GN=C19orf60 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q7Z7M9	Polypeptide N-acetylgalactosaminyltransferase 5 OS=Homo sapiens GN=GALNT5 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BU61	NADH dehydrogenase [ubiquinone] 1 alpha subcomplex assembly factor 3 OS=Homo sapiens GN=NDUFAF3 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9NTX7	E3 ubiquitin-protein ligase RNF146 OS=Homo sapiens GN=RNF146 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BRA0-2	Isoform 2 of N-alpha-acetyltransferase 38, NatC auxiliary subunit OS=Homo sapiens GN=NAA38	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8NG08	DNA helicase B OS=Homo sapiens GN=HELB PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O94953	Lysine-specific demethylase 4B OS=Homo sapiens GN=KDM4B PE=1 SV=4	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96AQ6	Pre-B-cell leukemia transcription factor-interacting protein 1 OS=Homo sapiens GN=PBXIP1 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q711Q0	Uncharacterized protein C10orf71 OS=Homo sapiens GN=C10orf71 PE=2 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9Y4W6	AFG3-like protein 2 OS=Homo sapiens GN=AFG3L2 PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O43829	Zinc finger and BTB domain-containing protein 14 OS=Homo sapiens GN=ZBTB14 PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O75925-2	Isoform 2 of E3 SUMO-protein ligase PIAS1 OS=Homo sapiens GN=PIAS1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q08AE8	Protein spire homolog 1 OS=Homo sapiens GN=SPIRE1 PE=1 SV=3	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P62324	Protein BTG1 OS=Homo sapiens GN=BTG1 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9H040	SprT-like domain-containing protein Spartan OS=Homo sapiens GN=SPRTN PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q99708-2	Isoform 2 of DNA endonuclease RBBP8 OS=Homo sapiens GN=RBBP8	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8NBP7	Proprotein convertase subtilisin/kexin type 9 OS=Homo sapiens GN=PCSK9 PE=1 SV=3	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BX63	Fanconi anemia group J protein OS=Homo sapiens GN=BRIP1 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96CS7-2	Isoform 2 of Pleckstrin homology domain-containing family B member 2 OS=Homo sapiens GN=PLEKHB2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9H0Y0	Ubiquitin-like-conjugating enzyme ATG10 OS=Homo sapiens GN=ATG10 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8IZE3	Protein-associating with the carboxyl-terminal domain of ezrin OS=Homo sapiens GN=SCYL3 PE=1 SV=3	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q502X0	MORN repeat-containing protein 2 OS=Homo sapiens GN=MORN2 PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8NCQ2	Uncharacterized protein CSNK1G2-AS1 OS=Homo sapiens GN=CSNK1G2-AS1 PE=2 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8WZ73	E3 ubiquitin-protein ligase rififylin OS=Homo sapiens GN=RFFL PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P0CG00	Putative zinc finger and SCAN domain-containing protein 5D OS=Homo sapiens GN=ZSCAN5D PE=5 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O00165-2	Isoform 2 of HCLS1-associated protein X-1 OS=Homo sapiens GN=HAX1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P86397	Hydroxyacyl-thioester dehydratase type 2, mitochondrial OS=Homo sapiens GN=RPP14 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q5MNZ9	WD repeat domain phosphoinositide-interacting protein 1 OS=Homo sapiens GN=WIPI1 PE=1 SV=3	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q12846	Syntaxin-4 OS=Homo sapiens GN=STX4 PE=1 SV=2	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8WYH8	Inhibitor of growth protein 5 OS=Homo sapiens GN=ING5 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q86UY8	5'-nucleotidase domain-containing protein 3 OS=Homo sapiens GN=NT5DC3 PE=2 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O75971	snRNA-activating protein complex subunit 5 OS=Homo sapiens GN=SNAPC5 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BUB4	tRNA-specific adenosine deaminase 1 OS=Homo sapiens GN=ADAT1 PE=1 SV=1	ST.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P09493-5	Isoform 5 of Tropomyosin alpha-1 chain OS=Homo sapiens GN=TPM1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	0	36	NA
+O60907	F-box-like/WD repeat-containing protein TBL1X OS=Homo sapiens GN=TBL1X PE=1 SV=3	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	4	NA
+Q7KZ85-2	Isoform 2 of Transcription elongation factor SPT6 OS=Homo sapiens GN=SUPT6H	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	4	NA
+Q92750	Transcription initiation factor TFIID subunit 4B OS=Homo sapiens GN=TAF4B PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+Q9UL54	Serine/threonine-protein kinase TAO2 OS=Homo sapiens GN=TAOK2 PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+Q96PU5	E3 ubiquitin-protein ligase NEDD4-like OS=Homo sapiens GN=NEDD4L PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+Q6P1R4	tRNA-dihydrouridine(16/17) synthase [NAD(P)(+)]-like OS=Homo sapiens GN=DUS1L PE=1 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q5VSL9	Striatin-interacting protein 1 OS=Homo sapiens GN=STRIP1 PE=1 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	2	NA
+Q9Y2U5	Mitogen-activated protein kinase kinase kinase 2 OS=Homo sapiens GN=MAP3K2 PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O43513	Mediator of RNA polymerase II transcription subunit 7 OS=Homo sapiens GN=MED7 PE=1 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+Q9H079	KATNB1-like protein 1 OS=Homo sapiens GN=KATNBL1 PE=1 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q5TC82	Roquin-1 OS=Homo sapiens GN=RC3H1 PE=1 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P36952	Serpin B5 OS=Homo sapiens GN=SERPINB5 PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P04844	Dolichyl-diphosphooligosaccharide--protein glycosyltransferase subunit 2 OS=Homo sapiens GN=RPN2 PE=1 SV=3	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+A5PL33	Protein KRBA1 OS=Homo sapiens GN=KRBA1 PE=1 SV=3	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BYX2	TBC1 domain family member 2A OS=Homo sapiens GN=TBC1D2 PE=1 SV=3	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9NRH2	SNF-related serine/threonine-protein kinase OS=Homo sapiens GN=SNRK PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BV19	Uncharacterized protein C1orf50 OS=Homo sapiens GN=C1orf50 PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9NVF7	F-box only protein 28 OS=Homo sapiens GN=FBXO28 PE=1 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q96B45	UPF0693 protein C10orf32 OS=Homo sapiens GN=C10orf32 PE=3 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9H0C5	BTB/POZ domain-containing protein 1 OS=Homo sapiens GN=BTBD1 PE=1 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O43542	DNA repair protein XRCC3 OS=Homo sapiens GN=XRCC3 PE=1 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9UH17	DNA dC->dU-editing enzyme APOBEC-3B OS=Homo sapiens GN=APOBEC3B PE=1 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q5MNZ9	WD repeat domain phosphoinositide-interacting protein 1 OS=Homo sapiens GN=WIPI1 PE=1 SV=3	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q7Z309-2	Isoform 2 of Protein FAM122B OS=Homo sapiens GN=FAM122B	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q2NL98	Vimentin-type intermediate filament-associated coiled-coil protein OS=Homo sapiens GN=VMAC PE=2 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q99807	5-demethoxyubiquinone hydroxylase, mitochondrial OS=Homo sapiens GN=COQ7 PE=1 SV=3	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8N7B6	PACRG-like protein OS=Homo sapiens GN=PACRGL PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9UMX1	Suppressor of fused homolog OS=Homo sapiens GN=SUFU PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q53GT1	Kelch-like protein 22 OS=Homo sapiens GN=KLHL22 PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+Q96RK4-2	Isoform 2 of Bardet-Biedl syndrome 4 protein OS=Homo sapiens GN=BBS4	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9BYN0	Sulfiredoxin-1 OS=Homo sapiens GN=SRXN1 PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q7L9B9	Endonuclease/exonuclease/phosphatase family domain-containing protein 1 OS=Homo sapiens GN=EEPD1 PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q8IVI9-4	Isoform 4 of Nostrin OS=Homo sapiens GN=NOSTRIN	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q13164	Mitogen-activated protein kinase 7 OS=Homo sapiens GN=MAPK7 PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P19397	Leukocyte surface antigen CD53 OS=Homo sapiens GN=CD53 PE=1 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q9NU19	TBC1 domain family member 22B OS=Homo sapiens GN=TBC1D22B PE=1 SV=3	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+O00411	DNA-directed RNA polymerase, mitochondrial OS=Homo sapiens GN=POLRMT PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q86UW6	NEDD4-binding protein 2 OS=Homo sapiens GN=N4BP2 PE=1 SV=2	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q12980	Nitrogen permease regulator 3-like protein OS=Homo sapiens GN=NPRL3 PE=1 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+Q92558	Wiskott-Aldrich syndrome protein family member 1 OS=Homo sapiens GN=WASF1 PE=1 SV=1	ST.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA

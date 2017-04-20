@@ -1,0 +1,236 @@
+id	description	condition	37	40	43	46	49	52	55	58	61	64	sumUniPeps	sumPSMs	countNum
+P00742	Coagulation factor X OS=Homo sapiens GN=F10 PE=1 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P01566	Interferon alpha-10 OS=Homo sapiens GN=IFNA10 PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P04004	Vitronectin OS=Homo sapiens GN=VTN PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P04259	Keratin, type II cytoskeletal 6B OS=Homo sapiens GN=KRT6B PE=1 SV=5	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	46	NA
+P04275	von Willebrand factor OS=Homo sapiens GN=VWF PE=1 SV=4	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+P06703	Protein S100-A6 OS=Homo sapiens GN=S100A6 PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P06858	Lipoprotein lipase OS=Homo sapiens GN=LPL PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P07197	Neurofilament medium polypeptide OS=Homo sapiens GN=NEFM PE=1 SV=3	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	14	NA
+P08173	Muscarinic acetylcholine receptor M4 OS=Homo sapiens GN=CHRM4 PE=1 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P0DKL9	ARL14 effector protein-like OS=Homo sapiens GN=ARL14EPL PE=4 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P10645	Chromogranin-A OS=Homo sapiens GN=CHGA PE=1 SV=7	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P13591-5	Isoform 5 of Neural cell adhesion molecule 1 OS=Homo sapiens GN=NCAM1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P13688-9	Isoform 9 of Carcinoembryonic antigen-related cell adhesion molecule 1 OS=Homo sapiens GN=CEACAM1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P15621	Zinc finger protein 44 OS=Homo sapiens GN=ZNF44 PE=2 SV=3	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P16144	Integrin beta-4 OS=Homo sapiens GN=ITGB4 PE=1 SV=5	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P17066	Heat shock 70 kDa protein 6 OS=Homo sapiens GN=HSPA6 PE=1 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	201	NA
+P18074	TFIIH basal transcription factor complex helicase XPD subunit OS=Homo sapiens GN=ERCC2 PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+P18089	Alpha-2B adrenergic receptor OS=Homo sapiens GN=ADRA2B PE=2 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P20645	Cation-dependent mannose-6-phosphate receptor OS=Homo sapiens GN=M6PR PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P20930	Filaggrin OS=Homo sapiens GN=FLG PE=1 SV=3	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	2	NA
+P21127-4	Isoform 3 of Cyclin-dependent kinase 11B OS=Homo sapiens GN=CDK11B	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	17	NA
+P21675-4	Isoform 4 of Transcription initiation factor TFIID subunit 1 OS=Homo sapiens GN=TAF1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	3	NA
+P22694-2	Isoform 2 of cAMP-dependent protein kinase catalytic subunit beta OS=Homo sapiens GN=PRKACB	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	22	NA
+P24278	Zinc finger and BTB domain-containing protein 25 OS=Homo sapiens GN=ZBTB25 PE=1 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P24593	Insulin-like growth factor-binding protein 5 OS=Homo sapiens GN=IGFBP5 PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P26447	Protein S100-A4 OS=Homo sapiens GN=S100A4 PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	4	NA
+P29508	Serpin B3 OS=Homo sapiens GN=SERPINB3 PE=1 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P30419-2	Isoform Short of Glycylpeptide N-tetradecanoyltransferase 1 OS=Homo sapiens GN=NMT1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	60	NA
+P32942	Intercellular adhesion molecule 3 OS=Homo sapiens GN=ICAM3 PE=1 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P33552	Cyclin-dependent kinases regulatory subunit 2 OS=Homo sapiens GN=CKS2 PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	10	NA
+P35226	Polycomb complex protein BMI-1 OS=Homo sapiens GN=BMI1 PE=1 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+P35555	Fibrillin-1 OS=Homo sapiens GN=FBN1 PE=1 SV=3	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P35556	Fibrillin-2 OS=Homo sapiens GN=FBN2 PE=1 SV=3	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P35754	Glutaredoxin-1 OS=Homo sapiens GN=GLRX PE=1 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P42167-2	Isoform Gamma of Lamina-associated polypeptide 2, isoforms beta/gamma OS=Homo sapiens GN=TMPO	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	53	NA
+P42677	40S ribosomal protein S27 OS=Homo sapiens GN=RPS27 PE=1 SV=3	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	10	NA
+P42772-2	Isoform 2 of Cyclin-dependent kinase 4 inhibitor B OS=Homo sapiens GN=CDKN2B	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P43364-2	Isoform 2 of Melanoma-associated antigen 11 OS=Homo sapiens GN=MAGEA11	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P49703	ADP-ribosylation factor-like protein 4D OS=Homo sapiens GN=ARL4D PE=1 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P50993	Sodium/potassium-transporting ATPase subunit alpha-2 OS=Homo sapiens GN=ATP1A2 PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	9	NA
+P51513	RNA-binding protein Nova-1 OS=Homo sapiens GN=NOVA1 PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P51610	Host cell factor 1 OS=Homo sapiens GN=HCFC1 PE=1 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	130	NA
+P51800	Chloride channel protein ClC-Ka OS=Homo sapiens GN=CLCNKA PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P53801	Pituitary tumor-transforming gene 1 protein-interacting protein OS=Homo sapiens GN=PTTG1IP PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P55285	Cadherin-6 OS=Homo sapiens GN=CDH6 PE=1 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P56181	NADH dehydrogenase [ubiquinone] flavoprotein 3, mitochondrial OS=Homo sapiens GN=NDUFV3 PE=1 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	4	NA
+P59923	Zinc finger protein 445 OS=Homo sapiens GN=ZNF445 PE=2 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+P61018-2	Isoform 2 of Ras-related protein Rab-4B OS=Homo sapiens GN=RAB4B	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	14	NA
+P61129	Zinc finger CCCH domain-containing protein 6 OS=Homo sapiens GN=ZC3H6 PE=2 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P61647	Alpha-2,8-sialyltransferase 8F OS=Homo sapiens GN=ST8SIA6 PE=2 SV=1	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	4	NA
+P62491	Ras-related protein Rab-11A OS=Homo sapiens GN=RAB11A PE=1 SV=3	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	66	NA
+P63096	Guanine nucleotide-binding protein G(i) subunit alpha-1 OS=Homo sapiens GN=GNAI1 PE=1 SV=2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	5	NA
+P98095-2	Isoform 2 of Fibulin-2 OS=Homo sapiens GN=FBLN2	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P98164	Low-density lipoprotein receptor-related protein 2 OS=Homo sapiens GN=LRP2 PE=1 SV=3	Ctrl.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P01568	Interferon alpha-21 OS=Homo sapiens GN=IFNA21 PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P01615	Ig kappa chain V-II region FR OS=Homo sapiens PE=1 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P01710	Ig lambda chain V-II region BO OS=Homo sapiens PE=1 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P01889	HLA class I histocompatibility antigen, B-7 alpha chain OS=Homo sapiens GN=HLA-B PE=1 SV=3	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P02452	Collagen alpha-1(I) chain OS=Homo sapiens GN=COL1A1 PE=1 SV=5	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	4	NA
+P04844	Dolichyl-diphosphooligosaccharide--protein glycosyltransferase subunit 2 OS=Homo sapiens GN=RPN2 PE=1 SV=3	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P05771	Protein kinase C beta type OS=Homo sapiens GN=PRKCB PE=1 SV=4	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	116	NA
+P07202	Thyroid peroxidase OS=Homo sapiens GN=TPO PE=1 SV=4	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P08567	Pleckstrin OS=Homo sapiens GN=PLEK PE=1 SV=3	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P08700	Interleukin-3 OS=Homo sapiens GN=IL3 PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P08779	Keratin, type I cytoskeletal 16 OS=Homo sapiens GN=KRT16 PE=1 SV=4	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	33	NA
+P0C7Q3	Putative cyclin-related protein FAM58B OS=Homo sapiens GN=FAM58BP PE=5 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P0CB44	Putative spindle and kinetochore-associated protein 2-like OS=Homo sapiens GN=SKA2L PE=5 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P0CG34	Thymosin beta-15A OS=Homo sapiens GN=TMSB15A PE=1 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	3	NA
+P0DI81-3	Isoform 3 of Trafficking protein particle complex subunit 2 OS=Homo sapiens GN=TRAPPC2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P10720	Platelet factor 4 variant OS=Homo sapiens GN=PF4V1 PE=1 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P10997	Islet amyloid polypeptide OS=Homo sapiens GN=IAPP PE=1 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P12034	Fibroblast growth factor 5 OS=Homo sapiens GN=FGF5 PE=1 SV=4	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P13056	Nuclear receptor subfamily 2 group C member 1 OS=Homo sapiens GN=NR2C1 PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P14136-2	Isoform 2 of Glial fibrillary acidic protein OS=Homo sapiens GN=GFAP	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	15	NA
+P16070	CD44 antigen OS=Homo sapiens GN=CD44 PE=1 SV=3	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P17098	Zinc finger protein 8 OS=Homo sapiens GN=ZNF8 PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P17538	Chymotrypsinogen B OS=Homo sapiens GN=CTRB1 PE=2 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P18206-3	Isoform 3 of Vinculin OS=Homo sapiens GN=VCL	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	93	NA
+P19447	TFIIH basal transcription factor complex helicase XPB subunit OS=Homo sapiens GN=ERCC3 PE=1 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P22303-2	Isoform H of Acetylcholinesterase OS=Homo sapiens GN=ACHE	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P22607-2	Isoform 2 of Fibroblast growth factor receptor 3 OS=Homo sapiens GN=FGFR3	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	11	NA
+P22694-2	Isoform 2 of cAMP-dependent protein kinase catalytic subunit beta OS=Homo sapiens GN=PRKACB	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	24	NA
+P24278	Zinc finger and BTB domain-containing protein 25 OS=Homo sapiens GN=ZBTB25 PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	6	NA
+P24864	G1/S-specific cyclin-E1 OS=Homo sapiens GN=CCNE1 PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+P26447	Protein S100-A4 OS=Homo sapiens GN=S100A4 PE=1 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	4	NA
+P30499	HLA class I histocompatibility antigen, Cw-1 alpha chain OS=Homo sapiens GN=HLA-C PE=2 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P31249	Homeobox protein Hox-D3 OS=Homo sapiens GN=HOXD3 PE=1 SV=3	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P32121-4	Isoform 4 of Beta-arrestin-2 OS=Homo sapiens GN=ARRB2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	7	NA
+P35670	Copper-transporting ATPase 2 OS=Homo sapiens GN=ATP7B PE=1 SV=4	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	4	NA
+P36406	E3 ubiquitin-protein ligase TRIM23 OS=Homo sapiens GN=TRIM23 PE=1 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P41247	Patatin-like phospholipase domain-containing protein 4 OS=Homo sapiens GN=PNPLA4 PE=2 SV=3	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P42772-2	Isoform 2 of Cyclin-dependent kinase 4 inhibitor B OS=Homo sapiens GN=CDKN2B	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P43080	Guanylyl cyclase-activating protein 1 OS=Homo sapiens GN=GUCA1A PE=1 SV=3	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P49916	DNA ligase 3 OS=Homo sapiens GN=LIG3 PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	4	NA
+P51508	Zinc finger protein 81 OS=Homo sapiens GN=ZNF81 PE=1 SV=3	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P51587	Breast cancer type 2 susceptibility protein OS=Homo sapiens GN=BRCA2 PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	2	NA
+P51668	Ubiquitin-conjugating enzyme E2 D1 OS=Homo sapiens GN=UBE2D1 PE=1 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	8	NA
+P51800	Chloride channel protein ClC-Ka OS=Homo sapiens GN=CLCNKA PE=1 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P55268	Laminin subunit beta-2 OS=Homo sapiens GN=LAMB2 PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	2	NA
+P56381	ATP synthase subunit epsilon, mitochondrial OS=Homo sapiens GN=ATP5E PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	4	NA
+P57679	Ellis-van Creveld syndrome protein OS=Homo sapiens GN=EVC PE=1 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P57768	Sorting nexin-16 OS=Homo sapiens GN=SNX16 PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P62316-2	Isoform 2 of Small nuclear ribonucleoprotein Sm D2 OS=Homo sapiens GN=SNRPD2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	63	NA
+P63218	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-5 OS=Homo sapiens GN=GNG5 PE=1 SV=3	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P67936-2	Isoform 2 of Tropomyosin alpha-4 chain OS=Homo sapiens GN=TPM4	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	0	125	NA
+P68871	Hemoglobin subunit beta OS=Homo sapiens GN=HBB PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	31	NA
+P78364	Polyhomeotic-like protein 1 OS=Homo sapiens GN=PHC1 PE=1 SV=3	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P78537	Biogenesis of lysosome-related organelles complex 1 subunit 1 OS=Homo sapiens GN=BLOC1S1 PE=1 SV=2	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P86397	Hydroxyacyl-thioester dehydratase type 2, mitochondrial OS=Homo sapiens GN=RPP14 PE=1 SV=1	Ctrl.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P00403	Cytochrome c oxidase subunit 2 OS=Homo sapiens GN=MT-CO2 PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P01768	Ig heavy chain V-III region CAM OS=Homo sapiens PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P04004	Vitronectin OS=Homo sapiens GN=VTN PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P04217	Alpha-1B-glycoprotein OS=Homo sapiens GN=A1BG PE=1 SV=4	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P04844	Dolichyl-diphosphooligosaccharide--protein glycosyltransferase subunit 2 OS=Homo sapiens GN=RPN2 PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P05177-2	Isoform 2 of Cytochrome P450 1A2 OS=Homo sapiens GN=CYP1A2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P05997	Collagen alpha-2(V) chain OS=Homo sapiens GN=COL5A2 PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P07099	Epoxide hydrolase 1 OS=Homo sapiens GN=EPHX1 PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P07357	Complement component C8 alpha chain OS=Homo sapiens GN=C8A PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P07951-2	Isoform 2 of Tropomyosin beta chain OS=Homo sapiens GN=TPM2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	88	NA
+P08476	Inhibin beta A chain OS=Homo sapiens GN=INHBA PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P09914	Interferon-induced protein with tetratricopeptide repeats 1 OS=Homo sapiens GN=IFIT1 PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P0C869-4	Isoform 4 of Cytosolic phospholipase A2 beta OS=Homo sapiens GN=PLA2G4B	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	3	NA
+P0CB44	Putative spindle and kinetochore-associated protein 2-like OS=Homo sapiens GN=SKA2L PE=5 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P10243	Myb-related protein A OS=Homo sapiens GN=MYBL1 PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P10586	Receptor-type tyrosine-protein phosphatase F OS=Homo sapiens GN=PTPRF PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P11047	Laminin subunit gamma-1 OS=Homo sapiens GN=LAMC1 PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P11169	Solute carrier family 2, facilitated glucose transporter member 3 OS=Homo sapiens GN=SLC2A3 PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P12755	Ski oncogene OS=Homo sapiens GN=SKI PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	5	NA
+P12882	Myosin-1 OS=Homo sapiens GN=MYH1 PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	8	NA
+P14136-2	Isoform 2 of Glial fibrillary acidic protein OS=Homo sapiens GN=GFAP	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	19	NA
+P16455	Methylated-DNA--protein-cysteine methyltransferase OS=Homo sapiens GN=MGMT PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P16860	Natriuretic peptides B OS=Homo sapiens GN=NPPB PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+P17098	Zinc finger protein 8 OS=Homo sapiens GN=ZNF8 PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	4	NA
+P17931	Galectin-3 OS=Homo sapiens GN=LGALS3 PE=1 SV=5	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P18084	Integrin beta-5 OS=Homo sapiens GN=ITGB5 PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P18825	Alpha-2C adrenergic receptor OS=Homo sapiens GN=ADRA2C PE=2 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P19012	Keratin, type I cytoskeletal 15 OS=Homo sapiens GN=KRT15 PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	41	NA
+P20333	Tumor necrosis factor receptor superfamily member 1B OS=Homo sapiens GN=TNFRSF1B PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P20809	Interleukin-11 OS=Homo sapiens GN=IL11 PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P22105	Tenascin-X OS=Homo sapiens GN=TNXB PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P23467-3	Isoform 3 of Receptor-type tyrosine-protein phosphatase beta OS=Homo sapiens GN=PTPRB	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P24043	Laminin subunit alpha-2 OS=Homo sapiens GN=LAMA2 PE=1 SV=4	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P24278	Zinc finger and BTB domain-containing protein 25 OS=Homo sapiens GN=ZBTB25 PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	5	NA
+P24394	Interleukin-4 receptor subunit alpha OS=Homo sapiens GN=IL4R PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+P26447	Protein S100-A4 OS=Homo sapiens GN=S100A4 PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	4	NA
+P30531	Sodium- and chloride-dependent GABA transporter 1 OS=Homo sapiens GN=SLC6A1 PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P31645	Sodium-dependent serotonin transporter OS=Homo sapiens GN=SLC6A4 PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P35555	Fibrillin-1 OS=Homo sapiens GN=FBN1 PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	4	NA
+P35749-2	Isoform 2 of Myosin-11 OS=Homo sapiens GN=MYH11	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	94	NA
+P36268	Gamma-glutamyltranspeptidase 2 OS=Homo sapiens GN=GGT2 PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P36952	Serpin B5 OS=Homo sapiens GN=SERPINB5 PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P39900	Macrophage metalloelastase OS=Homo sapiens GN=MMP12 PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P41279-2	Isoform 2 of Mitogen-activated protein kinase kinase kinase 8 OS=Homo sapiens GN=MAP3K8	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	2	NA
+P42677	40S ribosomal protein S27 OS=Homo sapiens GN=RPS27 PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	15	NA
+P42696	RNA-binding protein 34 OS=Homo sapiens GN=RBM34 PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P42772-2	Isoform 2 of Cyclin-dependent kinase 4 inhibitor B OS=Homo sapiens GN=CDKN2B	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P43146	Netrin receptor DCC OS=Homo sapiens GN=DCC PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P48960	CD97 antigen OS=Homo sapiens GN=CD97 PE=1 SV=4	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P49023-4	Isoform 4 of Paxillin OS=Homo sapiens GN=PXN	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	20	NA
+P50225	Sulfotransferase 1A1 OS=Homo sapiens GN=SULT1A1 PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	9	NA
+P50238	Cysteine-rich protein 1 OS=Homo sapiens GN=CRIP1 PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P50579	Methionine aminopeptidase 2 OS=Homo sapiens GN=METAP2 PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	61	NA
+P51587	Breast cancer type 2 susceptibility protein OS=Homo sapiens GN=BRCA2 PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	4	NA
+P51788	Chloride channel protein 2 OS=Homo sapiens GN=CLCN2 PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P54709	Sodium/potassium-transporting ATPase subunit beta-3 OS=Homo sapiens GN=ATP1B3 PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P54851	Epithelial membrane protein 2 OS=Homo sapiens GN=EMP2 PE=2 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P60507	HERV-F(c)1Xq21.33 provirus ancestral Env polyprotein OS=Homo sapiens PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P60660-2	Isoform Smooth muscle of Myosin light polypeptide 6 OS=Homo sapiens GN=MYL6	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	59	NA
+P61218	DNA-directed RNA polymerases I, II, and III subunit RPABC2 OS=Homo sapiens GN=POLR2F PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P61927	60S ribosomal protein L37 OS=Homo sapiens GN=RPL37 PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P63218	Guanine nucleotide-binding protein G(I)/G(S)/G(O) subunit gamma-5 OS=Homo sapiens GN=GNG5 PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P78364	Polyhomeotic-like protein 1 OS=Homo sapiens GN=PHC1 PE=1 SV=3	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P86397	Hydroxyacyl-thioester dehydratase type 2, mitochondrial OS=Homo sapiens GN=RPP14 PE=1 SV=1	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P98066	Tumor necrosis factor-inducible gene 6 protein OS=Homo sapiens GN=TNFAIP6 PE=1 SV=2	Treatment.1	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P00390-5	Isoform 4 of Glutathione reductase, mitochondrial OS=Homo sapiens GN=GSR	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	83	NA
+P00750	Tissue-type plasminogen activator OS=Homo sapiens GN=PLAT PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P01266	Thyroglobulin OS=Homo sapiens GN=TG PE=1 SV=5	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	2	NA
+P04217	Alpha-1B-glycoprotein OS=Homo sapiens GN=A1BG PE=1 SV=4	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P04629	High affinity nerve growth factor receptor OS=Homo sapiens GN=NTRK1 PE=1 SV=4	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P04899-4	Isoform sGi2 of Guanine nucleotide-binding protein G(i) subunit alpha-2 OS=Homo sapiens GN=GNAI2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	8	NA
+P05121	Plasminogen activator inhibitor 1 OS=Homo sapiens GN=SERPINE1 PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P05160	Coagulation factor XIII B chain OS=Homo sapiens GN=F13B PE=1 SV=3	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P05771	Protein kinase C beta type OS=Homo sapiens GN=PRKCB PE=1 SV=4	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	115	NA
+P06703	Protein S100-A6 OS=Homo sapiens GN=S100A6 PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P07951-2	Isoform 2 of Tropomyosin beta chain OS=Homo sapiens GN=TPM2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	63	NA
+P08697	Alpha-2-antiplasmin OS=Homo sapiens GN=SERPINF2 PE=1 SV=3	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	4	NA
+P09914	Interferon-induced protein with tetratricopeptide repeats 1 OS=Homo sapiens GN=IFIT1 PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P0C0S5	Histone H2A.Z OS=Homo sapiens GN=H2AFZ PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	16	NA
+P0C734	Uncharacterized protein BTRF1 OS=Epstein-Barr virus (strain GD1) GN=BTRF1 PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	3	NA
+P0DI81-3	Isoform 3 of Trafficking protein particle complex subunit 2 OS=Homo sapiens GN=TRAPPC2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P10124	Serglycin OS=Homo sapiens GN=SRGN PE=1 SV=3	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P10242-4	Isoform 4 of Transcriptional activator Myb OS=Homo sapiens GN=MYB	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P12755	Ski oncogene OS=Homo sapiens GN=SKI PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	3	NA
+P17098	Zinc finger protein 8 OS=Homo sapiens GN=ZNF8 PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+P19419	ETS domain-containing protein Elk-1 OS=Homo sapiens GN=ELK1 PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P20591	Interferon-induced GTP-binding protein Mx1 OS=Homo sapiens GN=MX1 PE=1 SV=4	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P22301	Interleukin-10 OS=Homo sapiens GN=IL10 PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P22694-2	Isoform 2 of cAMP-dependent protein kinase catalytic subunit beta OS=Homo sapiens GN=PRKACB	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	21	NA
+P23467-3	Isoform 3 of Receptor-type tyrosine-protein phosphatase beta OS=Homo sapiens GN=PTPRB	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P24666-2	Isoform 2 of Low molecular weight phosphotyrosine protein phosphatase OS=Homo sapiens GN=ACP1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	22	NA
+P24821-4	Isoform 4 of Tenascin OS=Homo sapiens GN=TNC	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P25440-2	Isoform 2 of Bromodomain-containing protein 2 OS=Homo sapiens GN=BRD2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	3	NA
+P26441	Ciliary neurotrophic factor OS=Homo sapiens GN=CNTF PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P27482	Calmodulin-like protein 3 OS=Homo sapiens GN=CALML3 PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	11	NA
+P28335	5-hydroxytryptamine receptor 2C OS=Homo sapiens GN=HTR2C PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P33076	MHC class II transactivator OS=Homo sapiens GN=CIITA PE=1 SV=3	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P33151	Cadherin-5 OS=Homo sapiens GN=CDH5 PE=1 SV=5	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P34969	5-hydroxytryptamine receptor 7 OS=Homo sapiens GN=HTR7 PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P35222	Catenin beta-1 OS=Homo sapiens GN=CTNNB1 PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	3	NA
+P35442	Thrombospondin-2 OS=Homo sapiens GN=THBS2 PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P38935	DNA-binding protein SMUBP-2 OS=Homo sapiens GN=IGHMBP2 PE=1 SV=3	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	4	NA
+P40261	Nicotinamide N-methyltransferase OS=Homo sapiens GN=NNMT PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P41221	Protein Wnt-5a OS=Homo sapiens GN=WNT5A PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P41440	Folate transporter 1 OS=Homo sapiens GN=SLC19A1 PE=1 SV=3	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P42330	Aldo-keto reductase family 1 member C3 OS=Homo sapiens GN=AKR1C3 PE=1 SV=4	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	33	NA
+P42677	40S ribosomal protein S27 OS=Homo sapiens GN=RPS27 PE=1 SV=3	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	17	NA
+P43630	Killer cell immunoglobulin-like receptor 3DL2 OS=Homo sapiens GN=KIR3DL2 PE=2 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P47710	Alpha-S1-casein OS=Homo sapiens GN=CSN1S1 PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P47895	Aldehyde dehydrogenase family 1 member A3 OS=Homo sapiens GN=ALDH1A3 PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	23	NA
+P49639	Homeobox protein Hox-A1 OS=Homo sapiens GN=HOXA1 PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P50443	Sulfate transporter OS=Homo sapiens GN=SLC26A2 PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P51513	RNA-binding protein Nova-1 OS=Homo sapiens GN=NOVA1 PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P51685	C-C chemokine receptor type 8 OS=Homo sapiens GN=CCR8 PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P51854	Transketolase-like protein 1 OS=Homo sapiens GN=TKTL1 PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P53701	Cytochrome c-type heme lyase OS=Homo sapiens GN=HCCS PE=1 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	2	NA
+P55210-2	Isoform Beta of Caspase-7 OS=Homo sapiens GN=CASP7	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P57723	Poly(rC)-binding protein 4 OS=Homo sapiens GN=PCBP4 PE=2 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	8	NA
+P59044	NACHT, LRR and PYD domains-containing protein 6 OS=Homo sapiens GN=NLRP6 PE=2 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P60468	Protein transport protein Sec61 subunit beta OS=Homo sapiens GN=SEC61B PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P61978-2	Isoform 2 of Heterogeneous nuclear ribonucleoprotein K OS=Homo sapiens GN=HNRNPK	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	180	NA
+P68106	Peptidyl-prolyl cis-trans isomerase FKBP1B OS=Homo sapiens GN=FKBP1B PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	2	5	NA
+P78325	Disintegrin and metalloproteinase domain-containing protein 8 OS=Homo sapiens GN=ADAM8 PE=1 SV=2	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P83105	Serine protease HTRA4 OS=Homo sapiens GN=HTRA4 PE=2 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P86452	Zinc finger BED domain-containing protein 6 OS=Homo sapiens GN=ZBED6 PE=3 SV=1	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	1	NA
+P98177	Forkhead box protein O4 OS=Homo sapiens GN=FOXO4 PE=1 SV=5	Treatment.2	1	NA	NA	NA	NA	NA	NA	NA	NA	NA	1	4	NA
