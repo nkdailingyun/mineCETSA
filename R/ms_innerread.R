@@ -14,7 +14,7 @@
 #'
 #' @keywords internal
 #'
-#' @importFrom readr read_tsv
+#' @importFrom readr read_tsv locale
 #'
 #' @return a dataframe
 #' @examples \dontrun{

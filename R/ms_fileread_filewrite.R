@@ -54,7 +54,7 @@ ms_filewrite <- function(data, filename, outdir=NULL, withdescription=TRUE, auto
 #'
 #' @param file name of the txt file, in the format of "./subfolder/datafile.txt"
 #'
-#' @importFrom readr read_tsv
+#' @importFrom readr read_tsv locale
 #'
 #' @export
 #' @return a dataframe
