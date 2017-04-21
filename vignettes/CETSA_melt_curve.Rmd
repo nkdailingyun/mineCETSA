@@ -4,7 +4,7 @@ author: "Dai Lingyun"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{analysis of melt curves}
+  %\VignetteIndexEntry{analysis of CETSA melt curves}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -47,8 +47,12 @@ By default, `PD21=TRUE` assume the data is searched using PD2.1; otherwise, spec
 Refer to "Data searching using PD2.1" for how-to.  
 Note that for simplicity, always use channel __126__ as control channel for data search in PD, regardless of the labelling arrangement.    
 You need to specify a `temp` (short for temperature) vector that was the heat challenge the samples/cells were exposed to in CETSA treatment, corresponding to the labelling done from 126 up to 131, of which the function default is `temp=c(37,40,43,46,49,52,55,58,61,64)`.  
-```{r, message=TRUE}
+```{r, eval=FALSE}
 LY <- ms_rawread(c("LY_K562_Ctrl_rep1_PD21_Proteins copy.txt","LY_K562_Ctrl_rep2_PD21_Proteins copy.txt","LY_K562_Treatment_rep1_PD21_Proteins copy.txt","LY_K562_Treatment_rep2_PD21_Proteins copy.txt"))
+```
+
+```{r, echo=FALSE, message=TRUE}
+LY <- ms_rawread(c(system.file("extdata", "LY_K562_Ctrl_rep1_PD21_Proteins copy.txt", package="mineCETSA"), system.file("extdata", "LY_K562_Ctrl_rep2_PD21_Proteins copy.txt", package="mineCETSA"), system.file("extdata", "LY_K562_Treatment_rep1_PD21_Proteins copy.txt", package="mineCETSA"), system.file("extdata", "LY_K562_Treatment_rep2_PD21_Proteins copy.txt", package="mineCETSA")))
 ```
 
 4. Customize the condition names in dataset using `ms_conditionrename()`.  

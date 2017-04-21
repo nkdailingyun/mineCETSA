@@ -51,9 +51,16 @@ Note that for simplicity, always use channel __126__ as control channel for data
 You need to specify a `dose` vector of the compound concentration used corresponding to the labelling done from 126 up to 131, of which the function default is `dose=c(400,100,25,6.25,1.56,0.391,0.098,0.0245,0.006,0)`.  
 Similarly for ITTR experiment, you need to specify a treatment `time` vector, of which the default is `time=c(0,10,20,30,45,60,90,120,150,180)`.  
 When protein abundance values are present in PD2.1 rawdata, they would be extracted by default and used for sysmtematic normalization in the next step.  
-```{r, message=TRUE}
+```{r, eval=FALSE}
 ITDRdata <- ms_ITDR_rawread(c("SN1.txt", "SN2.txt", "ST1.txt", "ST2.txt"), PD21=TRUE, dose=c(20,5,1.25,0.3123,0.078125,0.019531,0.004883,0.001221,0.000305,0))
+```
 
+```{r, echo=FALSE, message=TRUE}
+ITDRdata <- ms_ITDR_rawread(c(system.file("extdata", "SN1.txt", package="mineCETSA"), system.file("extdata", "SN2.txt", package="mineCETSA"), system.file("extdata", "ST1.txt", package="mineCETSA"), system.file("extdata", "ST2.txt", package="mineCETSA")), PD21=TRUE, dose=c(20,5,1.25,0.3123,0.078125,0.019531,0.004883,0.001221,0.000305,0))
+#print(unique(ITDRdata$outdir))
+```
+
+```{r}
 #ITDRdata_1file <- ms_ITDR_rawread("SN1.txt", PD21=TRUE, dose=c(20,5,1.25,0.3123,0.078125,0.019531,0.004883,0.001221,0.000305,0))
 
 #ITTRdata <- ms_ITTR_rawread(c("file1.txt", "file2.txt", "file3.txt", "file4.txt"), PD21=TRUE, time=c(0,5,10,15,20,30,45,60,90,120))
