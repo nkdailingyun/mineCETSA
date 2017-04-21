@@ -29,6 +29,8 @@ ms_ITTR_rawread <- function(filevector, fchoose=FALSE, time=c(0,10,20,30,45,60,9
   flength <- length(filevector)
   if (flength < 2) {
     dirname <- deparse(substitute(filevector))
+    dirname_l <- unlist(strsplit(dirname, split="/"))
+    dirname <- dirname_l[length(dirname_l)]
     data <- ms_innerread(filevector, fchoose, treatment=time, nread, abdread, PD21, refchannel, channels)
     data <- ms_dircreate(dirname, data)
     print("The data composition under each experimental condition is:")
@@ -37,6 +39,8 @@ ms_ITTR_rawread <- function(filevector, fchoose=FALSE, time=c(0,10,20,30,45,60,9
   } else {
     filename <- filevector[1]
     dirname <- deparse(substitute(filename))
+    dirname_l <- unlist(strsplit(dirname, split="/"))
+    dirname <- dirname_l[length(dirname_l)]
     indata <- ms_innerread(filevector[1], fchoose, treatment=time, nread, abdread, PD21, refchannel, channels)
     indata <- mutate(indata, condition = paste0(condition,".1"))
     outdata <- indata
