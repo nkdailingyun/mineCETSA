@@ -46,7 +46,8 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
   y <- c(1.0, 0.98, 0.95, 0.8, 0.7, 0.5, 0.5, 0.2, 0.15, 0.1)
   x <- c(37.0, 40.0, 43.0, 46.0, 49.0, 52.0, 55.0, 58.0, 61.0, 64.0)
   df <- data.frame(x, y)
-  t1 <- drm(y ~ x, data=df, fct=drc::LL.4())
+  t1 <- drc::drm(y~x, data=df, fct=LL.4())
+  #print(t1)
 
   if (topasone==TRUE) { top <- 1.0 } else { top <- NA }
 
@@ -69,8 +70,7 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
       # q <- q + geom_smooth(method = "drm", formula = t1,
       #                      fct = LL.4(fixed=c(NA,NA,top,NA)),
       #                      aes(colour=condition), se=FALSE, size=0.5)
-      q <- q + geom_smooth(method="drm", formula=t1, method.args=list(fct=LL.4(fixed=c(NA,NA,top,NA))),
-                           aes(colour=condition), se=FALSE, size=0.5)
+      q <- q + geom_smooth(method=drc::"drm", formula=t1, method.args=list(fct=LL.4(fixed=c(NA,NA,top,NA))), aes(colour=condition), se=FALSE, size=0.5)
     } else {
       q <- q + geom_line(aes(colour=condition), size=0.5)
     }
