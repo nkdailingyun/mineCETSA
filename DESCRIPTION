@@ -8,8 +8,19 @@ Description: This package is designed to process MS-CETSA result from TMT10 labe
 License: GPL (>= 2)
 Encoding: UTF-8 
 LazyData: true
-Imports: readr(>= 1.1.0), tibble, dplyr(>= 0.5.0), tidyr(>= 0.6.1), drc(>= 3.0), RColorBrewer, gtools, gridExtra, scales, ggplot2(>= 2.2.0)
-Depends: R (>= 3.2)
+Imports: 
+  readr (>= 1.1.0), 
+  tibble, 
+  dplyr (>= 0.5.0), 
+  tidyr (>= 0.6.1), 
+  drc (>= 3.0), 
+  RColorBrewer, 
+  gtools, 
+  gridExtra, 
+  scales, 
+  ggplot2 (>= 2.2.0)
+Depends: 
+  R (>= 3.2)
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
 Suggests: knitr,
