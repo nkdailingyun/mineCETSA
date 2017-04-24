@@ -5,8 +5,8 @@
 \title{ms_ITTR_scaling}
 \usage{
 ms_ITTR_scaling(data, nread = 10, abdnorm = TRUE, reftolowest = TRUE,
-  remloadc = FALSE, loadcname = "C", writefactortofile = TRUE,
-  bottomlabel = "Treatment time",
+  remloadc = FALSE, loadcname = "C", numcharmix = FALSE,
+  writefactortofile = TRUE, bottomlabel = "Treatment time",
   filename = "ITTR_normalization_factors.txt")
 }
 \arguments{
@@ -24,6 +24,9 @@ group as the reference to derive ratios, default set to TRUE}
 \item{remloadc}{whether to remove loading control sample, default set to FALSE}
 
 \item{loadcname}{the header name of loading control sample}
+
+\item{numcharmix}{whether the treatment names contains both character and
+numeric values}
 
 \item{writefactortofile}{whether to save a copy of scaling factors,
 default set to TRUE}

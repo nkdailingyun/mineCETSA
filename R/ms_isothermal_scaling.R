@@ -10,6 +10,8 @@
 #' group as the reference to derive ratios
 #' @param remloadc whether to remove loading control sample
 #' @param loadcname the header name of loading control sample
+#' @param numcharmix whether the treatment names contains both character and
+#' numeric values
 #' @param writefactortofile whether to save a copy of scaling factors
 #' @param bottomlabel textual label at the bottom of the plot
 #' @param filename name for the file
@@ -17,6 +19,7 @@
 #' @keywords internal
 #'
 #' @importFrom tibble as_tibble
+#' @importFrom gtools mixedorder mixedsort
 #' @import tidyr
 #' @import dplyr
 #' @import ggplot2
@@ -28,7 +31,7 @@
 #'
 
 ms_isothermal_scaling <- function(data, nread, abdnorm, reftolowest, remloadc,
-                                  loadcname, writefactortofile,
+                                  loadcname, numcharmix, writefactortofile,
                                   bottomlabel, filename) {
 
   dataname <- deparse(substitute(data))
@@ -65,6 +68,7 @@ ms_isothermal_scaling <- function(data, nread, abdnorm, reftolowest, remloadc,
                     filename=paste0(dataname,"_Normalized_Abundance_wholeset_trend.pdf"),
                     xlabel=bottomlabel, ylabel="Normalized protein abundance (10^)",
                     isratio=FALSE, isothermalstyle=TRUE, outdir=outdir)
+    ms_filewrite(outdata, paste0(dataname,"_","Scaled_abundance_data.txt"), outdir=outdir)
     #return(outdata)
 
     # Remove protein adundance data
@@ -103,9 +107,14 @@ ms_isothermal_scaling <- function(data, nread, abdnorm, reftolowest, remloadc,
 
   # make sure the dose is in ascending trend
   int_data <- rdata[ ,c(4:(nread+3))]
-  int_data <- int_data[ ,order(as.numeric(names(int_data)), decreasing=FALSE)]
+  if (numcharmix) {
+    int_data <- int_data[ ,gtools::mixedorder(names(int_data))]
+  } else {
+    int_data <- int_data[ ,order(as.numeric(names(int_data)), decreasing=FALSE)]
+  }
   rdata <- cbind(rdata[ ,c(1:3)], int_data, rdata[ ,c((nread+4):(ncol(rdata)))])
   namedosevector <- names(rdata[c(4:(nread+3))])
+  #print(namedosevector)
   #print(mdata)
 
   # Normalize blank treatement to 1
@@ -167,16 +176,23 @@ ms_isothermal_scaling <- function(data, nread, abdnorm, reftolowest, remloadc,
   scalemdata <- tidyr::gather(scalemdata[ ,-c(1,2)], treatment, reading, -set, -condition)
   mediandata <- rbind(mdata, scalemdata)
   mediandata$set <- factor(mediandata$set, levels=setorder)
-  mediandata$treatment <- factor(mediandata$treatment,
-                                 levels=sort(as.numeric(unique(mediandata$treatment)), decreasing=FALSE))
+  if (numcharmix) {
+    #print(unique(mediandata$treatment))
+    #print(gtools::mixedsort(unique(mediandata$treatment)))
+    mediandata$treatment <- factor(mediandata$treatment,
+                                   levels=gtools::mixedsort(unique(mediandata$treatment)))
+  } else {
+    mediandata$treatment <- factor(mediandata$treatment,
+                                   levels=sort(as.numeric(unique(mediandata$treatment)), decreasing=FALSE))
+  }
   ms_innerplotmedian(mediandata, filename=paste0(dataname, "_scaling_median.pdf"),
                      xlabel=bottomlabel, ylabel="Median value of soluble proteins",
                      isothermalstyle=TRUE, outdir=outdir)
 
   if (remloadc) {
-    #outdata <- outdata[,-4] # to remove the loading control
+    # to remove the loading control
     loadcpos <- grep(pattern=paste0("^",loadcname,"$"), names(outdata), value=FALSE)
-    int_data <- outdata[ ,-loadcpos]
+    int_data <- outdata[ ,-loadcpos][ ,c(4:(nread+2))]
     int_data <- tibble::as_tibble(t(apply(int_data, 1, function(x) x/x[1])))
     names(int_data) <- setdiff(namedosevector, loadcname)
     outdata <- cbind(outdata[ ,c(1:3)], int_data, outdata[,c((nread+4):(ncol(outdata)))])

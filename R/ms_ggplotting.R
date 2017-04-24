@@ -41,8 +41,8 @@
 
 ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRUE,
                           orderAUCdiff=TRUE, nreplicate=1, topasone=TRUE, normTop=TRUE,
-                          dotconnect=FALSE, printGeneName=FALSE, PSManno=TRUE,
-                          presetcolor=TRUE, colorpanel=NULL, commonlegend=TRUE,
+                          dotconnect=FALSE, pfdatabase=FALSE, printGeneName=FALSE,
+                          PSManno=TRUE, presetcolor=TRUE, colorpanel=NULL, commonlegend=TRUE,
                           layout=c(5,5), pdfname="ggplotting.pdf") {
 
   dataname <- deparse(substitute(data))
@@ -90,7 +90,10 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   # to concatenate id and description
   nrowdata <- nrow(data)
   getGeneName <- function(x) {return (strsplit(strsplit(x, "GN=")[[1]][2], " ")[[1]][1])}
-  getProteinName <- function(x) {return (strsplit(x, " OS")[[1]][1])}
+  getProteinName <- function(x) {return (strsplit(x, " OS=")[[1]][1])}
+  if (pfdatabase) {
+    getProteinName <- function(x) {return (gsub("product=", "", strsplit(x, "\\|")[[1]][2]))}
+  }
   if (printGeneName) {
     data <- data %>% rowwise() %>%
       mutate(description = getGeneName(description)) %>%

@@ -11,6 +11,8 @@
 #' group as the reference to derive ratios, default set to TRUE
 #' @param remloadc whether to remove loading control sample, default set to FALSE
 #' @param loadcname the header name of loading control sample
+#' @param numcharmix whether the treatment names contains both character and
+#' numeric values
 #' @param writefactortofile whether to save a copy of scaling factors,
 #' default set to TRUE
 #' @param bottomlabel textual label at the bottom of the plot
@@ -25,10 +27,10 @@
 #'
 #'
 ms_ITTR_scaling <- function(data, nread=10, abdnorm=TRUE, reftolowest=TRUE,
-                            remloadc=FALSE, loadcname="C",
+                            remloadc=FALSE, loadcname="C", numcharmix=FALSE,
                             writefactortofile=TRUE, bottomlabel="Treatment time",
                             filename="ITTR_normalization_factors.txt") {
 
   ms_isothermal_scaling(data, nread, abdnorm, reftolowest, remloadc, loadcname,
-                        writefactortofile, bottomlabel, filename)
+                        numcharmix,writefactortofile, bottomlabel, filename)
 }

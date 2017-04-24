@@ -5,7 +5,7 @@
 \title{ms_isothermal_scaling}
 \usage{
 ms_isothermal_scaling(data, nread, abdnorm, reftolowest, remloadc, loadcname,
-  writefactortofile, bottomlabel, filename)
+  numcharmix, writefactortofile, bottomlabel, filename)
 }
 \arguments{
 \item{data}{dataset to be scaled}
@@ -21,6 +21,9 @@ group as the reference to derive ratios}
 \item{remloadc}{whether to remove loading control sample}
 
 \item{loadcname}{the header name of loading control sample}
+
+\item{numcharmix}{whether the treatment names contains both character and
+numeric values}
 
 \item{writefactortofile}{whether to save a copy of scaling factors}
 

@@ -52,7 +52,7 @@ ms_ITDR_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondpro
                                PSMcutoff=FALSE, PSMthreshold=3, nreplicate=2,
                                remfragment=FALSE, remribosomal=FALSE,
                                orderEC=FALSE, orderAUC=FALSE, plotseq=NULL,
-                               loess=FALSE, dotconnect=FALSE,
+                               loess=FALSE, dotconnect=FALSE, pfdatabase=FALSE,
                                printGeneName=FALSE, PSManno=FALSE, unit="mM",
                                xlinear=FALSE, xlog10=TRUE, xsqrt=FALSE, xinterval=NULL,
                                fixedy=FALSE, layout=c(5,5),
@@ -116,7 +116,10 @@ ms_ITDR_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondpro
     stop("Otherwise specify remsinglecondprot==FALSE !")
   }
   getGeneName <- function(x) {return (strsplit(strsplit(x, "GN=")[[1]][2], " ")[[1]][1])}
-  getProteinName <- function(x) {return (strsplit(x, " OS")[[1]][1])}
+  getProteinName <- function(x) {return (strsplit(x, " OS=")[[1]][1])}
+  if (pfdatabase) {
+    getProteinName <- function(x) {return (gsub("product=", "", strsplit(x, "\\|")[[1]][2]))}
+  }
   if (printGeneName) {
     data <- data %>% rowwise() %>% mutate(description = getGeneName(description)) %>%
       mutate(id = paste(id, description, sep="\n"))

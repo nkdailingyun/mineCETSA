@@ -68,7 +68,7 @@ ms_innerplotbox <- function(data, filename, xlabel, ylabel, isratio, isothermals
   data <- tidyr::gather(data, treatment, reading, -id, -condition)
   #d1 <- melt(data, id.vars=c("id", "condition"), variable.name="treatment", value.name="reading")
   if (isratio) {
-    data$treatment <- factor(data$treatment, levels=sort(as.numeric(unique(data$treatment)), decreasing=FALSE))
+    data$treatment <- factor(data$treatment, levels=gtools::mixedsort(unique(data$treatment)))
     q <- ggplot(data, aes(x = treatment, y = reading))
     if (isothermalstyle) {
       q <- q + coord_cartesian(ylim=c(0,2)) + scale_y_continuous(breaks=c(0,0.9,1,1.1,2)) +
@@ -79,7 +79,7 @@ ms_innerplotbox <- function(data, filename, xlabel, ylabel, isratio, isothermals
     q <- q + labs(x=xlabel, y=ylabel) + geom_boxplot(aes(fill=condition)) +
       theme(text=element_text(size=20), axis.text.x = element_text(angle=45,hjust=1), aspect.ratio=1)
   } else {
-    data$treatment <- factor(data$treatment, levels=gtools::mixedsort(unique(data$treatment), decreasing=FALSE))
+    data$treatment <- factor(data$treatment, levels=gtools::mixedsort(unique(data$treatment)))
     q <- ggplot(data, aes(x=treatment, y = log10(reading)))
     q <- q + labs(x=xlabel, y=ylabel) + geom_boxplot(aes(fill=condition)) +
       theme(text=element_text(size=20), axis.text.x = element_text(angle=45,hjust=1), aspect.ratio=1)
