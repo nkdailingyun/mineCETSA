@@ -42,6 +42,13 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
   dataname <- deparse(substitute(data))
   outdir <- data$outdir[1]
   data$outdir <- NULL
+  # to prevent the change of sub-directory folder
+  if (!length(outdir)) {
+    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
+    dir.create(outdir)
+  } else if (dir.exists(outdir)==FALSE) {
+    dir.create(outdir)
+  }
 
   if (!length(foldername)) {
     foldername <- paste0(dataname, "_QCreports")
@@ -151,6 +158,16 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
             legend.position="bottom", aspect.ratio=1)
     ggsave(filename = paste0(outdir,"/",foldername,"/","R2_CV_distribution1.png"), n2, height=4, width=8)
 
+
+    n3 <- ggplot(data, aes(x=R2, y=AUC)) + geom_point(aes(colour=condition),size=0.5,alpha=0.3) +
+      geom_vline(xintercept=0.8, colour="blue", linetype = "longdash") +
+      coord_cartesian(ylim = c(0,20))
+    n3 <- n3 + labs(x="Reading R-squared",y="Reading Area Under the Curve") +
+      facet_grid( .~condition+replicate) + theme_bw() +
+      theme(text = element_text(size=12), axis.text=element_text(size=6),
+            legend.position="bottom", aspect.ratio=1)
+    ggsave(filename = paste0(outdir,"/",foldername,"/","R2_AUC_distribution1.png"), n3, height=4, width=8)
+
     a<-data.frame(t(as.matrix(summary(data$CV))), stringsAsFactors=F, check.names=F)
     a$parameter <- "CV"
     b<-data.frame(t(as.matrix(summary(data$AUC))), stringsAsFactors=F, check.names=F)
@@ -213,6 +230,16 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
             legend.position="bottom", aspect.ratio=1)
     ggsave(filename = paste0(outdir,"/",foldername,"/","R2_CV_distribution2.png"), n2, height=4, width=8)
 
+
+    n3 <- ggplot(data_PSMbig, aes(x=R2, y=AUC)) + geom_point(aes(colour=condition),size=0.5,alpha=0.3) +
+      geom_vline(xintercept=0.8, colour="blue", linetype = "longdash") +
+      coord_cartesian(ylim = c(0,20))
+    n3 <- n3 + labs(x="Reading R-squared",y="Reading Area Under the Curve") +
+      facet_grid( .~condition+replicate) + theme_bw() +
+      theme(text = element_text(size=12), axis.text=element_text(size=6),
+            legend.position="bottom", aspect.ratio=1)
+    ggsave(filename = paste0(outdir,"/",foldername,"/","R2_AUC_distribution2.png"), n3, height=4, width=8)
+
     a<-data.frame(t(as.matrix(summary(data_PSMbig$CV))), stringsAsFactors=F, check.names=F)
     a$parameter <- "CV"
     b<-data.frame(t(as.matrix(summary(data_PSMbig$AUC))), stringsAsFactors=F, check.names=F)
@@ -257,11 +284,13 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
   if (isdatafitted) {
     fig8 <- newFigure( "R2_CV_distribution1.png", "The distribution of R2 vs CV of readings per curve in each condition.")
     fig9 <- newFigure( "R2_CV_distribution2.png", "The distribution of R2 vs CV of readings per curve in each condition from PSM>3 group.")
+    fig10 <- newFigure( "R2_AUC_distribution1.png", "The distribution of R2 vs AUC of readings per curve in each condition.")
+    fig11 <- newFigure( "R2_AUC_distribution2.png", "The distribution of R2 vs AUC of readings per curve in each condition from PSM>3 group.")
   } else {
     fig8 <- NULL
     fig9 <- NULL
   }
-  fig10 <- newFigure( "PSM_distribution.png", "The distribution of PSMs for each quantified protein")
+  fig12 <- newFigure( "PSM_distribution.png", "The distribution of PSMs for each quantified protein")
 
   t1 <- newTable( data_N, paste0("The number of quantified proteins for in total ", length(unique(data$id))), " unique proteins." )
   t2 <- newTable( R2CV, "The distribution of CV and R2 of readings (grouped by 10plex-curve)." )
@@ -278,14 +307,14 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
     ss2 <- addTo( ss2, fig1)
   }
   if(isdatafitted){
-    ss3 <- addTo( ss3, t2, p1, fig3, fig4, fig5, fig6, fig8, p2 )
-    ss4 <- addTo( ss4, p3, fig10, t3, t4, fig7, fig9, p2 )
+    ss3 <- addTo( ss3, t2, p1, fig3, fig4, fig5, fig6, fig8, fig10, p2 )
+    ss4 <- addTo( ss4, p3, fig12, t3, t4, fig7, fig9, fig11, p2 )
   }else{
     ss3 <- addTo( ss3, t2, p1, fig3, fig4, fig5, fig6, p2 )
-    ss4 <- addTo( ss4, p3, fig10, t3, t4, fig7, p2 )
+    ss4 <- addTo( ss4, p3, fig12, t3, t4, fig7, p2 )
   }
   r <- addTo( r, ss1, ss2, ss3, ss4 )
   writeReport( r, filename=paste0(outdir,"/",foldername, "/", reportname )) # w/o extension
-  rm(p1, p2, p3, r, ss1, ss2, ss3, ss4, t1, t2, t3, t4, fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig10)
+  rm(p1, p2, p3, r, ss1, ss2, ss3, ss4, t1, t2, t3, t4, fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig10, fig11, fig12)
 
 }

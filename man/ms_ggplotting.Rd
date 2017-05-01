@@ -7,9 +7,9 @@
 ms_ggplotting(data, legenddata = NULL, nread = 10,
   remsinglecondprot = TRUE, orderAUCdiff = TRUE, nreplicate = 1,
   topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
-  printGeneName = FALSE, PSManno = TRUE, presetcolor = TRUE,
-  colorpanel = NULL, commonlegend = TRUE, layout = c(5, 5),
-  pdfname = "ggplotting.pdf")
+  pfdatabase = FALSE, printGeneName = FALSE, PSManno = TRUE,
+  presetcolor = TRUE, colorpanel = NULL, commonlegend = TRUE,
+  layout = c(5, 5), pdfname = "ggplotting.pdf")
 }
 \arguments{
 \item{data}{isothermal dataset to plot}

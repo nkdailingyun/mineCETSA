@@ -33,6 +33,15 @@ ms_ITDR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
   outdir <- data$outdir[1]
   data$outdir <- NULL
 
+  # to prevent the change of sub-directory folder
+  if (!length(outdir)) {
+    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
+    dir.create(outdir)
+  } else if (dir.exists(outdir)==FALSE) {
+    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
+    dir.create(outdir)
+  }
+
   nrowdata <- nrow(data)
   nametempvector <- names(data[4:(nread+3)])
   # Calculate EC value, R2, Slope
@@ -146,6 +155,14 @@ ms_ITTR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
   dataname <- deparse(substitute(data))
   outdir <- data$outdir[1]
   data$outdir <- NULL
+
+  # to prevent the change of sub-directory folder
+  if (!length(outdir)) {
+    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
+    dir.create(outdir)
+  } else if (dir.exists(outdir)==FALSE) {
+    dir.create(outdir)
+  }
 
   nrowdata <- nrow(data)
   nametempvector <- names(data[4:(nread+3)])

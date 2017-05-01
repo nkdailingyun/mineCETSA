@@ -8,9 +8,9 @@ ms_ggplotting_rep(data, legenddata = NULL, levelvector = NULL, nread = 10,
   remsinglecondprot = TRUE, PSMcutoff = FALSE, PSMthreshold = 3,
   remfragment = FALSE, remribosomal = FALSE, fitremout = FALSE,
   nreplicate = 2, topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
-  printGeneName = FALSE, PSManno = TRUE, presetcolor = TRUE,
-  colorpanel = NULL, commonlegend = TRUE, layout = c(5, 5),
-  pdfname = "ggplotting.pdf")
+  pfdatabase = FALSE, printGeneName = FALSE, PSManno = TRUE,
+  presetcolor = TRUE, colorpanel = NULL, commonlegend = TRUE,
+  layout = c(5, 5), pdfname = "ggplotting.pdf")
 }
 \arguments{
 \item{data}{isothermal dataset to plot}

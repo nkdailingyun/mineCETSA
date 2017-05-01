@@ -6,7 +6,6 @@
 #' @param filename name of the txt file
 #' @param outdir the subfolder name to save the txt file
 #' @param withdescription whether the dataset contains the description column, default set to TRUE
-#' @param autodir whether to automatically use the sub-working directory associated to the data, defalut set to TRUE
 #'
 #' @import tidyr
 #' @importFrom readr write_tsv
@@ -20,11 +19,17 @@
 #'
 
 
-ms_filewrite <- function(data, filename, outdir=NULL, withdescription=TRUE, autodir=TRUE) {
+ms_filewrite <- function(data, filename, outdir=NULL, withdescription=TRUE) {
 
   #print(outdir)
-  if (length(grep("outdir", names(data))) & autodir) {
+  if (length(grep("outdir", names(data)))) {
     outdir <- data$outdir[1]
+    if (dir.exists(outdir)==FALSE) {
+      dir.create(outdir)
+    }
+  } else if (!length(outdir)) {
+    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
+    dir.create(outdir)
   }
 
   if (!length(grep("description", names(data))) & withdescription) {

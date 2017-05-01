@@ -49,6 +49,14 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   outdir <- data$outdir[1]
   data$outdir <- NULL
 
+  # to prevent the change of sub-directory folder
+  if (!length(outdir)) {
+    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
+    dir.create(outdir)
+  } else if (dir.exists(outdir)==FALSE) {
+    dir.create(outdir)
+  }
+
   if (any(duplicated(data[, c(1,3)]))) {
     print("Warning for duplicated protein name entries")
     print("Double check the following proteins for duplicated entries:")

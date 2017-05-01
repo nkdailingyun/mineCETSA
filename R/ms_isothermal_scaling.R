@@ -38,6 +38,14 @@ ms_isothermal_scaling <- function(data, nread, abdnorm, reftolowest, remloadc,
   outdir <- data$outdir[1]
   data$outdir <- NULL
 
+  # to prevent the change of sub-directory folder
+  if (!length(outdir)) {
+    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
+    dir.create(outdir)
+  } else if (dir.exists(outdir)==FALSE) {
+    dir.create(outdir)
+  }
+
   abdcol <- grep("Abundance", names(data), value=FALSE)
   if(length(abdcol) > 0 & abdnorm) {
     #if(!length(abdcol)){stop("Make sure there is abundance values, or add argument: abdnorm=FALSE")}

@@ -35,6 +35,14 @@ ms_forcescaling <- function(data, refcondition=NULL, nread=10, reorder=FALSE,
   outdir <- data$outdir[1]
   data$outdir <- NULL
 
+  # to prevent the change of sub-directory folder
+  if (!length(outdir)) {
+    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
+    dir.create(outdir)
+  } else if (dir.exists(outdir)==FALSE) {
+    dir.create(outdir)
+  }
+
   if (reorder) {
     # make sure the temperature is in ascending trend
     int_data <- data[ ,c(4:(nread+3))]

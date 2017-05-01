@@ -34,6 +34,14 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
   outdir <- data$outdir[1]
   data$outdir <- NULL
 
+  # to prevent the change of sub-directory folder
+  if (!length(outdir)) {
+    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
+    dir.create(outdir)
+  } else if (dir.exists(outdir)==FALSE) {
+    dir.create(outdir)
+  }
+
   nrowdata <- nrow(data)
   nametempvector <- names(data[4:(nread+3)])
   numtempvector <- as.numeric(nametempvector)

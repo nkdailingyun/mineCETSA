@@ -60,6 +60,14 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   outdir <- data$outdir[1]
   data$outdir <- NULL
 
+  # to prevent the change of sub-directory folder
+  if (!length(outdir)) {
+    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
+    dir.create(outdir)
+  } else if (dir.exists(outdir)==FALSE) {
+    dir.create(outdir)
+  }
+
   if (remfragment) {
     if(length(grep("Fragment", data$description))) {
       data <- data[-grep("Fragment", data$description), ]

@@ -23,6 +23,14 @@ ms_clean <- function(data, nread=10, remkeratin=TRUE, remsinglecondprot=FALSE) {
   dataname <- deparse(substitute(data))
   outdir <- data$outdir[1]
 
+  # to prevent the change of sub-directory folder
+  if (!length(outdir)) {
+    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
+    dir.create(outdir)
+  } else if (dir.exists(outdir)==FALSE) {
+    dir.create(outdir)
+  }
+
   nrowdata <- nrow(data)
   row_na <- apply(data, 1, function(x) {any(is.na(x[c(1:(nread+3))]))})
   data_na <- data[row_na, ]

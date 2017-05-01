@@ -4,8 +4,7 @@
 \alias{ms_filewrite}
 \title{ms_filewrite}
 \usage{
-ms_filewrite(data, filename, outdir = NULL, withdescription = TRUE,
-  autodir = TRUE)
+ms_filewrite(data, filename, outdir = NULL, withdescription = TRUE)
 }
 \arguments{
 \item{data}{dataset to save into txt file}
@@ -15,8 +14,6 @@ ms_filewrite(data, filename, outdir = NULL, withdescription = TRUE,
 \item{outdir}{the subfolder name to save the txt file}
 
 \item{withdescription}{whether the dataset contains the description column, default set to TRUE}
-
-\item{autodir}{whether to automatically use the sub-working directory associated to the data, defalut set to TRUE}
 }
 \description{
 Function to write dataset into tab delimited files
