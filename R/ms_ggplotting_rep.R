@@ -18,6 +18,14 @@
 #' accordingly, this is relavent to automatic coloring scheme,
 #' up to 4 is possible for now
 #' @param fitremout whether to segregate the proteins with messy melt curves
+#' @param ctrlcond if necessary, could used to specify what conditions to be
+#' referred as control conditions
+#' @param bottomcutoff the average of the last three points should be lower than
+#' specified bottom cutoff value, which is 0.4 by default
+#' @param topcutoff the average of the first three points should be higher than
+#' specified bottom cutoff value, which is 0.8 by default
+#' @param variancecutoff whether to segregate the proteins with large inter-replicate variance
+#' @param nMAD_var the number of MADs to set the significance cutoff about variance distribution
 #' @param topasone whether the top plateau has to be fixed, i.e., 1.0
 #' @param normTop whether to normalize the AUC based on Top three readings
 #' @param dotconnect whether to simply dot connect the readings for each curve
@@ -49,7 +57,9 @@
 
 ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                               remsinglecondprot=TRUE, PSMcutoff=FALSE, PSMthreshold=3,
-                              remfragment=FALSE, remribosomal=FALSE, fitremout=FALSE,
+                              remfragment=FALSE, remribosomal=FALSE,
+                              fitremout=FALSE, ctrlcond=NULL, bottomcutoff=0.4, topcutoff=0.8,
+                              variancecutoff=FALSE, nMAD_var=2.5,
                               nreplicate=2, topasone=TRUE, normTop=TRUE, dotconnect=FALSE,
                               pfdatabase=FALSE, printGeneName=FALSE,
                               PSManno=TRUE, presetcolor=TRUE,
@@ -158,15 +168,15 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   }
 
   # look for outlier proteins based on melting behavior in controls
+  outliers <- NULL
   if (fitremout) {
-    outliers <- NULL
     print("Make sure you provide fitted data with Tm and R2 values for this option!")
     ctrllist1 <- unique(grep("[Cc][Tt][Rr][Ll]", data$condition, value=TRUE))
     ctrllist2 <- unique(grep("[Cc][Oo][Nn][Tt][Rr][Oo][Ll]", data$condition, value=TRUE))
     ctrllist3 <- unique(grep("[Dd][Mm][Ss][Oo]", data$condition, value=TRUE))
-    ctrllist <- c(ctrllist1, ctrllist2, ctrllist3)
+    ctrllist <- c(ctrllist1, ctrllist2, ctrllist3, ctrlcond)
     if(length(ctrllist)==0) {
-      stop("Name your control conditions with prefix [Ctrl] or [Control] or [DMSO]")
+      stop("Name your control conditions with prefix [Ctrl] or [Control] or [DMSO], or specify in ctrlcond argument")
     }
     data$Top <- rowMeans(data[, c(3:5)])
     data$Bottom <- rowMeans(data[ ,c(nread:(nread+2))])
@@ -179,13 +189,15 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
     tmp3 <- which(data$id %in% R2table$id)
     #tmp4 <- which(data$condition %in% ctrllist & data$Tm>=100);
     tmp5 <- which(data$condition %in% ctrllist & data$Top<data$Bottom)
-    tmp <- c(tmp1, tmp2, tmp3, tmp5)#, tmp4)
+    tmp6 <- which(data$condition %in% ctrllist & data$Top<topcutoff)
+    tmp7 <- which(data$condition %in% ctrllist & data$Bottom>bottomcutoff)
+    tmp <- c(tmp1, tmp2, tmp3, tmp5, tmp6, tmp7)#, tmp4)
     tmp <- unique(tmp)
     data$Top <- NULL
     data$Bottom <- NULL
     if (length(tmp)>0) {
-      print(paste0(length(tmp), "measurements were messy in melting behavior and removed."))
-      outlierid <- data[tmp,"id"]
+      print(paste0(length(tmp), " measurements were messy in melting behavior and removed."))
+      outlierid <- data[tmp, ]$id
       outlierid1 <- which(data$id %in% outlierid)
       outliers <- data[outlierid1, ]
       ms_filewrite(outliers, "Messy proteins.txt", outdir=outdir)
@@ -281,11 +293,11 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
       distance<-Intra1+Intra2+Intra3-variance
       EDscore<-(Intra1+Intra2+Intra3)/(10^(variance))
       eucl<-c(Intra1, Intra2, Intra3, InterCtrl1, InterCtrl2, InterCtrl3,
-              InterTreatment1, InterTreatment2, InterTreatment3, distance, EDscore)
+              InterTreatment1, InterTreatment2, InterTreatment3, variance, distance, EDscore)
       data.frame(Intra1=eucl[1], Intra2=eucl[2], Intra3=eucl[3],
                  InterCtrl1=eucl[4], InterCtrl2=eucl[5], InterCtrl3=eucl[6],
                  InterTreatment1=eucl[7], InterTreatment2=eucl[8], InterTreatment3=eucl[9],
-                 distance=eucl[10], EDscore=eucl[11])
+                 variance=eucl[10], distance=eucl[11], EDscore=eucl[12])
     })
   } else if (nreplicate==4) {
     dism <- plyr::ddply(data_complete, "id", function(data){
@@ -317,13 +329,13 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
               InterCtrl1, InterCtrl2, InterCtrl3,
               InterCtrl4, InterCtrl5, InterCtrl6,
               InterTreatment1, InterTreatment2, InterTreatment3,
-              InterTreatment4, InterTreatment5, InterTreatment6, distance, EDscore)
+              InterTreatment4, InterTreatment5, InterTreatment6, variance, distance, EDscore)
       data.frame(Intra1=eucl[1], Intra2=eucl[2], Intra3=eucl[3], Intra4=eucl[4],
                  InterCtrl1=eucl[5], InterCtrl2=eucl[6], InterCtrl3=eucl[7],
                  InterCtrl4=eucl[8], InterCtrl5=eucl[9], InterCtrl6=eucl[10],
                  InterTreatment1=eucl[11], InterTreatment2=eucl[12], InterTreatment3=eucl[13],
                  InterTreatment4=eucl[14], InterTreatment5=eucl[15], InterTreatment6=eucl[16],
-                 distance=eucl[17], EDscore=eucl[18])
+                 variance=eucl[17], distance=eucl[18], EDscore=eucl[19])
     })
   }
 
@@ -342,11 +354,26 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   ms_filewrite(dism, "Euclidean distance score table.txt", outdir=outdir)
 
   # Turkey boxplot [Q1-c*IQD, Q3+c*IQD]
-  pos10 <- which(dism$EDscore >= quantile(dism$EDscore, probs=0.9))
-  pos10id <- dism[pos10, ]
-  ms_filewrite(pos10id,"ED score Top10%_id.txt", outdir=outdir)
+  # pos10 <- which(dism$EDscore >= quantile(dism$EDscore, probs=0.9))
+  # pos10id <- dism[pos10, ]
+  # ms_filewrite(pos10id,"ED score Top10%_id.txt", outdir=outdir)
 
   plotlegend <- ms_melt_legend(data_complete, nread, colorpanel)
+
+  data_largevar <- NULL
+  if (variancecutoff) {
+    cutoff <- NULL
+    # MAD guided significance
+    print("use MAD scheme to assign variance cutoff...")
+    cutoff <- round(median(dism$variance)+nMAD_var*mad(dism$variance), 3)
+    print(paste0("The variance cutoff limit (", nMAD_var, "*mad) sets at ", cutoff))
+    dism <- subset(dism, variance<cutoff)
+    fkeep1 <- which(data_complete$id %in% dism$id)
+    data_largevar <- data_complete[-fkeep1, ]
+    data_complete <- data_complete[fkeep1, ]
+    print(paste0("The number of reproducible proteins with complete replicates is: ",
+                 length(unique(data_complete$id))))
+  }
 
   # print out the PSM small data file
   if (PSMcutoff) {
@@ -368,6 +395,17 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                        length(unique(outliers$id)),
                        "_Messy proteins", pdfname), pl, height=12, width=12)
     print("Messy plot file generated successfully.")
+  }
+
+  # print out the large variance data file
+  if (variancecutoff) {
+    pl <- ms_melt_innerplot(data_largevar, nread, topasone, dotconnect,
+                            PSManno, PSM_annod, Pep_annod, colorpanel,
+                            plotlegend, commonlegend, layout)
+    ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
+                       length(unique(outliers$id)),
+                       "_Non_reproducible proteins", pdfname), pl, height=12, width=12)
+    print("Non reproducible plot file generated successfully.")
   }
 
   print("Generating first complete plot file, pls wait.")

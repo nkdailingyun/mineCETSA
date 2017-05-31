@@ -30,12 +30,16 @@ ms_clean <- function(data, nread=10, remkeratin=TRUE, remsinglecondprot=FALSE) {
   } else if (dir.exists(outdir)==FALSE) {
     dir.create(outdir)
   }
-
+  #print(outdir)
   nrowdata <- nrow(data)
   row_na <- apply(data, 1, function(x) {any(is.na(x[c(1:(nread+3))]))})
-  data_na <- data[row_na, ]
-  data <- na.omit(data)
-  ms_filewrite(data_na, paste0(dataname, "_Missing Values.txt"), outdir=outdir)
+  if (sum(row_na)!=0) {
+    data_na <- data[which(row_na), ]
+    data <- data[-which(row_na), ]
+    ms_filewrite(data_na, paste0(dataname, "_Missing Values.txt"), outdir=outdir)
+  } else {
+    print("Your data is complete in quantification, there is no NA values!")
+  }
 
   # remove single condition proteins if desired
   if (remsinglecondprot) {

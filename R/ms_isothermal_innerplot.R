@@ -164,14 +164,22 @@ ms_isothermal_innerplot <- function(data, legenddata, nread, nreplicate, loess,
       q <- q + coord_cartesian(xlim=c(0,xmax)) + scale_x_continuous(trans=sqrt_trans(), breaks=trans_breaks("sqrt", function(x) x^2)) + labs(x=" ", y=" ")
     }
 
-    if (fixedy | max(abs(d1[,4]), na.rm=T)<=2.0) {
-      q <- q + coord_cartesian(ylim = c(0,2)) + scale_y_continuous(breaks=seq(0, 2, 0.5))
+    if (min(abs(d1[,4]), na.rm=T) <= 0.5) {
+      mi = 0
     } else {
-      ma <- (floor(max(abs(d1[,4]), na.rm=T)) + ceiling(max(abs(d1[,4]), na.rm=T)))/2
+      mi = 0.5
+    }
+
+    if (fixedy | max(abs(d1[,4]), na.rm=T) < 2.0 ) {
+      q <- q + coord_cartesian(ylim = c(mi-0.05,2)) + scale_y_continuous(breaks=seq(mi, 2, 0.5))
+    } else {
+      ma <- ceiling(2*max(abs(d1[,4]), na.rm=T))/2
       if (ma<=3.0) {
-        q <- q + coord_cartesian(ylim = c(0,ma)) + scale_y_continuous(breaks=seq(0, ma, 0.5))
+        q <- q + coord_cartesian(ylim = c(mi-0.05,ma+0.1)) + scale_y_continuous(breaks=seq(mi, ma, 0.5))
+      } else if (ma<=5.0) {
+        q <- q + coord_cartesian(ylim = c(mi-0.05,ma+0.1)) + scale_y_continuous(breaks=seq(mi, ma, 1))
       } else {
-        q <- q + coord_cartesian(ylim = c(0,ma)) + scale_y_continuous(breaks=seq(0, ma, 1))
+        q <- q + coord_cartesian(ylim = c(mi-0.05,ma+0.1)) + scale_y_continuous(breaks=seq(mi, ma, 2))
       }
     }
 

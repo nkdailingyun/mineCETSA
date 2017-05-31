@@ -5,7 +5,8 @@
 \title{ms_ITTR_fitting}
 \usage{
 ms_ITTR_fitting(data, nread = 10, fc = 0.3, forcestart = FALSE,
-  writetofile = TRUE, keepfittedvalue = FALSE)
+  nbaseline = 2, baselineMAD = 0, nMAD = 2.5, writetofile = TRUE,
+  keepfittedvalue = FALSE)
 }
 \arguments{
 \item{data}{dataset to be fitted}

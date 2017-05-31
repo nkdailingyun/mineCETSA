@@ -289,6 +289,8 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
   } else {
     fig8 <- NULL
     fig9 <- NULL
+    fig10 <- NULL
+    fig11 <- NULL
   }
   fig12 <- newFigure( "PSM_distribution.png", "The distribution of PSMs for each quantified protein")
 

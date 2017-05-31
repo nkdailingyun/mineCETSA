@@ -41,7 +41,8 @@ ms_subsetting <- function(data, hitidlist, isfile=TRUE, allisoform=TRUE, revsel=
 
   fkeep <- NULL
   for (i in 1:llength) {
-    hits <- grep(paste0("^", listid[i]), data$id, value=FALSE)
+    if (!allisoform) {hits <- grep(paste0("^", listid[i], "$"), data$id, value=FALSE)}
+    else {hits <- grep(paste0("^", listid[i]), data$id, value=FALSE)}
     fkeep <- c(fkeep, hits)
     # print(fkeep)
   }

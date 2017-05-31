@@ -5,10 +5,10 @@
 \title{ms_ITTR_filter}
 \usage{
 ms_ITTR_filter(data, nread = 10, fcthreshold = 0.3, R2threshold = 0.8,
-  baselineMAD = 0, checkreplicate = FALSE, treatcondition = NULL,
-  allpresence = FALSE, ncheckpoint = 3, nreplicate = 2, ncondition = 2,
-  PSMcutoff = FALSE, PSMthreshold = 3, remfragment = FALSE,
-  remribosomal = FALSE)
+  nbaseline = 2, baselineMAD = 0, nMAD = 2.5, checkreplicate = FALSE,
+  treatcondition = NULL, allpresence = FALSE, ncheckpoint = 3,
+  nreplicate = 2, ncondition = 2, PSMcutoff = FALSE, PSMthreshold = 3,
+  remfragment = FALSE, remribosomal = FALSE)
 }
 \arguments{
 \item{data}{dataset to be filtered}
@@ -22,8 +22,13 @@ considered significantly stabilized or destabilized, default value 0.3}
 
 \item{R2threshold}{minimal R2 level to consider time-reponse fitting as reliable}
 
+\item{nbaseline}{the number of points (count from lowest concentration) used
+for calculate the baseline MAD, default is 2}
+
 \item{baselineMAD}{MAD of baseline variation, default value is 0; if not
 provided, it will be calculated based on the readings from the lowest two dose groups}
+
+\item{nMAD}{the significance level of MAD cutoff, default value is 2.5}
 
 \item{checkreplicate}{whether to check replicated measurements, when set to
 TRUE, make sure the proteins with all the replicated measurements from at least

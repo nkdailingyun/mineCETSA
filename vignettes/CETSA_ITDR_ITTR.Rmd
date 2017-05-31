@@ -25,9 +25,9 @@ The main tasks include:
 ## Prerequisites
 * R version > 3.3.0 
 * Rstudio version > 0.99, preferably > 1.0
-* Dependent packages (will be handled during the package installiation process automatically):  
+* Dependent packages:  
 "readr", "drc", "plyr", "tibble", "tidyr", "grid", "gtools", "gridExtra", "scales", "RColorBrewer", "dplyr", "ggplot2"  
-However, if complained, use `install.packges()` command to manually install a paticular package  
+Currently, during the package installiation process from local source, when these dependent packages are not available, complains would rise, use `install.packges()` command to manually install a paticular package, then repeat the installation process.  
 
 --------------------------------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ This condition remaning is important for group assignment and ITDR/ITTR hits sel
 __It is recommended that you should try to omit using dot in the condition names, you can segregate your long condition name using underline if necessary.__  
 The argument `incondition` corresponses to current condition naming, whereas `outcondition` correponses to new condition naming, both order and length should match exactly.  
 ```{r}
-ITDRdata <- ms_conditionrename(ITDRdata, incondition=c("staurosporine.3","staurosporine.4"), outcondition=c("ST.1","ST.2"))
+ITDRdata <- ms_conditionrename(ITDRdata, incondition=c("drugS.3","drugS.4","drugX.1","drugX.2"), outcondition=c("drugS.r1","drugS.r2","drugX.r1","drugX.r2"))
 ```
 
 5. Remove not-quantified and Keratin proteins by default using `ms_clean()`.  
@@ -82,18 +82,28 @@ ITDRdata_c <- ms_clean(ITDRdata)
 #ITTRdata_c <- ms_clean(ITTRdata)
 ```
 
-6. Apply systematic scaling to the dataset using `ms_ITDR_scaling()` or `ms_ITTR_scaling()`.  
+6. Resolve isoform ambiguity from multiple runs of searches using `ms_isoform_resolve()`.  
+When two or more isoforms of the same parental proteins are identified among the combined datasets but within each individual condition, only one isoform is identified, base on the principle of parsimony, the minor isoforms will be automatically adjusted to be the corresponding major or more frequent oberserved isoform. At the same time, a match table will be suggested to further consolidate the cases that when two or more isoforms of the same parental proteins are identified within the same individual conditioned dataset, which could then be achieved by using `ms_isoform_consolidate()`.   
+```{r,eval=FALSE}
+ITDRdata_c1 <- ms_clean(ITDRdata_c)
+# The next one is optional. You are encouraged to double check and adjust the match table entries. 
+ITDRdata_c2 <- ms_clean(ITDRdata_c1, matchtable="./subfolder/tobe_consolidated.txt")
+# When the data contains protein abundance information. 
+ITDRdata_c2 <- ms_clean(ITDRdata_c1, matchtable="./subfolder/tobe_consolidated.txt", withabd=TRUE)
+```
+
+7. Apply systematic scaling to the dataset using `ms_ITDR_scaling()` or `ms_ITTR_scaling()`.  
 The function achieve: 1) For dataset with protein abundance information, the total abundances in each channel are adjusted to be the same (i.e., average of all channels). 2) For dataset without protein abundance information but only calculated ratio information, the median of ratios in each channel are adjusted to be the same (i.e., 1). 3) Automatically check and re-arrange the treatment dose (or time) in ascending order.  
 Output in working directory:  
 * Scaling factors used is written into a local file.  
 * Medians of pre- and post- data normalization is plotted.  
 * The distribution of raw and normalized protein abundance is plotted.  
-```{r}
-ITDRdata_s <- ms_ITDR_scaling(ITDRdata_c)
-#ITTRdata_s <- ms_ITTR_scaling(ITTRdata_c)
+```{r,eval=FALSE}
+ITDRdata_s <- ms_ITDR_scaling(ITDRdata_c2)
+#ITTRdata_s <- ms_ITTR_scaling(ITTRdata_c2)
 ```
 
-7. Try to perform dose/time-response function fitting to generate fitting parameters for each entry/curve using `ms_ITDR_fitting()` or `ms_ITTR_fitting()`.  
+8. Try to perform dose/time-response function fitting to generate fitting parameters for each entry/curve using `ms_ITDR_fitting()` or `ms_ITTR_fitting()`.  
 The returned data contains the input scaled data plus fitting parameters (including `EC`/`ET`, `R2`, and `Slope`). Parameter `fc` (short for fold change) indicated the response level the fitting function used to back-calculate the corresponding `EC` (short for Effective concentration).   
 For `ms_ITTR_fitting()`, similarly the `ET` (short for Effective time) is calculated.  
 A copy of the fitted dataset would be saved in current working directory.  
@@ -102,7 +112,7 @@ ITDRdata_f <- ms_ITDR_fitting(ITDRdata_s)
 #ITTRdata_f <- ms.ITTR_fitting(ITTRdata_s)
 ```
 
-8. Generate a QC report for the dataset using `ms_IDIT_QC()`, ideally the scaled data with fitting parameter should be used as input.  
+9. Generate a QC report for the dataset using `ms_IDIT_QC()`, ideally the scaled data with fitting parameter should be used as input.  
 The arguments and its default value includes:  
 * `foldername=NULL`, can specify a foldername to keep the QC report if preferred
 * `nread=10`, how many readings are there per entry/curve in the dataset, default is 10
@@ -112,7 +122,7 @@ ms_IDIT_QC(ITDRdata_f)
 ms_IDIT_QC(ITDRdata_s, isdatafitted=FALSE, foldername="QC1")
 ```
 
-9. Carry out data segregation and positive hits selection based on desired `fc` level and the associated fitting parameters using `ms_ITDR_filter()`.  
+10. Carry out data segregation and positive hits selection based on desired `fc` level and the associated fitting parameters using `ms_ITDR_filter()`.  
 The arguments and its default value includes:  
 * `fcthreshold=0.3`, readings have to surpass this threshold (by default 30%) of fold change level to be considered as positive  
 * `R2threshold=0.8`, minimal R-squared (R2) level to consider dose/time-reponse fitting as reliable  
@@ -125,11 +135,11 @@ Returned values: The return data is in list format, when `checkreplicate=TRUE` a
 In the case of ITTR data, the `ms_ITTR_filter()` function is very similarly performed.  
 However, when there is 37C-heated samples (used to check protein expression level change but not to explore protein stabilty change), you need to provide an extra argument `treatcondition=c()` to specify the heat challenging condition keyword (say, 52C) used in the experiment.  
 ```{r, eval=FALSE}
-ITDRdata_filtered <- ms_ITDR_filter(ITDRdata_f, fc=0.3, checkreplicate=TRUE, PSMcutoff=TRUE)
+ITDRdata_filtered <- ms_ITDR_filter(ITDRdata_f, fcthreshold=0.3, checkreplicate=TRUE, PSMcutoff=TRUE)
 #ITTRdata_filtered <- ms_ITTR_filter(ITTRdata_f, checkreplicate=TRUE, PSMcutoff=TRUE)
 ```
 
-10. Plot out dose response curves for each segregated data item in the list returned from the above filter function using `ms_ITDR_ggplotting()` or `ms_ITTR_ggplotting()`.  
+11. Plot out dose response curves for each segregated data item in the list returned from the above filter function using `ms_ITDR_ggplotting()` or `ms_ITTR_ggplotting()`.  
 The arguments and its default value includes:  
 * `nread=10`, how many readings per curve (count from lowest dose) were used for plotting, default is 10  
 * `remsinglecondprot=TRUE`, whether orphan proteins to be plotted, default to exclude them from plotting  
@@ -152,7 +162,7 @@ Note: It has been reported that for Mac user, an error *"Error in grid.Call(L_te
 (170324 update: This problem should be solved in the current version of package, otherwise follow the aforementioned suggestion)  
 
 
-11. Export the scaled data (virtually any data in the current working space) using `ms_filewrite()` to a local txt file.
+12. Export the scaled data (virtually any data in the current working space) using `ms_filewrite()` to a local txt file.  
 ```{r, eval=FALSE}
 ms_filewrite(ITDRdata_filtered[[1]], "ITDRdata_good.txt")
 ms_filewrite(ITDRdata_filtered[[2]], "ITDRdata_single.txt")
@@ -160,7 +170,7 @@ ms_filewrite(ITDRdata_filtered[[3]], "ITDRdata_PSMsmall.txt")
 ms_filewrite(ITDRdata_filtered[[4]], "ITDRdata_notselected.txt")
 ```
 
-12. Read in the exported data (virtually any data in the current working space) using `ms_fileread()` from a saved txt file.
+13. Read in the exported data (virtually any data in the current working space) using `ms_fileread()` from a saved txt file.  
 ```{r, eval=FALSE}
 ITDRdata_selected_good <- ms_fileread("./subfolder/ITDRdata_good.txt")
 # . indicate the current working directory
@@ -168,7 +178,7 @@ ITDRdata_selected_good <- ms_fileread("./subfolder/ITDRdata_good.txt")
 # Remember that typically now you are still working in the main working directory
 ```
 
-13. Focus on a list of target proteins to study using `ms_subsetting()`.  
+14. Focus on a list of target proteins to study using `ms_subsetting()`.  
 You need to make an excel file with a list of Uniprot IDs you want to study (for example, P00000, P12345-6) under the header “__id__”, then save as txt file in working directory, say under the name “hit_list.txt”. The alternative for a short list, you can simply provide a vector of Uniprot IDs.  
 The arguments and its default value includes:  
 * `isfile=TRUE`, whether the provided hitidlist is in a txt. file, default is set to TRUE

@@ -27,7 +27,8 @@
 
 
 ms_ITDR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
-                            writetofile=TRUE, keepfittedvalue=FALSE) {
+                            nbaseline=2, baselineMAD=0, nMAD=2.5, writetofile=TRUE,
+                            keepfittedvalue=FALSE) {
 
   dataname <- deparse(substitute(data))
   outdir <- data$outdir[1]
@@ -44,6 +45,13 @@ ms_ITDR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
 
   nrowdata <- nrow(data)
   nametempvector <- names(data[4:(nread+3)])
+
+  if (!length(baselineMAD)) {
+    baselineMAD <- round(mad(unlist(data[ ,c(4:(3+nbaseline))]), na.rm=T), 4)
+    print(paste0("The baseline variance (based on the first ", nbaseline,
+                 " points) is ", baselineMAD, "."))
+  }
+
   # Calculate EC value, R2, Slope
   ECresult <- NULL
   R2result <- NULL
@@ -68,10 +76,10 @@ ms_ITDR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
       slope <- coeffs[1,1]
       fitted_y[i, ] <- fitted.values(fit.dat)
       if (mean(fitted.values(fit.dat)) > 1.0) {
-        EC <- ED(fit.dat, respLev=1+fc, interval="delta", reference="control",
+        EC <- ED(fit.dat, respLev=(1+nMAD*baselineMAD)*(1+fc), interval="delta", reference="control",
                  type="absolute", lref=1.0, display=FALSE)#coeffs[4,1]
       } else {
-        EC <- ED(fit.dat, respLev=1/(1+fc), interval="delta", reference="upper",
+        EC <- ED(fit.dat, respLev=(1-nMAD*baselineMAD)/(1+fc), interval="delta", reference="upper",
                  type="absolute", uref=1.0, display=FALSE)#coeffs[4,1]
       }
       R2 <- 1 - sum((residuals(fit.dat)^2))/sum((y-mean(y))^2)
@@ -150,7 +158,8 @@ ms_ITDR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
 #'
 
 ms_ITTR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
-                            writetofile=TRUE, keepfittedvalue=FALSE) {
+                            nbaseline=2, baselineMAD=0, nMAD=2.5, writetofile=TRUE,
+                            keepfittedvalue=FALSE) {
 
   dataname <- deparse(substitute(data))
   outdir <- data$outdir[1]
@@ -166,6 +175,12 @@ ms_ITTR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
 
   nrowdata <- nrow(data)
   nametempvector <- names(data[4:(nread+3)])
+
+  if (!length(baselineMAD)) {
+    baselineMAD <- round(mad(unlist(data[ ,c(4:(3+nbaseline))]), na.rm=T), 4)
+    print(paste0("The baseline variance (based on the first ", nbaseline,
+                 " points) is ", baselineMAD, "."))
+  }
   # Calculate EC value, R2, Slope
   ETresult <- NULL
   R2result <- NULL
@@ -190,10 +205,10 @@ ms_ITTR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
       slope <- coeffs[1,1]
       fitted_y[i, ] <- fitted.values(fit.dat)
       if (mean(fitted.values(fit.dat)) > 1.0) {
-        ET <- ED(fit.dat, respLev=1+fc, interval="delta", reference="control",
+        ET <- ED(fit.dat, respLev=(1+nMAD*baselineMAD)*(1+fc), interval="delta", reference="control",
                  type="absolute", lref=1.0, display=FALSE)#coeffs[4,1]
       } else {
-        ET <- ED(fit.dat, respLev=1/(1+fc), interval="delta", reference="upper",
+        ET <- ED(fit.dat, respLev=(1-nMAD*baselineMAD)/(1+fc), interval="delta", reference="upper",
                  type="absolute", uref=1.0, display=FALSE)#coeffs[4,1]
       }
       R2 <- 1 - sum((residuals(fit.dat)^2))/sum((y-mean(y))^2)

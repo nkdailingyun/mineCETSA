@@ -23,9 +23,9 @@ The main tasks include:
 ## Prerequisites
 * R version > 3.3.0 
 * Rstudio version > 0.99, preferably > 1.0
-* Dependent packages (will be handled during the package installiation process automatically):  
+* Dependent packages:  
 "readr", "drc", "plyr", "tibble", "tidyr", "grid", "gtools", "gridExtra", "scales", "RColorBrewer", "dplyr", "ggplot2"  
-However, if complained, use `install.packges()` command to manually install a paticular package  
+Currently, during the package installiation process from local source, when these dependent packages are not available, complains would rise, use `install.packges()` command to manually install a paticular package, then repeat the installation process.  
 
 --------------------------------------------------------------------------------------------
 
@@ -70,37 +70,45 @@ By default the orphan proteins that appear only in one of the datasets is not re
 LY_cleaned <- ms_clean(LY1)
 ```
 
-6.1. Apply systematic scaling to the dataset using `ms_scaling()`.  
+6. Resolve isoform ambiguity from multiple runs of searches using `ms_isoform_resolve()`.  
+When two or more isoforms of the same parental proteins are identified among the combined datasets but within each individual condition, only one isoform is identified, base on the principle of parsimony, the minor isoforms will be automatically adjusted to be the corresponding major or more frequent oberserved isoform. At the same time, a match table will be suggested to further consolidate the cases that when two or more isoforms of the same parental proteins are identified within the same individual conditioned dataset, which could then be achieved by using `ms_isoform_consolidate()`.   
+```{r,eval=FALSE}
+LY_cleaned1 <- ms_clean(LY_cleaned)
+# The next one is optional. You are encouraged to double check and adjust the match table entries. 
+LY_cleaned2 <- ms_clean(LY_cleaned1, matchtable="./subfolder/tobe_consolidated.txt")
+```
+
+7.1. Apply systematic scaling to the dataset using `ms_scaling()`.  
 The function achieves: The medians of soluble protein ratio is fitted into a sigmoidal function of the temperature range   
 Output in working directory:  
 * Scaling factors used is written into a local file   
 * Medians of pre- and post- data normalization soluble protein ratio is plotted  
 * The distribution of pre- and post- normalization soluble protein ratio is plotted  
-```{r}
-LY_scaled <- ms_scaling(LY_cleaned)
+```{r,eval=FALSE}
+LY_scaled <- ms_scaling(LY_cleaned2)
 ```
 
-6.2. The alternative for systematic scaling is to force scale the median of data to be same as the median from a subset of data by `ms_forcescaling()`. However, make sure you have enough good reason to perform forcescaling.  
-```{r}
+7.2. The alternative for systematic scaling is to force scale the median of data to be same as the median from a subset of data by `ms_forcescaling()`. However, make sure you have enough good reason to perform forcescaling.  
+```{r,eval=FALSE}
 LY_fs_all <- ms_forcescaling(LY_cleaned, refcondition="all")
 LY_fs <- ms_forcescaling(LY_cleaned, refcondition=c("Ctrl.1", "Ctrl.2"))
 ```
 
-7. Try to perform temperature-response function fitting to generate fitting parameters for each entry/curve using `ms_fitting()`.  
+8. Try to perform temperature-response function fitting to generate fitting parameters for each entry/curve using `ms_fitting()`.  
 The returned data contains the input scaled data plus fitting parameters (including `Tm`, `R2`, `Slope`, `RSE`(Residual standard error)).  
 A copy of the fitted dataset would be saved in current working directory.  
 ```{r, eval=FALSE}
 LY_fitted <- ms_fitting(LY_scaled)
 ```
 
-8.1. Plot out melt curves using `ms_ggplotting()`.  
+9.1. Plot out melt curves using `ms_ggplotting()`.  
 This function is previously designed for single replicated experiment, mainly about the simplicity and generality.   
 The resulting plots were sorted based on the difference of AUCs of the same protein under different experimental conditions, i.e., the proteins showing most significant "shift"/change would be ranked at the top of the file. However, it has been observed that noisy readings tend to mess up the rankings.  
 ```{r, eval=FALSE}
 ms_ggplotting(LY_scaled)
 ```
 
-8.2. Plot out replicated melt curves using `ms_ggplotting_rep()`.  
+9.2. Plot out replicated melt curves using `ms_ggplotting_rep()`.  
 This function mainly cater for the (technical or biological) replicated runs of CETSA melt curves, the ranking system not only considers the nominal shifts between different experimental conditions, but also the internal reproducibility among the replicate runs.  
 The arguments and its default value includes:  
 * `nread=10`, how many readings per curve (from lowest dose) were used for plotting, default is 10  
@@ -114,13 +122,13 @@ The arguments and its default value includes:
 ms_ggplotting_rep(LY_scaled, levelvector=c("Ctrl.1", "Ctrl.2", "Treatment.1","Treatment.2"))
 ```
 
-9. Export the scaled data (virtually any data in the current working space) using `ms_filewrite()` to a local txt file.
+10. Export the scaled data (virtually any data in the current working space) using `ms_filewrite()` to a local txt file.
 ```{r, eval=FALSE}
 ms_filewrite(LY_scaled, "CETSA_data_scaled.txt")
 ms_filewrite(LY_fitted, "CETSA_data_with_fitting_parameters.txt")
 ```
 
-10. Read in the exported data (virtually any data in the current working space) using `ms_fileread()` from a saved txt file.
+11. Read in the exported data (virtually any data in the current working space) using `ms_fileread()` from a saved txt file.
 ```{r, eval=FALSE}
 MyCETSAdata <- ms_fileread("./subfolder/myCETSAdata_to_readin.txt")
 # . indicate the current working directory
@@ -128,7 +136,7 @@ MyCETSAdata <- ms_fileread("./subfolder/myCETSAdata_to_readin.txt")
 # Remember that typically now you are still working in the main working directory
 ```
 
-11. Focus on a list of target proteins to study using `ms_subsetting()`.  
+12. Focus on a list of target proteins to study using `ms_subsetting()`.  
 You need to make an excel file with a list of Uniprot IDs you want to study (for example, P00000, P12345-6) under the header “__id__”, then save as txt file in working directory, say under the name “hit_list.txt”. The alternative for a short list, you can simply provide a vector of Uniprot IDs.  
 The arguments and its default value includes:  
 * `isfile=TRUE`, whether the provided hitidlist is in a txt. file, default is set to TRUE

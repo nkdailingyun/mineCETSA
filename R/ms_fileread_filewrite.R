@@ -21,6 +21,8 @@
 
 ms_filewrite <- function(data, filename, outdir=NULL, withdescription=TRUE) {
 
+  # add variable name to output
+  dataname <- deparse(substitute(data))
   #print(outdir)
   if (length(grep("outdir", names(data)))) {
     outdir <- data$outdir[1]

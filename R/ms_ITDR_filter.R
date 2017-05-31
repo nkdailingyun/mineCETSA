@@ -10,9 +10,12 @@
 #' fold change compared to baseline (i.e.,1.0) above which the readings can be
 #' considered significantly stabilized or destabilized, default value is 0.3
 #' @param R2threshold minimal R2 to consider dose-reponse fitting as reliable
+#' @param nbaseline the number of points (count from lowest concentration) used
+#' for calculate the baseline MAD, default is 2
 #' @param baselineMAD MAD of baseline variation, default value is 0; if not
 #' provided, it will be calculated based on the readings from the lowest two
 #' dose groups
+#' @param nMAD the significance level of MAD cutoff, default value is 2.5
 #' @param checkreplicate whether to check replicated measurements, when set to
 #' TRUE, make sure the proteins with all the replicated measurements from
 #' at least one condition pass fold change threshold will be segregated, default
@@ -43,7 +46,8 @@
 
 
 ms_ITDR_filter <- function(data, nread=10, fcthreshold=0.3, R2threshold=0.8,
-                           baselineMAD=0, checkreplicate=FALSE, treatcondition=NULL,
+                           nbaseline=2, baselineMAD=0, nMAD=2.5,
+                           checkreplicate=FALSE, treatcondition=NULL,
                            ncheckpoint=3, nreplicate=2, PSMcutoff=FALSE, PSMthreshold=3,
                            remfragment=FALSE, remribosomal=FALSE) {
 
@@ -88,12 +92,12 @@ ms_ITDR_filter <- function(data, nread=10, fcthreshold=0.3, R2threshold=0.8,
   }
 
   if (!length(baselineMAD)) {
-    baselineMAD <- round(mad(unlist(data[ ,c(4:5)]), na.rm=T), 4)
-    print(paste0("The baseline variance (based on the first two points) is ",
-                 baselineMAD, "."))
+    baselineMAD <- round(mad(unlist(data[ ,c(4:(3+nbaseline))]), na.rm=T), 4)
+    print(paste0("The baseline variance (based on the first ", nbaseline,
+                 " points) is ", baselineMAD, "."))
   }
-  cutoff_high <- round((1+2.5*baselineMAD)*(1+fcthreshold), 3)
-  cutoff_low <- round((1-2.5*baselineMAD)/(1+fcthreshold), 3)
+  cutoff_high <- round((1+nMAD*baselineMAD)*(1+fcthreshold), 3)
+  cutoff_low <- round((1-nMAD*baselineMAD)/(1+fcthreshold), 3)
   print(paste0("The upper cutoff threshold for shift set at ", cutoff_high, "."))
   print(paste0("The lower cutoff threshold for shift set at ", cutoff_low, "."))
 

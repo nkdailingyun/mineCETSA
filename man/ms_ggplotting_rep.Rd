@@ -7,7 +7,9 @@
 ms_ggplotting_rep(data, legenddata = NULL, levelvector = NULL, nread = 10,
   remsinglecondprot = TRUE, PSMcutoff = FALSE, PSMthreshold = 3,
   remfragment = FALSE, remribosomal = FALSE, fitremout = FALSE,
-  nreplicate = 2, topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
+  ctrlcond = NULL, bottomcutoff = 0.4, topcutoff = 0.8,
+  variancecutoff = FALSE, nMAD_var = 2.5, nreplicate = 2,
+  topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
   pfdatabase = FALSE, printGeneName = FALSE, PSManno = TRUE,
   presetcolor = TRUE, colorpanel = NULL, commonlegend = TRUE,
   layout = c(5, 5), pdfname = "ggplotting.pdf")
@@ -32,6 +34,19 @@ default set to FALSE}
 quantification as reliable, default value is 3}
 
 \item{fitremout}{whether to segregate the proteins with messy melt curves}
+
+\item{ctrlcond}{if necessary, could used to specify what conditions to be
+referred as control conditions}
+
+\item{bottomcutoff}{the average of the last three points should be lower than
+specified bottom cutoff value, which is 0.4 by default}
+
+\item{topcutoff}{the average of the first three points should be higher than
+specified bottom cutoff value, which is 0.8 by default}
+
+\item{variancecutoff}{whether to segregate the proteins with large inter-replicate variance}
+
+\item{nMAD_var}{the number of MADs to set the significance cutoff about variance distribution}
 
 \item{nreplicate}{number of replicates, default value is 2, change the value
 accordingly, this is relavent to automatic coloring scheme,
