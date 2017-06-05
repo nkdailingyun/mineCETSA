@@ -10,8 +10,8 @@ ms_ITTR_ggplotting(data, legenddata = NULL, nread = 10,
   orderET = FALSE, orderAUC = FALSE, plotseq = NULL, loess = FALSE,
   dotconnect = FALSE, pfdatabase = FALSE, printGeneName = FALSE,
   PSManno = FALSE, unit = "min", xlinear = FALSE, xlog10 = FALSE,
-  xsqrt = TRUE, xinterval = NULL, fixedy = FALSE, layout = c(5, 5),
-  presetcolor = TRUE, colorpanel = NULL,
+  xsqrt = TRUE, xcubert = FALSE, xinterval = NULL, fixedy = FALSE,
+  layout = c(5, 5), presetcolor = TRUE, colorpanel = NULL,
   top_label = "ITTR CETSA data plotting", pdfname = "ITTR_ggplotting.pdf",
   external = TRUE)
 }
@@ -54,6 +54,8 @@ quantification as reliable, default value is 3}
 \item{xlog10}{whether the x-axis should be in log10 scale}
 
 \item{xsqrt}{whether the x-axis should be in square-root transformed scale}
+
+\item{xcubert}{whether the x-axis should be in cube-root transformed scale}
 
 \item{xinterval}{a number indicating the numerical interval for linear x-axis}
 

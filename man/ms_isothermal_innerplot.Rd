@@ -5,8 +5,8 @@
 \title{ms_isothermal_innerplot}
 \usage{
 ms_isothermal_innerplot(data, legenddata, nread, nreplicate, loess, dotconnect,
-  PSManno, PSM_annod, Pep_annod, xlinear, xlog10, xsqrt, xinterval, fixedy,
-  presetcolor, colorpanel, layout, top_label, bottom_label)
+  PSManno, PSM_annod, Pep_annod, xlinear, xlog10, xsqrt, xcubert, xinterval,
+  fixedy, presetcolor, colorpanel, layout, top_label, bottom_label)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}
@@ -31,6 +31,8 @@ inside this dataset should contains the full set of experiment conditions}
 \item{xlog10}{whether the x-axis should be in log10 scale}
 
 \item{xsqrt}{whether the x-axis should be in square-root transformed scale}
+
+\item{xcubert}{whether the x-axis should be in cube-root transformed scale}
 
 \item{xinterval}{a number indicating the numerical interval for linear x-axis}
 

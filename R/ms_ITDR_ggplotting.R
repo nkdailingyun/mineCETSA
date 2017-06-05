@@ -24,6 +24,7 @@
 #' @param xlinear whether the x-axis should be in linear scale
 #' @param xlog10 whether the x-axis should be in log10 scale
 #' @param xsqrt whether the x-axis should be in square-root transformed scale
+#' @param xcubert whether the x-axis should be in cube-root transformed scale
 #' @param xinterval a number indicating the numerical interval for linear x-axis
 #' @param fixedy whether the y-axis should use a fixed range scale
 #' @param presetcolor whether to use the pre-defined color scheme
@@ -54,8 +55,8 @@ ms_ITDR_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondpro
                                orderEC=FALSE, orderAUC=FALSE, plotseq=NULL,
                                loess=FALSE, dotconnect=FALSE, pfdatabase=FALSE,
                                printGeneName=FALSE, PSManno=FALSE, unit="mM",
-                               xlinear=FALSE, xlog10=TRUE, xsqrt=FALSE, xinterval=NULL,
-                               fixedy=FALSE, layout=c(5,5),
+                               xlinear=FALSE, xlog10=TRUE, xsqrt=FALSE, xcubert=FALSE,
+                               xinterval=NULL, fixedy=FALSE, layout=c(5,5),
                                presetcolor=TRUE, colorpanel=NULL,
                                top_label="ITDR CETSA data plotting",
                                pdfname="ITDR_ggplotting.pdf", external=TRUE){
@@ -219,9 +220,9 @@ ms_ITDR_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondpro
 
   pl <- ms_isothermal_innerplot(data, legenddata, nread, nreplicate, loess,
                                 dotconnect, PSManno, PSM_annod, Pep_annod,
-                                xlinear, xlog10, xsqrt, xinterval, fixedy,
-                                presetcolor, colorpanel, layout, top_label,
-                                bottom_label)
+                                xlinear, xlog10, xsqrt, xcubert, xinterval,
+                                fixedy, presetcolor, colorpanel, layout,
+                                top_label, bottom_label)
 
   if (length(outdir)) {
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"), pdfname),

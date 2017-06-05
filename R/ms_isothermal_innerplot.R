@@ -15,6 +15,7 @@
 #' @param xliner whether the x-axis should be in linear scale
 #' @param xlog10 whether the x-axis should be in log10 scale
 #' @param xsqrt whether the x-axis should be in square-root transformed scale
+#' @param xcubert whether the x-axis should be in cube-root transformed scale
 #' @param xinterval a number indicating the numerical interval for linear x-axis
 #' @param fixedy whether the y-axis should use a fixed range scale
 #' @param presetcolor whether to use the pre-defined color scheme
@@ -41,11 +42,11 @@
 
 ms_isothermal_innerplot <- function(data, legenddata, nread, nreplicate, loess,
                                     dotconnect, PSManno, PSM_annod, Pep_annod,
-                                    xlinear, xlog10, xsqrt, xinterval, fixedy,
-                                    presetcolor, colorpanel, layout,
+                                    xlinear, xlog10, xsqrt, xcubert, xinterval,
+                                    fixedy, presetcolor, colorpanel, layout,
                                     top_label, bottom_label) {
 
-  if (xlinear | xsqrt) {
+  if (xlinear | xsqrt | xcubert) {
     xmin <- as.numeric(names(data)[3])
     xmax <- as.numeric(names(data)[(nread+2)])
     print("The x axis scale range is: ")
@@ -73,7 +74,7 @@ ms_isothermal_innerplot <- function(data, legenddata, nread, nreplicate, loess,
   print("The points are as follows: ")
   print(as.numeric(nametreatmentvector))
 
-  if (xlinear | xsqrt) {
+  if (xlinear | xsqrt | xcubert) {
     treat_min <- xmin
     treat_max <- xmax
   } else if (xlog10) {
@@ -137,7 +138,7 @@ ms_isothermal_innerplot <- function(data, legenddata, nread, nreplicate, loess,
         d1_list[[j]] <- na.omit(d1_list[[j]])
         model.drm <- try(drm (reading ~ treatment, data = d1_list[[j]], fct = LL.4()))
         if(class(model.drm) != "try-error"){
-          if (xlinear | xsqrt) {
+          if (xlinear | xsqrt | xcubert) {
             mda <- data.frame(treatment=seq(treat_min,treat_max,length.out=100))
             mda$reading <- predict(model.drm, mda)
           } else if (xlog10) {
@@ -162,6 +163,9 @@ ms_isothermal_innerplot <- function(data, legenddata, nread, nreplicate, loess,
                                                                         labels = trans_format("log10", math_format(10^.x))) + labs(x=" ", y=" ")
     } else if (xsqrt) {
       q <- q + coord_cartesian(xlim=c(0,xmax)) + scale_x_continuous(trans=sqrt_trans(), breaks=trans_breaks("sqrt", function(x) x^2)) + labs(x=" ", y=" ")
+    } else if (xcubert) {
+      cuberoot_trans = function() trans_new("cuberoot", function(x) x^(1/3), function(x) x^3)
+      q <- q + coord_cartesian(xlim=c(0,xmax)) + scale_x_continuous(trans=cuberoot_trans(), breaks=seq(0,xmax,xinterval)) + labs(x=" ", y=" ")
     }
 
     if (min(abs(d1[,4]), na.rm=T) <= 0.5) {
@@ -202,6 +206,7 @@ ms_isothermal_innerplot <- function(data, legenddata, nread, nreplicate, loess,
         text = element_text(size=10),
         strip.text.x = element_text(size = 5),
         plot.title = element_text(hjust = 0.5, size = rel(0.7)),
+        axis.text.x = element_text(angle=45, hjust=1),
         legend.position="none",
         panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
