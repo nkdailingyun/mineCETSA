@@ -56,17 +56,18 @@ ms_ITDR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
   ECresult <- NULL
   R2result <- NULL
   Sloperesult <- NULL
-  fitted_y <- matrix(nrow = nrowdata, ncol = nread)
+  fitted_y <- matrix(data=NA, nrow = nrowdata, ncol = nread)
   numtempvector <- as.numeric(nametempvector)
   for (i in 1:nrowdata) {
     y <- as.numeric(data[i,c(4:(nread+3))])
     x <- numtempvector
+    valueindex = which(!is.na(y))
     if (forcestart & mean(y) > 1.0) {
-      fit.dat <- try(drm(formula = y ~ x, fct = LL.4(fixed=c(NA,1,NA,NA))))
+      fit.dat <- try(drm(formula = y ~ x, fct = LL.4(fixed=c(NA,1,NA,NA)), na.action=na.omit))
     } else if (forcestart & mean(y) <= 1.0){
-      fit.dat <- try(drm(formula = y ~ x, fct = LL.4(fixed=c(NA,NA,1,NA))))
+      fit.dat <- try(drm(formula = y ~ x, fct = LL.4(fixed=c(NA,NA,1,NA)), na.action=na.omit))
     } else {
-      fit.dat <- try(drm(formula = y ~ x, fct = LL.4()))
+      fit.dat <- try(drm(formula = y ~ x, fct = LL.4(), na.action=na.omit))
     }
     #The forced fitting to 1, turned out not ideal,
     #maybe only appliable for "nice" curves
@@ -74,7 +75,7 @@ ms_ITDR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
     if (class(fit.dat) != "try-error") {
       coeffs <- data.frame(coefficients(fit.dat))
       slope <- coeffs[1,1]
-      fitted_y[i, ] <- fitted.values(fit.dat)
+      fitted_y[i, valueindex] <- fitted.values(fit.dat)
       if (mean(fitted.values(fit.dat)) > 1.0) {
         EC <- ED(fit.dat, respLev=(1+nMAD*baselineMAD)*(1+fc), interval="delta", reference="control",
                  type="absolute", lref=1.0, display=FALSE)#coeffs[4,1]
@@ -84,9 +85,9 @@ ms_ITDR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
       }
       R2 <- 1 - sum((residuals(fit.dat)^2))/sum((y-mean(y))^2)
     } else {
-      fit.dat <- try(lm(formula = y ~ x))
+      fit.dat <- try(lm(formula = y ~ x, na.action=na.omit))
       if (class(fit.dat) != "try-error") {
-        fitted_y[i, ] <- fitted.values(fit.dat)
+        fitted_y[i, valueindex] <- fitted.values(fit.dat)
         R2 <- summary(fit.dat)$r.squared
         slope <- fit.dat$coefficient[[2]]
         EC <- NA
@@ -190,10 +191,11 @@ ms_ITTR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
   for (i in 1:nrowdata) {
     y <- as.numeric(data[i,c(4:(nread+3))])
     x <- numtempvector
+    valueindex = which(!is.na(y))
     if (forcestart & mean(y) > 1.0) {
-      fit.dat <- try(drm(formula = y ~ x, fct = LL.4(fixed=c(NA,1,NA,NA))))
+      fit.dat <- try(drm(formula = y ~ x, fct = LL.4(fixed=c(NA,1,NA,NA)), na.action=na.omit))
     } else if (forcestart & mean(y) <= 1.0){
-      fit.dat <- try(drm(formula = y ~ x, fct = LL.4(fixed=c(NA,NA,1,NA))))
+      fit.dat <- try(drm(formula = y ~ x, fct = LL.4(fixed=c(NA,NA,1,NA)), na.action=na.omit))
     } else {
       fit.dat <- try(drm(formula = y ~ x, fct = LL.4()))
     }
@@ -203,7 +205,7 @@ ms_ITTR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
     if (class(fit.dat) != "try-error") {
       coeffs <- data.frame(coefficients(fit.dat))
       slope <- coeffs[1,1]
-      fitted_y[i, ] <- fitted.values(fit.dat)
+      fitted_y[i, valueindex] <- fitted.values(fit.dat)
       if (mean(fitted.values(fit.dat)) > 1.0) {
         ET <- ED(fit.dat, respLev=(1+nMAD*baselineMAD)*(1+fc), interval="delta", reference="control",
                  type="absolute", lref=1.0, display=FALSE)#coeffs[4,1]
@@ -213,9 +215,9 @@ ms_ITTR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
       }
       R2 <- 1 - sum((residuals(fit.dat)^2))/sum((y-mean(y))^2)
     } else {
-      fit.dat <- try(lm(formula = y ~ x))
+      fit.dat <- try(lm(formula = y ~ x, na.action=na.omit))
       if (class(fit.dat) != "try-error") {
-        fitted_y[i, ] <- fitted.values(fit.dat)
+        fitted_y[i, valueindex] <- fitted.values(fit.dat)
         R2 <- summary(fit.dat)$r.squared
         slope <- fit.dat$coefficient[[2]]
         ET <- NA

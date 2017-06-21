@@ -122,6 +122,8 @@ ms_isoform_resolve <- function(data) {
 #' by default set to FALSE
 #' @param weightbycountnum by default to consolidate the isoforms
 #'
+#' @importFrom tibble as_tibble
+#' @importFrom gtools mixedorder mixedsort
 #' @importFrom plyr . ddply
 #' @import dplyr
 #' @import tidyr
@@ -172,7 +174,7 @@ ms_isoform_consolidate <- function(data, matchtable, nread=10, withabd=FALSE, we
   for (i in 1:nrow(matchtable)) {
     unsolvedid <- matchtable[i, "id"]
     tobeid <- matchtable[i,"Tobe_id"]
-    d1[grep(paste0("^", unsolvedid, "$"), d1$id), 1] <- tobeid
+    d1[grep(paste0("^", unsolvedid, "$"), d1$id), "id"] <- tobeid
   }
 
   d1_aveaged <- plyr::ddply(d1, plyr::.(id,condition,treatment), .drop=TRUE,
@@ -191,7 +193,11 @@ ms_isoform_consolidate <- function(data, matchtable, nread=10, withabd=FALSE, we
   data <- merge(d1_aveaged_w, originalname)
   data <- data[ ,c(1, ncol(data), 2:(ncol(data)-1))]
   names(data) <- gsub("_new","", names(data))
+  if (withabd) {
+    data <- data[ ,c(1:3, gtools::mixedorder(names(data)[c(4:(2*nread+3))])+3, (2*nread+4):ncol(data))]
+  }
   data$outdir <- outdir
+  ms_filewrite(data, paste0(dataname,"_isoform_resolved2.txt"))
   return(data)
 
 }
