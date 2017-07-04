@@ -6,9 +6,9 @@
 \usage{
 ms_ITDR_filter(data, nread = 10, fcthreshold = 0.3, R2threshold = 0.8,
   nbaseline = 2, baselineMAD = 0, nMAD = 2.5, checkreplicate = FALSE,
-  treatcondition = NULL, ncheckpoint = 3, nreplicate = 2,
-  PSMcutoff = FALSE, PSMthreshold = 3, remfragment = FALSE,
-  remribosomal = FALSE)
+  treatcondition = NULL, ncheckpoint = 3, excludelastpoint = FALSE,
+  excludeNA = FALSE, nreplicate = 2, PSMcutoff = FALSE,
+  PSMthreshold = 3, remfragment = FALSE, remribosomal = FALSE)
 }
 \arguments{
 \item{data}{dataset to be filtered}
@@ -43,6 +43,14 @@ setup, default value is NULL}
 
 \item{ncheckpoint}{the number of dose groups (count down from highest
 concentration) to check whether their readings surpass fold change threshold}
+
+\item{excludelastpoint}{whether to exclude the last dose point for checking,
+default set to FALSE, only set to TRUE when you believe that that last dose
+point is not trustworthy}
+
+\item{excludeNA}{whether to exclude the NA points when counting points to check,
+default set to FALSE, when set to TRUE, the exact number of points with readings
+would be used as specified by ncheckpoint parameter}
 
 \item{nreplicate}{number of replicates}
 

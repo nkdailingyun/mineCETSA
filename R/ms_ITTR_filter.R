@@ -44,6 +44,7 @@
 #'
 
 
+
 ms_ITTR_filter <- function(data, nread=10, fcthreshold=0.3, R2threshold=0.8,
                            nbaseline=2, baselineMAD=0, nMAD=2.5,
                            checkreplicate=FALSE, treatcondition=NULL,
@@ -125,7 +126,7 @@ ms_ITTR_filter <- function(data, nread=10, fcthreshold=0.3, R2threshold=0.8,
   if (checkreplicate) {
     # Focus only on the treatment or heat challenged conditions
     if(length(treatcondition)) {
-      pattern <- grep(pattern=paste0("^", treatcondition), data_good_tem$condition)
+      pattern <- grep(pattern=paste0("^", treatcondition, "\\."), data_good_tem$condition)
       data_good_tem <- data_good_tem[pattern, ]
     }
 

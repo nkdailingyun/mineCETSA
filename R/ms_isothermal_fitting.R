@@ -83,7 +83,8 @@ ms_ITDR_fitting <- function(data, nread=10, fc=0.3, forcestart=FALSE,
         EC <- ED(fit.dat, respLev=(1-nMAD*baselineMAD)/(1+fc), interval="delta", reference="upper",
                  type="absolute", uref=1.0, display=FALSE)#coeffs[4,1]
       }
-      R2 <- 1 - sum((residuals(fit.dat)^2))/sum((y-mean(y))^2)
+      y1 <- na.omit(y)
+      R2 <- 1 - sum((residuals(fit.dat)^2))/sum((y1-mean(y1))^2)
     } else {
       fit.dat <- try(lm(formula = y ~ x, na.action=na.omit))
       if (class(fit.dat) != "try-error") {

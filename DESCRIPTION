@@ -1,7 +1,7 @@
 Package: mineCETSA
 Type: Package
 Title: Processing and Visualization of MS-CETSA data
-Version: 0.2.8
+Version: 0.3.0
 Author: Dai Lingyun
 Maintainer: Dai Lingyun <nkdailingyun@gmail.com>
 Description: This package is designed to process MS-CETSA result from TMT10 labelling and quantification scheme.
@@ -10,7 +10,6 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
   plyr (>= 1.8.0), 
-  tidyr (>= 0.6.1), 
   drc (>= 3.0), 
   RColorBrewer, 
   gtools, 
@@ -22,6 +21,7 @@ Imports:
 Depends: 
   R (>= 3.2), 
   readr (>= 1.1.0), 
+  tidyr (>= 0.6.1), 
   dplyr (>= 0.5.0), 
   ggplot2 (>= 2.2.0)
 RoxygenNote: 6.0.1

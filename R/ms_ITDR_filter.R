@@ -26,6 +26,12 @@
 #' setup, default value is NULL
 #' @param ncheckpoint the number of dose groups (count down from highest
 #' concentration) to check whether their readings surpass fold change threshold
+#' @param excludelastpoint whether to exclude the last dose point for checking,
+#' default set to FALSE, only set to TRUE when you believe that that last dose
+#' point is not trustworthy
+#' @param excludeNA whether to exclude the NA points when counting points to check,
+#' default set to FALSE, when set to TRUE, the exact number of points with readings
+#' would be used as specified by ncheckpoint parameter
 #' @param nreplicate number of replicates
 #' @param PSMcutoff whether to apply PSM threshold cutoff on hit selection,
 #' default set to FALSE
@@ -48,7 +54,8 @@
 ms_ITDR_filter <- function(data, nread=10, fcthreshold=0.3, R2threshold=0.8,
                            nbaseline=2, baselineMAD=0, nMAD=2.5,
                            checkreplicate=FALSE, treatcondition=NULL,
-                           ncheckpoint=3, nreplicate=2, PSMcutoff=FALSE, PSMthreshold=3,
+                           ncheckpoint=3, excludelastpoint=FALSE, excludeNA=FALSE,
+                           nreplicate=2, PSMcutoff=FALSE, PSMthreshold=3,
                            remfragment=FALSE, remribosomal=FALSE) {
 
   dataname <- deparse(substitute(data))
@@ -104,10 +111,24 @@ ms_ITDR_filter <- function(data, nread=10, fcthreshold=0.3, R2threshold=0.8,
   fkeep <- NULL
   nrowdata <- nrow(data_good_tem)
   for (i in 1:nrowdata) {
-    highest <- max(as.numeric(data_good_tem[i,c((nread+4-ncheckpoint):
-                                                  (nread+3))]), na.rm=T)
-    lowest <- min(as.numeric(data_good_tem[i,c((nread+4-ncheckpoint):
-                                                 (nread+3))]), na.rm=T)
+    if (excludeNA) {
+      data_to_check <- na.omit(as.numeric(data_good_tem[i,c(4:(nread+3))]))
+      npoint <- length(data_to_check)
+      highest <- max(data_to_check[c((npoint-ncheckpoint+1):npoint)], na.rm=T)
+      lowest <- min(data_to_check[c((npoint-ncheckpoint+1):npoint)], na.rm=T)
+
+    } else if (excludelastpoint) {
+      highest <- max(as.numeric(data_good_tem[i,c((nread+3-ncheckpoint):
+                                                    (nread+2))]), na.rm=T)
+      lowest <- min(as.numeric(data_good_tem[i,c((nread+3-ncheckpoint):
+                                                   (nread+2))]), na.rm=T)
+    } else {
+      highest <- max(as.numeric(data_good_tem[i,c((nread+4-ncheckpoint):
+                                                    (nread+3))]), na.rm=T)
+      lowest <- min(as.numeric(data_good_tem[i,c((nread+4-ncheckpoint):
+                                                   (nread+3))]), na.rm=T)
+    }
+
     if (highest >= cutoff_high & data_good_tem[i,"Slope"] <0) {
       fkeep <- c(fkeep, i)
     }else if (lowest <= cutoff_low & data_good_tem[i,"Slope"] >0) {
@@ -126,7 +147,7 @@ ms_ITDR_filter <- function(data, nread=10, fcthreshold=0.3, R2threshold=0.8,
     # If necessary, focus only on the treatment or heat challenged conditions,
     # however this is not common in ITDR samples
     if(length(treatcondition)) {
-      pattern <- grep(pattern=paste0("^", treatcondition), data_good_tem$condition)
+      pattern <- grep(pattern=paste0("^", treatcondition, "\\."), data_good_tem$condition)
       data_good_tem <- data_good_tem[pattern, ]
     }
     data_good_copy <- data_good_tem
