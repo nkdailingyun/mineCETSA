@@ -100,7 +100,7 @@ ms_isoform_resolve <- function(data) {
               sep="\t", row.names=FALSE, quote=FALSE)
   #return(questionid_table)
   data$outdir <- outdir
-  ms_filewrite(data, paste0(dataname,"_isoform_solved1.txt"))
+  ms_filewrite(data, paste0(dataname,"_isoform_resolved.txt"))
 
   return(data)
 }
@@ -197,7 +197,7 @@ ms_isoform_consolidate <- function(data, matchtable, nread=10, withabd=FALSE, we
     data <- data[ ,c(1:3, gtools::mixedorder(names(data)[c(4:(2*nread+3))])+3, (2*nread+4):ncol(data))]
   }
   data$outdir <- outdir
-  ms_filewrite(data, paste0(dataname,"_isoform_resolved2.txt"))
+  ms_filewrite(data, paste0(dataname,"_isoform_consolidated.txt"))
   return(data)
 
 }

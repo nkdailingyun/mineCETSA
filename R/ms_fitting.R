@@ -62,7 +62,7 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
   for (i in 1:nrowdata) {
     y <- as.numeric(data[i,c(4:(nread+3))])
     x <- numtempvector
-    fit.dat <-try(drm(formula = y ~ x, fct = LL.4(fixed=c(NA,NA,top,NA))))
+    fit.dat <- try(drc::drm(formula = y ~ x, fct = drc::LL.4(fixed=c(NA,NA,top,NA))))
     if (class(fit.dat) != "try-error") {
       coeffs <- data.frame(coefficients(fit.dat))
       slope <- coeffs[1,1]
@@ -88,7 +88,7 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
 
   # Merge & Export fitting parameters file
   colnames(fitted_y) <- nametempvector
-  Fitted <- as_tibble(fitted_y)
+  Fitted <- tibble::as_tibble(fitted_y)
   Fitted <- cbind(data[, c(1:3)], Fitted)
   if (ncol(data) > (nread+3)) {
     #extra columns other than id, description, condition plus reading
