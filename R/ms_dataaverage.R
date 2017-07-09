@@ -7,8 +7,11 @@
 #' is 10
 #' @param nreplicate number of replicates, default value is 2, change the value
 #' accordingly
+#' @param subsetonly whether to just perform a simple subsetting of dataset
+#' with specified replicate numbers
 #' @param variancecutoff whether to segregate the proteins with large
 #' inter-replicate variance
+#' @param nMAD_var the significance level of MAD cutoff, default value is 2.5
 #'
 #' @importFrom plyr daply
 #' @import tidyr
@@ -20,7 +23,8 @@
 #'
 #'
 
-ms_find_replicate <- function(data, nreplicate=2, nread=10, variancecutoff=TRUE, nMAD_var=2.5) {
+ms_find_replicate <- function(data, nreplicate=2, nread=10, subsetonly=FALSE,
+                              variancecutoff=TRUE, nMAD_var=2.5) {
 
   dataname <- deparse(substitute(data))
   outdir <- data$outdir[1]
@@ -55,6 +59,10 @@ ms_find_replicate <- function(data, nreplicate=2, nread=10, variancecutoff=TRUE,
   print(paste0("The percentage of proteins with complete replicates is: ",
                round(length(unique(data_complete$id))/length(unique(data$id)),3)*100, "%"))
 
+  if (subsetonly) {
+    return(data_complete)
+  }
+
   dism <- plyr::daply(data_complete, "id", function(data) {
     data<-data[order(data$condition), ]
     dm<-as.vector(dist(data[ ,c(4:(nread+3))]))
@@ -83,9 +91,14 @@ ms_find_replicate <- function(data, nreplicate=2, nread=10, variancecutoff=TRUE,
     data_complete <- data_complete[fkeep1, ]
     print(paste0("The number of reproducible proteins with complete replicates is: ",
                  length(unique(data_complete$id))))
+    data_complete$outdir <- outdir
+    data_largevar$outdir <- outdir
+    return(list(data_complete=data_complete, data_largevar=data_largevar, dism=dism))
+  } else {
+    data_complete$outdir <- outdir
+    return(list(data_complete=data_complete, dism=dism))
   }
 
-  return(list(data_complete=data_complete, data_largevar=data_largevar, dism=dism))
 }
 
 

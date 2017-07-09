@@ -32,6 +32,7 @@
 #' @param PSManno whether to annotate the plots with PSM and uniPeptide number
 #' @param presetcolor whether to use the pre-defined color scheme
 #' @param colorpanel a vector of customizable color scheme provided by the user
+#' @param withset whether there is set column to perform facet_grid
 #' @param commonlegend whether to use one common legend for whole page of plots
 #' @param layout a vector indicating the panel layout for multi-panel plots per page
 #' @param pdfname name for the pdf plots file
@@ -63,7 +64,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                               nreplicate=2, topasone=TRUE, normTop=TRUE, dotconnect=FALSE,
                               pfdatabase=FALSE, printGeneName=FALSE,
                               PSManno=TRUE, presetcolor=TRUE,
-                              colorpanel=NULL, commonlegend=TRUE,
+                              colorpanel=NULL, withset=FALSE, commonlegend=TRUE,
                               layout=c(5,5), pdfname="ggplotting.pdf", external=TRUE) {
 
   dataname <- deparse(substitute(data))
@@ -101,11 +102,16 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   dev.off()
 
   if (nreplicate>4) {stop("Only up to four replicates are supported")}
-  if (any(duplicated(data[, c(1,3)]))) {
+  checkpos <- c(1,3)
+  if (withset) {
+    setpos <- grep("^set", names(data))
+    checkpos <- c(checkpos, setpos)
+  }
+  if (any(duplicated(data[, checkpos]))) {
     print("Warning for duplicated protein name entries")
     print("Double check the following proteins for duplicated entries:")
-    print(paste0(data[duplicated(data[, c(1,3)]), ]$id," in ",
-                 data[duplicated(data[, c(1,3)]), ]$condition))
+    print(paste0(data[duplicated(data[, checkpos]), ]$id," in ",
+                 data[duplicated(data[, checkpos]), ]$condition))
     stop("1.Remove the duplicated entires from original dataset then start again!")
   }
 
@@ -143,12 +149,16 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   #   }
   # }
   data$description<-NULL
-
-  if (any(duplicated(data[, c(1,2)]))) {
+  checkpos <- c(1,2)
+  if (withset) {
+    setpos <- grep("^set", names(data))
+    checkpos <- c(checkpos, setpos)
+  }
+  if (any(duplicated(data[, checkpos]))) {
     print("Warning for duplicated protein name entries")
     print("Double check the following proteins for duplicated entries:")
-    print(paste0(data[duplicated(data[, c(1,2)]), ]$id," in ",
-                 data[duplicated(data[, c(1,2)]), ]$condition))
+    print(paste0(data[duplicated(data[, checkpos]), ]$id," in ",
+                 data[duplicated(data[, checkpos]), ]$condition))
     stop("Remove the duplicated entires from original dataset then start again!")
   }
 
@@ -218,7 +228,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   }
 
   # To select the proteins with more than 3 PSM (average)
-  if (PSMcutoff) {
+  if (PSMcutoff & !withset) {
     PSMcol <- grep("PSM", names(data), value=FALSE)
     PSMname <- names(data)[PSMcol]
     names(data)[PSMcol] <- "PSM"
@@ -246,6 +256,29 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   } else if (length(colorpanel) < ncond){
     stop("The number of conditions in dataset exceeds the provided number of colors, pls provide enough colors in colorpanel")
   }
+
+  if (withset) {
+    if (external) { external_graphs(T) }
+    # subsetting complete replicates:
+    keep1 <- which(table(data$id) == ncond)
+    if(length(keep1)==0){ stop("No proteins contain complete replicate") }
+    nkeep1 <- names(keep1)
+    fkeep1 <- which(data$id %in% nkeep1)
+    data_complete <- data[fkeep1, ]
+
+    plotlegend <- ms_melt_legend(data_complete, nread, colorpanel)
+
+    pl <- ms_melt_innerplot(data, nread, topasone, dotconnect,
+                            PSManno, PSM_annod, Pep_annod, colorpanel,
+                            plotlegend, commonlegend, withset, layout)
+    ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
+                       length(unique(data$id)),
+                       "_whole_set_", pdfname), pl, height=12, width=12)
+    if (external) { external_graphs(F) } # switch off the external graphs
+    print("whole set plot file generated successfully.")
+    stop("Done")
+  }
+
 
   # subsetting complete replicates:
   keep1 <- which(table(data$id) == ncond)
@@ -375,37 +408,13 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                  length(unique(data_complete$id))))
   }
 
-  if (external) {
-    # http://thecoatlessprofessor.com/programming/detecting-if-r-is-in-rstudio-
-    # and-changing-rstudios-default-graphing-device/
-    is.rstudio = function() {
-      .Platform$GUI == "RStudio"
-    }
-
-    external_graphs = function(ext = TRUE) {
-      if( is.rstudio() ){
-        if( isTRUE(ext) ){
-          o = tolower(Sys.info()["sysname"])
-          a = switch(o,
-                     "darwin"  = "quartz",
-                     "linux"   = "x11",
-                     "windows" = "windows")
-          options("device" = a)
-        } else{
-          options("device"="RStudioGD")
-        }
-        # Kill open graphic devices
-        graphics.off()
-      }
-    }
-    external_graphs() # switch on the external graphs
-  }
+  if (external) { external_graphs(T) }
 
   # print out the PSM small data file
   if (PSMcutoff) {
     pl <- ms_melt_innerplot(data_PSMsmall, nread, topasone, dotconnect,
                             PSManno, PSM_annod, Pep_annod, colorpanel,
-                            plotlegend, commonlegend, layout)
+                            plotlegend, commonlegend, withset, layout)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data_PSMsmall$id)),
                        "_PSMsmall proteins", pdfname), pl, height=12, width=12)
@@ -416,7 +425,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   if (fitremout) {
     pl <- ms_melt_innerplot(outliers, nread, topasone, dotconnect,
                             PSManno, PSM_annod, Pep_annod, colorpanel,
-                            plotlegend, commonlegend, layout)
+                            plotlegend, commonlegend, withset, layout)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(outliers$id)),
                        "_Messy_proteins_", pdfname), pl, height=12, width=12)
@@ -427,7 +436,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   if (variancecutoff) {
     pl <- ms_melt_innerplot(data_largevar, nread, topasone, dotconnect,
                             PSManno, PSM_annod, Pep_annod, colorpanel,
-                            plotlegend, commonlegend, layout)
+                            plotlegend, commonlegend, withset, layout)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data_largevar$id)),
                        "_Non_reproducible_proteins_", pdfname), pl, height=12, width=12)
@@ -439,7 +448,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   data_complete$id <- factor(data_complete$id, levels=dism$id)
   pl <- ms_melt_innerplot(data_complete, nread, topasone, dotconnect,
                           PSManno, PSM_annod, Pep_annod, colorpanel,
-                          plotlegend, commonlegend, layout)
+                          plotlegend, commonlegend, withset, layout)
   ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                      length(unique(data_complete$id)),
                      "_Complete replicates_", pdfname), pl, height=12, width=12)
@@ -477,7 +486,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
 
   pl <- ms_melt_innerplot(data_incomp, nread, topasone, dotconnect,
                           PSManno, PSM_annod, Pep_annod, colorpanel,
-                          plotlegend, commonlegend, layout)
+                          plotlegend, commonlegend, withset, layout)
   ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                      length(unique(data_incomp$id)),
                      "_Non_replicates_", pdfname), pl, height=12, width=12)

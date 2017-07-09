@@ -1,7 +1,7 @@
 Package: mineCETSA
 Type: Package
 Title: Processing and Visualization of MS-CETSA data
-Version: 0.3.1
+Version: 0.3.2
 Author: Dai Lingyun
 Maintainer: Dai Lingyun <nkdailingyun@gmail.com>
 Description: This package is designed to process MS-CETSA result from TMT10 labelling and quantification scheme.

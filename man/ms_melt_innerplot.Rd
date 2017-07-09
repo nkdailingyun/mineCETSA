@@ -5,7 +5,7 @@
 \title{ms_melt_innerplot}
 \usage{
 ms_melt_innerplot(data, nread, topasone, dotconnect, PSManno, PSM_annod,
-  Pep_annod, colorpanel, plotlegend, commonlegend, layout)
+  Pep_annod, colorpanel, plotlegend, commonlegend, withset, layout)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}
@@ -27,6 +27,8 @@ ms_melt_innerplot(data, nread, topasone, dotconnect, PSManno, PSM_annod,
 \item{plotlegend}{a legend object from ms_melt_legend}
 
 \item{commonlegend}{whether to use one common legend for whole page of plots}
+
+\item{withset}{whether there is set column to perform facet_grid}
 
 \item{layout}{a vector indicating the panel layout for multi-panel plots per page}
 }

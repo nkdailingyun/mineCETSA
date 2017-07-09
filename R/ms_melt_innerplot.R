@@ -12,6 +12,7 @@
 #' @param colorpanel a vector of customizable color scheme provided by the user
 #' @param plotlegend a legend object from ms_melt_legend
 #' @param commonlegend whether to use one common legend for whole page of plots
+#' @param withset whether there is set column to perform facet_grid
 #' @param layout a vector indicating the panel layout for multi-panel plots per page
 #'
 #'
@@ -33,9 +34,16 @@
 
 ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
                               PSM_annod, Pep_annod, colorpanel, plotlegend,
-                              commonlegend, layout) {
+                              commonlegend, withset, layout) {
 
-  d1 <- tidyr::gather(data[ ,c(1:(nread+2))], temperature, reading, -id, -condition)
+  if (withset){
+    setpos <- grep("^set", names(data))
+    if ( length(setpos)==0 ) {stop("There is no set column to perform facet_grid")}
+    d1 <- tidyr::gather(data[ ,c(1:(nread+2),setpos)], temperature, reading, -id, -set, -condition)
+    d1 <- d1 %>% complete(id, set, condition, temperature)
+  } else {
+    d1 <- tidyr::gather(data[ ,c(1:(nread+2))], temperature, reading, -id, -condition)
+  }
 
   d1$condition <- as.factor(d1$condition)
   d1$temperature <- as.numeric(as.character(d1$temperature))
@@ -65,6 +73,8 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
       scale_y_continuous(breaks=seq(0,1,0.2)) + labs(x=" ", y=" ") +
       scale_colour_manual(drop=FALSE, values=colorpanel) +
       ggtitle(as.character(d1$id))
+
+    if (withset) { q <- q + facet_grid(set~., drop=FALSE) }
 
     if (dotconnect==FALSE) {
       # q <- q + geom_smooth(method = "drm", formula = t1,
