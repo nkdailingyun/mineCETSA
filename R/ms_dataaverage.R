@@ -63,29 +63,51 @@ ms_find_replicate <- function(data, nreplicate=2, nread=10, subsetonly=FALSE,
     return(data_complete)
   }
 
-  dism <- plyr::daply(data_complete, "id", function(data) {
-    data<-data[order(data$condition), ]
-    dm<-as.vector(dist(data[ ,c(4:(nread+3))]))
-    nsd<-sd(dm)
-    nmean<-mean(dm,na.rm=T)
-    ncv<-nsd/nmean
-    eucl<-c(dm, nmean, nsd, ncv)
-    eucl
-  })
-  dism <- data.frame(id=rownames(dism), dism, row.names=NULL)
-  nlength <- nreplicate*(nreplicate-1)/2
-  colnames(dism) <- c("id", paste0("distance_", 1:nlength), "mean", "sd", "cv")
-  #return(dism)
-  print("The CVs of inter-replicates readings distribution is as follows:")
-  print(summary(dism$cv))
+  if (nreplicate==2) {
+    dism <- plyr::daply(data_complete, "id", function(data) {
+      data<-data[order(data$condition), ]
+      dm<-as.vector(dist(data[ ,c(4:(nread+3))]))
+      eucl<-dm
+      eucl
+    })
+
+    dism <- data.frame(id=names(dism), distance=dism, row.names=NULL)
+    #return(dism)
+    print("The distances of inter-replicates readings distribution is as follows:")
+    print(summary(dism$distance))
+  } else {
+    dism <- plyr::daply(data_complete, "id", function(data) {
+      data<-data[order(data$condition), ]
+      dm<-as.vector(dist(data[ ,c(4:(nread+3))]))
+      nsd<-sd(dm)
+      nmean<-mean(dm,na.rm=T)
+      ncv<-nsd/nmean
+      eucl<-c(dm, nmean, nsd, ncv)
+      eucl
+    })
+
+    dism <- data.frame(id=rownames(dism), dism, row.names=NULL)
+    nlength <- nreplicate*(nreplicate-1)/2
+    colnames(dism) <- c("id", paste0("distance_", 1:nlength), "mean", "sd", "cv")
+    #return(dism)
+    print("The CVs of inter-replicates readings distribution is as follows:")
+    print(summary(dism$cv))
+  }
+
   data_largevar <- NULL
   if (variancecutoff) {
     cutoff <- NULL
     # MAD guided significance
     print("use MAD scheme to assign variance cutoff...")
-    cutoff <- round(median(dism$cv,na.rm=T)+nMAD_var*mad(dism$cv,na.rm=T), 3)
-    print(paste0("The variance (CV) cutoff limit (", nMAD_var, "*mad) sets at ", cutoff))
-    dism1 <- subset(dism, cv<cutoff)
+    if (nreplicate==2) {
+      cutoff <- round(median(dism$distance,na.rm=T)+nMAD_var*mad(dism$distance,na.rm=T), 3)
+      print(paste0("The distance cutoff limit (", nMAD_var, "*mad) sets at ", cutoff))
+      dism1 <- subset(dism, distance<cutoff)
+    } else {
+      cutoff <- round(median(dism$cv,na.rm=T)+nMAD_var*mad(dism$cv,na.rm=T), 3)
+      print(paste0("The variance (CV) cutoff limit (", nMAD_var, "*mad) sets at ", cutoff))
+      dism1 <- subset(dism, cv<cutoff)
+    }
     fkeep1 <- which(data_complete$id %in% dism1$id)
     data_largevar <- data_complete[-fkeep1, ]
     data_complete <- data_complete[fkeep1, ]
@@ -114,6 +136,7 @@ ms_find_replicate <- function(data, nreplicate=2, nread=10, subsetonly=FALSE,
 #' and count numbers
 #' @param calsd whether to calculate standard deviation on readings, default FALSE
 #'
+#' @importFrom plyr . ddply
 #' @import dplyr
 #' @import tidyr
 #' @export
@@ -123,7 +146,7 @@ ms_find_replicate <- function(data, nreplicate=2, nread=10, subsetonly=FALSE,
 #' }
 #'
 #'
-ms_data_average <- function(data, nread=10, rep="r", calPSM=FALSE, calsd=FALSE) {
+ms_data_average <- function(data, nread=10, rep="r", weightbycountnum=TRUE, calPSM=FALSE, calsd=FALSE) {
   # The input data is post fitting and filterring
 
   # calratio=FALSE, numerator="52C", denominator="37C"
@@ -148,22 +171,37 @@ ms_data_average <- function(data, nread=10, rep="r", calPSM=FALSE, calsd=FALSE) 
   data$description <- NULL
 
   d1 <- tidyr::gather(data[ ,c(1:(nread+2))], treatment, reading, -id, -condition)
-  d1$condition <- gsub(paste0("\\.", rep, "[1-9]+"), "", d1$condition)
-  d1$condition <- gsub("\\.[1-9]", "", d1$condition)
 
   # summarySE provides the standard deviation, standard error of the mean, and a (default 95%) confidence interval
   #datarr <- summarySE(datal, measurevar="reading", groupvars=c("id", "condition", "temperature"))
+  if (weightbycountnum) {
+    d1 <- merge(d1, data[ ,c("id","condition","sumUniPeps","sumPSMs","countNum")])
+    d1$condition <- gsub(paste0("\\.", rep, "[1-9]+"), "", d1$condition)
+    d1$condition <- gsub("\\.[1-9]", "", d1$condition)
 
-  # datac <- plyr::ddply(d1, plyr::.(id,condition,treatment), .drop=TRUE,
-  #                .fun = function(xx, col) {
-  #                  c(mean = mean(xx[[col]], na.rm=TRUE)
-  #                    #sd   = sd(xx[[col]], na.rm=na.rm)
-  #                  )
-  #                },
-  #                "reading"
-  # )
+    datac <- plyr::ddply(d1, plyr::.(id,condition,treatment), .drop=TRUE,
+                         .fun = function(xx) {
+                           c(reading_mean = weighted.mean(xx[["reading"]], xx[["countNum"]], na.rm=TRUE),
+                             sumUniPeps_new = mean(xx[["sumUniPeps"]]),
+                             sumPSMs_new = mean(xx[["sumPSMs"]]),
+                             countNum_new = mean(xx[["countNum"]])
+                           )
+                         }
+    )
+  } else {
+    d1$condition <- gsub(paste0("\\.", rep, "[1-9]+"), "", d1$condition)
+    d1$condition <- gsub("\\.[1-9]", "", d1$condition)
 
-  datac <- d1 %>% group_by(id,condition,treatment) %>% summarise(reading_mean=mean(reading, na.rm=TRUE))
+    datac <- plyr::ddply(d1, plyr::.(id,condition,treatment), .drop=TRUE,
+                         .fun = function(xx) {
+                           c(reading_mean = mean(xx[["reading"]], na.rm=TRUE)
+                             #sd   = sd(xx[[col]], na.rm=na.rm)
+                           )
+                         }
+    )
+  }
+
+  #datac <- d1 %>% group_by(id,condition,treatment) %>% summarise(reading_mean=mean(reading, na.rm=TRUE))
 
   if (calPSM) {
     data_copy <- data
@@ -205,12 +243,20 @@ ms_data_average <- function(data, nread=10, rep="r", calPSM=FALSE, calsd=FALSE) 
   #   colnames(df) <- c("id", "Description");
   #   ratios<-cbind(df, ratios[,-1]);
   # }
-  averageddata <- tidyr::spread(datac, treatment, reading_mean)
-  averageddata <- merge(proteininfo, averageddata)
+
+  if (weightbycountnum) {
+    averageddata <- tidyr::spread(datac[ ,c(1:4)], treatment, reading_mean)
+    averageddata <- merge(averageddata, unique(datac[ ,c(1,2,5:7)]), all=FALSE)
+  } else {
+    averageddata <- tidyr::spread(datac, treatment, reading_mean)
+  }
+
   if (calPSM) {
     averageddata <- merge(averageddata, pepinfo, by=c("id","condition"))
   }
 
+  averageddata <- merge(proteininfo, averageddata)
+  names(averageddata) <- gsub("_new","", names(averageddata))
   averageddata$outdir <- outdir
 
   # if(calratio){

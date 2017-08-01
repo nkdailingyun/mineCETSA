@@ -4,8 +4,8 @@
 \alias{ms_data_average}
 \title{ms_data_average}
 \usage{
-ms_data_average(data, nread = 10, rep = "r", calPSM = FALSE,
-  calsd = FALSE)
+ms_data_average(data, nread = 10, rep = "r", weightbycountnum = TRUE,
+  calPSM = FALSE, calsd = FALSE)
 }
 \arguments{
 \item{data}{dataset to be filtered}

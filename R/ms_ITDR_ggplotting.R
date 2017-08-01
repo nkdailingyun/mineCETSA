@@ -192,31 +192,7 @@ ms_ITDR_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondpro
   bottom_label <- paste0("Compound concentration(", unit, ")")
   #plotlegend <- ms_legend(data, nread, colorpanel)
 
-  if (external) {
-    # http://thecoatlessprofessor.com/programming/detecting-if-r-is-in-rstudio-
-    # and-changing-rstudios-default-graphing-device/
-    is.rstudio = function() {
-      .Platform$GUI == "RStudio"
-    }
-
-    external_graphs = function(ext = TRUE) {
-      if( is.rstudio() ){
-        if( isTRUE(ext) ){
-          o = tolower(Sys.info()["sysname"])
-          a = switch(o,
-                     "darwin"  = "quartz",
-                     "linux"   = "x11",
-                     "windows" = "windows")
-          options("device" = a)
-        } else{
-          options("device"="RStudioGD")
-        }
-        # Kill open graphic devices
-        graphics.off()
-      }
-    }
-    external_graphs() # switch on the external graphs
-  }
+  if (external) { external_graphs(T) }
 
   pl <- ms_isothermal_innerplot(data, legenddata, nread, nreplicate, loess,
                                 dotconnect, PSManno, PSM_annod, Pep_annod,

@@ -25,12 +25,19 @@
 #' @param topcutoff the average of the first three points should be higher than
 #' specified bottom cutoff value, which is 0.8 by default
 #' @param variancecutoff whether to segregate the proteins with large inter-replicate variance
-#' @param nMAD_var the number of MADs to set the significance cutoff about variance distribution
+#' @param nMAD_var the number of MADs to set the significance cutoff about variance distribution,
+#' default value is 2.5
 #' @param topasone whether the top plateau has to be fixed, i.e., 1.0
 #' @param normTop whether to normalize the AUC based on Top three readings
 #' @param dotconnect whether to simply dot connect the readings for each curve
 #' @param PSManno whether to annotate the plots with PSM and uniPeptide number
+#' @param PSMannoypos the starting y postion of PSM/uniPeptide number annotation from top,
+#' default value is 0.5
+#' @param PSMannoyinterval the interval of PSM/uniPeptide number annotation per line,
+#' default value is 0.08
 #' @param presetcolor whether to use the pre-defined color scheme
+#' @param plotfitremout whether to plot out messy melt curves
+#' @param plotvarremout whether to plot out large inter-replicate variance melt curves
 #' @param colorpanel a vector of customizable color scheme provided by the user
 #' @param withset whether there is set column to perform facet_grid
 #' @param commonlegend whether to use one common legend for whole page of plots
@@ -63,7 +70,9 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                               variancecutoff=FALSE, nMAD_var=2.5,
                               nreplicate=2, topasone=TRUE, normTop=TRUE, dotconnect=FALSE,
                               pfdatabase=FALSE, printGeneName=FALSE,
-                              PSManno=TRUE, presetcolor=TRUE,
+                              PSManno=TRUE, PSMannoypos=0.5, PSMannoyinterval=0.08,
+                              presetcolor=TRUE, extraidtocomplete=NULL,
+                              plotfitremout=TRUE, plotvarremout=TRUE,
                               colorpanel=NULL, withset=FALSE, commonlegend=TRUE,
                               layout=c(5,5), pdfname="ggplotting.pdf", external=TRUE) {
 
@@ -129,6 +138,16 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   if (pfdatabase) {
     getProteinName <- function(x) {return (gsub("product=", "", strsplit(x, "\\|")[[1]][2]))}
   }
+
+  if (length(extraidtocomplete)) {
+    fkeep <- NULL
+    for (i in 1:length(extraidtocomplete)){
+      hits <- grep(paste0("^", extraidtocomplete[i], "$"), data$id, value=FALSE)
+      fkeep <- c(fkeep, hits)
+    }
+    data_extra <- data[fkeep, ]
+  }
+
   if (printGeneName) {
     data <- data %>% rowwise() %>%
       mutate(description = getGeneName(description)) %>%
@@ -139,6 +158,18 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
       mutate(id = paste(id, description, sep="\n"))
   }
 
+  if (length(extraidtocomplete)) {
+    if (printGeneName) {
+      data_extra <- data_extra %>% rowwise() %>%
+        mutate(description = getGeneName(description)) %>%
+        mutate(id = paste(id, description, sep="\n"))
+    } else {
+      data_extra <- data_extra %>% rowwise() %>%
+        mutate(description = getProteinName(description)) %>%
+        mutate(id = paste(id, description, sep="\n"))
+    }
+    data_extra$description<-NULL
+  }
   # for(i in 1:nrowdata){
   #   if(geneName){
   #     data[i, 'description']<-strsplit(strsplit(data[i, 'description'], "GN=")[[1]][2], " ")[[1]][1]
@@ -269,8 +300,8 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
     plotlegend <- ms_melt_legend(data_complete, nread, colorpanel)
 
     pl <- ms_melt_innerplot(data, nread, topasone, dotconnect,
-                            PSManno, PSM_annod, Pep_annod, colorpanel,
-                            plotlegend, commonlegend, withset, layout)
+                            PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
+                            colorpanel, plotlegend, commonlegend, withset, layout)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data$id)),
                        "_whole_set_", pdfname), pl, height=12, width=12)
@@ -413,8 +444,8 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   # print out the PSM small data file
   if (PSMcutoff) {
     pl <- ms_melt_innerplot(data_PSMsmall, nread, topasone, dotconnect,
-                            PSManno, PSM_annod, Pep_annod, colorpanel,
-                            plotlegend, commonlegend, withset, layout)
+                            PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
+                            colorpanel, plotlegend, commonlegend, withset, layout)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data_PSMsmall$id)),
                        "_PSMsmall proteins", pdfname), pl, height=12, width=12)
@@ -422,10 +453,10 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   }
 
   # print out the outliers data file
-  if (fitremout) {
+  if (fitremout & plotfitremout) {
     pl <- ms_melt_innerplot(outliers, nread, topasone, dotconnect,
-                            PSManno, PSM_annod, Pep_annod, colorpanel,
-                            plotlegend, commonlegend, withset, layout)
+                            PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
+                            colorpanel, plotlegend, commonlegend, withset, layout)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(outliers$id)),
                        "_Messy_proteins_", pdfname), pl, height=12, width=12)
@@ -433,10 +464,10 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   }
 
   # print out the large variance data file
-  if (variancecutoff) {
+  if (variancecutoff & plotvarremout) {
     pl <- ms_melt_innerplot(data_largevar, nread, topasone, dotconnect,
-                            PSManno, PSM_annod, Pep_annod, colorpanel,
-                            plotlegend, commonlegend, withset, layout)
+                            PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
+                            colorpanel, plotlegend, commonlegend, withset, layout)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data_largevar$id)),
                        "_Non_reproducible_proteins_", pdfname), pl, height=12, width=12)
@@ -445,10 +476,17 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
 
   print("Generating first complete plot file, pls wait.")
   #seq1 <- as.factor(dism$id)
-  data_complete$id <- factor(data_complete$id, levels=dism$id)
+  if (length(extraidtocomplete)) {
+    data_complete <- rbind(data_extra, data_complete)
+    data_complete <- data_complete[!duplicated(data_complete), ]
+    data_complete$id <- factor(data_complete$id, levels=c(unique(data_extra$id), dism$id))
+  } else {
+    data_complete$id <- factor(data_complete$id, levels=dism$id)
+  }
+
   pl <- ms_melt_innerplot(data_complete, nread, topasone, dotconnect,
-                          PSManno, PSM_annod, Pep_annod, colorpanel,
-                          plotlegend, commonlegend, withset, layout)
+                          PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
+                          colorpanel, plotlegend, commonlegend, withset, layout)
   ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                      length(unique(data_complete$id)),
                      "_Complete replicates_", pdfname), pl, height=12, width=12)
@@ -485,8 +523,8 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   data_incomp$id <- factor(data_incomp$id, levels=plotseq)
 
   pl <- ms_melt_innerplot(data_incomp, nread, topasone, dotconnect,
-                          PSManno, PSM_annod, Pep_annod, colorpanel,
-                          plotlegend, commonlegend, withset, layout)
+                          PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
+                          colorpanel, plotlegend, commonlegend, withset, layout)
   ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                      length(unique(data_incomp$id)),
                      "_Non_replicates_", pdfname), pl, height=12, width=12)

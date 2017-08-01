@@ -9,7 +9,7 @@
 #' in the same order as channels
 #' @param nread number of reading channels, should match the number of channels
 #' used, default value 10
-#' @param abdread whether to read in protein abundance data, default set to TRUE
+#' @param abdread whether to read in protein abundance data, default set to FALSE
 #' @param PD21 whether the data is searched using Proteome Discoverer 2.1,
 #' default set to TRUE
 #' @param refchannel names of reference channel used in Proteome Discoverer

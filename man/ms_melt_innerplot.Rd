@@ -5,7 +5,8 @@
 \title{ms_melt_innerplot}
 \usage{
 ms_melt_innerplot(data, nread, topasone, dotconnect, PSManno, PSM_annod,
-  Pep_annod, colorpanel, plotlegend, commonlegend, withset, layout)
+  Pep_annod, PSMannoypos, PSMannoyinterval, colorpanel, plotlegend,
+  commonlegend, withset, layout)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}
@@ -21,6 +22,10 @@ ms_melt_innerplot(data, nread, topasone, dotconnect, PSManno, PSM_annod,
 \item{PSM_annod}{dataframe containing the PSM number information}
 
 \item{Pep_annod}{dataframe containing the uniPeptide number information}
+
+\item{PSMannoypos}{the starting y postion of PSM/uniPeptide number annotation from top}
+
+\item{PSMannoyinterval}{the interval of PSM/uniPeptide number annotation per line}
 
 \item{colorpanel}{a vector of customizable color scheme provided by the user}
 

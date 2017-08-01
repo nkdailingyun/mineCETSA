@@ -9,6 +9,8 @@
 #' @param PSManno whether to annotate the plots with PSM and uniPeptide number
 #' @param PSM_annod dataframe containing the PSM number information
 #' @param Pep_annod dataframe containing the uniPeptide number information
+#' @param PSMannoypos the starting y postion of PSM/uniPeptide number annotation from top
+#' @param PSMannoyinterval the interval of PSM/uniPeptide number annotation per line
 #' @param colorpanel a vector of customizable color scheme provided by the user
 #' @param plotlegend a legend object from ms_melt_legend
 #' @param commonlegend whether to use one common legend for whole page of plots
@@ -33,8 +35,8 @@
 #'
 
 ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
-                              PSM_annod, Pep_annod, colorpanel, plotlegend,
-                              commonlegend, withset, layout) {
+                              PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
+                              colorpanel, plotlegend, commonlegend, withset, layout) {
 
   if (withset){
     setpos <- grep("^set", names(data))
@@ -86,15 +88,15 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
     }
 
     if (PSManno) {
-      q <- q + annotate("text", x=xpos, y=0.5, label="  #PSM  #Peptides", size=1.5)
+      q <- q + annotate("text", x=xpos, y=PSMannoypos, label="  #PSM  #Peptides", size=1.5)
       for (i in 1:length(PSM_label)) {
-        q <- q + annotate("text", x=xpos, y=0.5-0.08*i,
+        q <- q + annotate("text", x=xpos, y=PSMannoypos-PSMannoyinterval*i,
                           label=paste0(names(PSM_label)[i], ":  ", as.character(PSM_label)[i], " "),
                           size=1.5, hjust=1)
         i <- i + 1
       }
       for (i in 1:length(Pep_label)) {
-        q <- q + annotate("text", x=xpos+2, y=0.5-0.08*i,
+        q <- q + annotate("text", x=xpos+2, y=PSMannoypos-PSMannoyinterval*i,
                           label=as.character(Pep_label)[i], size=1.5)
         i <- i + 1
       }

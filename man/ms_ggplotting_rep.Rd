@@ -11,9 +11,10 @@ ms_ggplotting_rep(data, legenddata = NULL, levelvector = NULL, nread = 10,
   variancecutoff = FALSE, nMAD_var = 2.5, nreplicate = 2,
   topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
   pfdatabase = FALSE, printGeneName = FALSE, PSManno = TRUE,
-  presetcolor = TRUE, colorpanel = NULL, withset = FALSE,
-  commonlegend = TRUE, layout = c(5, 5), pdfname = "ggplotting.pdf",
-  external = TRUE)
+  PSMannoypos = 0.5, PSMannoyinterval = 0.08, presetcolor = TRUE,
+  extraidtocomplete = NULL, plotfitremout = TRUE, plotvarremout = TRUE,
+  colorpanel = NULL, withset = FALSE, commonlegend = TRUE, layout = c(5,
+  5), pdfname = "ggplotting.pdf", external = TRUE)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}
@@ -61,9 +62,15 @@ up to 4 is possible for now}
 
 \item{PSManno}{whether to annotate the plots with PSM and uniPeptide number}
 
+\item{PSMannoypos}{the starting y postion of PSM/uniPeptide number annotation from top}
+
+\item{PSMannoyinterval}{the interval of PSM/uniPeptide number annotation per line}
+
 \item{presetcolor}{whether to use the pre-defined color scheme}
 
 \item{colorpanel}{a vector of customizable color scheme provided by the user}
+
+\item{withset}{whether there is set column to perform facet_grid}
 
 \item{commonlegend}{whether to use one common legend for whole page of plots}
 

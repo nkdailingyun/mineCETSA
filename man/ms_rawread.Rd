@@ -20,7 +20,7 @@ in the same order as channels}
 \item{nread}{number of reading channels, should match the number of channels
 used, default value 10}
 
-\item{abdread}{whether to read in protein abundance data, default set to TRUE}
+\item{abdread}{whether to read in protein abundance data, default set to FALSE}
 
 \item{PD21}{whether the data is searched using Proteome Discoverer 2.1,
 default set to TRUE}

@@ -30,6 +30,7 @@ ms_isoform_resolve <- function(data) {
   }
 
   data$outdir <- NULL
+  ncondition <- length(unique(data$condition))
 
   # To look for the ids found in same conditions
   uniqueid <- unique(gsub("-[0-9]+", "", data$id))
@@ -73,11 +74,10 @@ ms_isoform_resolve <- function(data) {
 
   print(paste0(nrow(ambitable), " Isoforms were solved."))
 
-  print(paste0("Still, Pay attention to these ", length(questionid), " base IDs for possible protein grouping ambuiguity: "))
-  print(questionid)
+  # print(paste0("Still, Pay attention to these ", length(questionid), " base IDs for possible protein grouping ambuiguity: "))
+  # print(questionid)
 
-  print("To further solve isoform ambiguity issue, double check and modify the matching table accordingly in the current working directory.")
-  print("Then proceed to use ms_isoform_consolidate() function.")
+  print("To further solve isoform ambiguity issue, proceed to use ms_isoform_consolidate() function.")
 
   questionid_pos <- NULL
   for (id in questionid) {
@@ -90,11 +90,14 @@ ms_isoform_resolve <- function(data) {
     arrange(id, desc(totalCountNum))
   questionid_table2$uniid <- gsub("-[0-9]+", "", questionid_table2$uniid)
   questionid_table3 <- questionid_table2 %>% group_by(uniid) %>%
-    top_n(1, frequency) %>% top_n(1, totalCountNum)
+    top_n(1, frequency) %>% top_n(1, totalCountNum) %>% filter(frequency != ncondition)
   questionid_table3 <- questionid_table3[ ,c(1,4)]
   names(questionid_table3) <- c("Tobe_id","groupid")
   questionid_table4 <- merge(questionid_table2, questionid_table3, by.x="uniid", by.y="groupid")
   questionid_table4$uniid <- NULL
+
+  print(paste0(nrow(questionid_table3), " base IDs were found with possible protein grouping ambuiguity."))
+  print("Carefully check and modify the suggested to_be_consoidated matching table in the current working directory.")
 
   write.table(questionid_table4, paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"), dataname, "_tobe_consolidated.txt"),
               sep="\t", row.names=FALSE, quote=FALSE)
