@@ -85,11 +85,11 @@ ITDRdata_c <- ms_clean(ITDRdata)
 6. Resolve isoform ambiguity from multiple runs of searches using `ms_isoform_resolve()`.  
 When two or more isoforms of the same parental proteins are identified among the combined datasets but within each individual condition, only one isoform is identified, base on the principle of parsimony, the minor isoforms will be automatically adjusted to be the corresponding major or more frequent oberserved isoform. At the same time, a match table will be suggested to further consolidate the cases that when two or more isoforms of the same parental proteins are identified within the same individual conditioned dataset, which could then be achieved by using `ms_isoform_consolidate()`.   
 ```{r,eval=FALSE}
-ITDRdata_c1 <- ms_clean(ITDRdata_c)
+ITDRdata_c1 <- ms_isoform_resolve(ITDRdata_c)
 # The next one is optional. You are encouraged to double check and adjust the match table entries. 
-ITDRdata_c2 <- ms_clean(ITDRdata_c1, matchtable="./subfolder/tobe_consolidated.txt")
+ITDRdata_c2 <- ms_isoform_consolidate(ITDRdata_c1, matchtable="./subfolder/tobe_consolidated.txt")
 # When the data contains protein abundance information. 
-ITDRdata_c2 <- ms_clean(ITDRdata_c1, matchtable="./subfolder/tobe_consolidated.txt", withabd=TRUE)
+ITDRdata_c2 <- ms_isoform_consolidate(ITDRdata_c1, matchtable="./subfolder/tobe_consolidated.txt", withabd=TRUE)
 ```
 
 7. Apply systematic scaling to the dataset using `ms_ITDR_scaling()` or `ms_ITTR_scaling()`.  
@@ -127,7 +127,8 @@ The arguments and its default value includes:
 * `fcthreshold=0.3`, readings have to surpass this threshold (by default 30%) of fold change level to be considered as positive  
 * `R2threshold=0.8`, minimal R-squared (R2) level to consider dose/time-reponse fitting as reliable  
 * `checkreplicate=FALSE`, whether to check replicated measurements, when set to TRUE, the filter function will make sure the proteins with all the replicated measurements from at least one condition pass fold change threshold will be segregated, default set to FALSE  
-* `ncheckpoint=3`, the checking of whether readings surpass fold change threshold is applied on the highest three doses
+* `ncheckpoint=3`, the checking of whether readings surpass fold change threshold is applied on the highest three doses  
+* `excludelastpoint`, exclude the last dose point for dose-response checking, default set to FALSE, only set to TRUE when you believe that that last dose point is not trustworthy (not applied on ms_ITTR_ggplotting function)  
 * `PSMcutoff=FALSE` and `PSMthreshold=3`, whether to apply minimal PSM cutoff on hit selection and the threshold level  
   
   

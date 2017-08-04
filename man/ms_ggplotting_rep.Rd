@@ -48,7 +48,8 @@ specified bottom cutoff value, which is 0.8 by default}
 
 \item{variancecutoff}{whether to segregate the proteins with large inter-replicate variance}
 
-\item{nMAD_var}{the number of MADs to set the significance cutoff about variance distribution}
+\item{nMAD_var}{the number of MADs to set the significance cutoff about variance distribution,
+default value is 2.5}
 
 \item{nreplicate}{number of replicates, default value is 2, change the value
 accordingly, this is relavent to automatic coloring scheme,
@@ -62,11 +63,17 @@ up to 4 is possible for now}
 
 \item{PSManno}{whether to annotate the plots with PSM and uniPeptide number}
 
-\item{PSMannoypos}{the starting y postion of PSM/uniPeptide number annotation from top}
+\item{PSMannoypos}{the starting y postion of PSM/uniPeptide number annotation from top,
+default value is 0.5}
 
-\item{PSMannoyinterval}{the interval of PSM/uniPeptide number annotation per line}
+\item{PSMannoyinterval}{the interval of PSM/uniPeptide number annotation per line,
+default value is 0.08}
 
 \item{presetcolor}{whether to use the pre-defined color scheme}
+
+\item{plotfitremout}{whether to plot out messy melt curves}
+
+\item{plotvarremout}{whether to plot out large inter-replicate variance melt curves}
 
 \item{colorpanel}{a vector of customizable color scheme provided by the user}
 

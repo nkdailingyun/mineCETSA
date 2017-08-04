@@ -5,11 +5,14 @@
 \title{ms_ggplotting}
 \usage{
 ms_ggplotting(data, legenddata = NULL, nread = 10,
-  remsinglecondprot = TRUE, orderAUCdiff = TRUE, nreplicate = 1,
-  topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
+  remsinglecondprot = TRUE, fitremout = FALSE, ctrlcond = NULL,
+  bottomcutoff = 0.4, topcutoff = 0.8, orderAUCdiff = TRUE,
+  nreplicate = 1, topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
   pfdatabase = FALSE, printGeneName = FALSE, PSManno = TRUE,
-  presetcolor = TRUE, colorpanel = NULL, commonlegend = TRUE,
-  layout = c(5, 5), pdfname = "ggplotting.pdf", external = TRUE)
+  PSMannoypos = 0.5, PSMannoyinterval = 0.08, presetcolor = TRUE,
+  colorpanel = NULL, extraidtocomplete = NULL, plotfitremout = TRUE,
+  withset = FALSE, commonlegend = TRUE, layout = c(5, 5),
+  pdfname = "ggplotting.pdf", external = TRUE)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}
@@ -21,6 +24,17 @@ inside this dataset should contains the full set of experiment conditions}
 
 \item{remsinglecondprot}{whether orphan proteins to be plotted,
 default value is TRUE, soto exclude them from plotting}
+
+\item{fitremout}{whether to segregate the proteins with messy melt curves}
+
+\item{ctrlcond}{if necessary, could used to specify what conditions to be
+referred as control conditions}
+
+\item{bottomcutoff}{the average of the last three points should be lower than
+specified bottom cutoff value, which is 0.4 by default}
+
+\item{topcutoff}{the average of the first three points should be higher than
+specified bottom cutoff value, which is 0.8 by default}
 
 \item{orderAUCdiff}{whether to order plots by AUC difference among different
 treatment for same protein, default set to TRUE}
@@ -38,6 +52,8 @@ treatment for same protein, default set to TRUE}
 \item{presetcolor}{whether to use the pre-defined color scheme}
 
 \item{colorpanel}{a vector of customizable color scheme provided by the user}
+
+\item{plotfitremout}{whether to plot out messy melt curves}
 
 \item{commonlegend}{whether to use one common legend for whole page of plots}
 

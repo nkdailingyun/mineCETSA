@@ -8,6 +8,13 @@
 #' @param nread number of reading channels or sample treatements
 #' @param remsinglecondprot whether orphan proteins to be plotted,
 #' default value is TRUE, soto exclude them from plotting
+#' @param fitremout whether to segregate the proteins with messy melt curves
+#' @param ctrlcond if necessary, could used to specify what conditions to be
+#' referred as control conditions
+#' @param bottomcutoff the average of the last three points should be lower than
+#' specified bottom cutoff value, which is 0.4 by default
+#' @param topcutoff the average of the first three points should be higher than
+#' specified bottom cutoff value, which is 0.8 by default
 #' @param orderAUCdiff whether to order plots by AUC difference among different
 #' treatment for same protein, default set to TRUE
 #' @param nreplicate number of replicates, default value is 1
@@ -16,6 +23,7 @@
 #' @param dotconnect whether to simply dot connect the readings for each curve
 #' @param PSManno whether to annotate the plots with PSM and uniPeptide number
 #' @param presetcolor whether to use the pre-defined color scheme
+#' @param plotfitremout whether to plot out messy melt curves
 #' @param colorpanel a vector of customizable color scheme provided by the user
 #' @param commonlegend whether to use one common legend for whole page of plots
 #' @param layout a vector indicating the panel layout for multi-panel plots per page
@@ -40,9 +48,13 @@
 #'
 
 ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRUE,
+                          fitremout=FALSE, ctrlcond=NULL, bottomcutoff=0.4, topcutoff=0.8,
                           orderAUCdiff=TRUE, nreplicate=1, topasone=TRUE, normTop=TRUE,
                           dotconnect=FALSE, pfdatabase=FALSE, printGeneName=FALSE,
-                          PSManno=TRUE, presetcolor=TRUE, colorpanel=NULL, commonlegend=TRUE,
+                          PSManno=TRUE, PSMannoypos=0.5, PSMannoyinterval=0.08,
+                          presetcolor=TRUE, colorpanel=NULL,
+                          extraidtocomplete=NULL, plotfitremout=TRUE, withset=FALSE,
+                          commonlegend=TRUE,
                           layout=c(5,5), pdfname="ggplotting.pdf", external=TRUE) {
 
   dataname <- deparse(substitute(data))
@@ -102,6 +114,16 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   if (pfdatabase) {
     getProteinName <- function(x) {return (gsub("product=", "", strsplit(x, "\\|")[[1]][2]))}
   }
+
+  if (length(extraidtocomplete)) {
+    fkeep <- NULL
+    for (i in 1:length(extraidtocomplete)){
+      hits <- grep(paste0("^", extraidtocomplete[i], "$"), data$id, value=FALSE)
+      fkeep <- c(fkeep, hits)
+    }
+    data_extra <- data[fkeep, ]
+  }
+
   if (printGeneName) {
     data <- data %>% rowwise() %>%
       mutate(description = getGeneName(description)) %>%
@@ -112,6 +134,19 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
       mutate(id = paste(id, description, sep="\n"))
   }
   data$description<-NULL
+
+  if (length(extraidtocomplete)) {
+    if (printGeneName) {
+      data_extra <- data_extra %>% rowwise() %>%
+        mutate(description = getGeneName(description)) %>%
+        mutate(id = paste(id, description, sep="\n"))
+    } else {
+      data_extra <- data_extra %>% rowwise() %>%
+        mutate(description = getProteinName(description)) %>%
+        mutate(id = paste(id, description, sep="\n"))
+    }
+    data_extra$description<-NULL
+  }
 
   if(any(duplicated(data[, c(1,2)]))){
     print("Warning for duplicated protein name entries")
@@ -135,28 +170,80 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
     PSM_annod <- NULL
     Pep_annod <- NULL
   }
+
+  # look for outlier proteins based on melting behavior in controls
+  outliers <- NULL
+  if (fitremout) {
+    print("Make sure you provide fitted data with Tm and R2 values for this option!")
+    ctrllist1 <- unique(grep("[Cc][Tt][Rr][Ll]", data$condition, value=TRUE))
+    ctrllist2 <- unique(grep("[Cc][Oo][Nn][Tt][Rr][Oo][Ll]", data$condition, value=TRUE))
+    ctrllist3 <- unique(grep("[Dd][Mm][Ss][Oo]", data$condition, value=TRUE))
+    ctrllist <- c(ctrllist1, ctrllist2, ctrllist3, ctrlcond)
+    if(length(ctrllist)==0) {
+      stop("Name your control conditions with prefix [Ctrl] or [Control] or [DMSO], or specify in ctrlcond argument")
+    }
+    data$Top <- rowMeans(data[, c(3:5)])
+    data$Bottom <- rowMeans(data[ ,c(nread:(nread+2))])
+
+    tmp1 <- which(is.na(data$Tm))
+    tmp2 <- which(data$Slope<=0)
+    #tmp3 <- which(data$R2<=0.8)
+    R2table <- plyr::ddply(data, .(id), summarize, meanR2=median(R2, na.rm=TRUE))
+    R2table <- subset(R2table, meanR2<0.8)
+    tmp3 <- which(data$id %in% R2table$id)
+    #tmp4 <- which(data$condition %in% ctrllist & data$Tm>=100);
+    tmp5 <- which(data$condition %in% ctrllist & data$Top<data$Bottom)
+    tmp6 <- which(data$condition %in% ctrllist & data$Top<topcutoff)
+    tmp7 <- which(data$condition %in% ctrllist & data$Bottom>bottomcutoff)
+    tmp <- c(tmp1, tmp2, tmp3, tmp5, tmp6, tmp7)#, tmp4)
+    tmp <- unique(tmp)
+    data$Top <- NULL
+    data$Bottom <- NULL
+    if (length(tmp)>0) {
+      print(paste0(length(tmp), " measurements were messy in melting behavior and removed."))
+      outlierid <- data[tmp, ]$id
+      outlierid1 <- which(data$id %in% outlierid)
+      outliers <- data[outlierid1, ]
+      ms_filewrite(outliers, "Messy proteins.txt", outdir=outdir)
+      #print(paste0("The outlier protein list is ", outlierids))
+      data <- data[-outlierid1, ]
+    }
+  }
+
   if (orderAUCdiff) {
     # Ranking based by Area under the curve(AUC) difference
     if (!("^AUC" %in% colnames(data))) {
       data$AUC <- rowSums(data[ ,c(3:(nread+2))])
     }
-
     if (normTop) {
       data$Top <- rowMeans(data[ ,c(3:5)])
     } else {
       data$Top <- rep(1.0, nrowdata)
     }
-
     data <- mutate(data, para = AUC/Top)
     delta <- function(dat) {
       max(dat$para) - min(dat$para) # simple ranking based on AUC of raw data
     }
     rank = sapply(split(data[, c('id', 'para')], factor(data$id), drop=T), delta)
     ord <- order(rank, decreasing=T)
-    plotseq <- as.factor(names(rank[ord]))
+    plotseq <- names(rank[ord])
+    data$AUC <- NULL
+    data$Top <- NULL
+    data$para <- NULL
     data$id <- factor(data$id, levels=plotseq)
+    if (length(extraidtocomplete)) {
+      data <- rbind(data_extra, data)
+      data <- data[!duplicated(data), ]
+      data$id <- factor(data$id, levels=unique(c(unique(data_extra$id), plotseq)))
+    }
   } else {
-    data$id <- factor(data$id)
+    if (length(extraidtocomplete)) {
+      data <- rbind(data_extra, data)
+      data <- data[!duplicated(data), ]
+      data$id <- factor(data$id, levels=unique(c(unique(data_extra$id), unique(data$id))))
+    } else {
+      data$id <- factor(data$id)
+    }
   }
 
   if (!length(legenddata)) { legenddata <- data }
@@ -165,8 +252,8 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   if (external) { external_graphs(T) }
 
   pl <- ms_melt_innerplot(data, nread, topasone, dotconnect,
-                          PSManno, PSM_annod, Pep_annod,
-                          colorpanel, plotlegend, commonlegend, layout)
+                          PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
+                          colorpanel, plotlegend, commonlegend, withset, layout)
 
   if (dotconnect) { pdfname=paste("simple",pdfname,sep="_") }
   else { pdfname=paste("fitted",pdfname,sep="_") }

@@ -73,9 +73,9 @@ LY_cleaned <- ms_clean(LY1)
 6. Resolve isoform ambiguity from multiple runs of searches using `ms_isoform_resolve()`.  
 When two or more isoforms of the same parental proteins are identified among the combined datasets but within each individual condition, only one isoform is identified, base on the principle of parsimony, the minor isoforms will be automatically adjusted to be the corresponding major or more frequent oberserved isoform. At the same time, a match table will be suggested to further consolidate the cases that when two or more isoforms of the same parental proteins are identified within the same individual conditioned dataset, which could then be achieved by using `ms_isoform_consolidate()`.   
 ```{r,eval=FALSE}
-LY_cleaned1 <- ms_clean(LY_cleaned)
+LY_cleaned1 <- ms_isoform_resolve(LY_cleaned)
 # The next one is optional. You are encouraged to double check and adjust the match table entries. 
-LY_cleaned2 <- ms_clean(LY_cleaned1, matchtable="./subfolder/tobe_consolidated.txt")
+LY_cleaned2 <- ms_isoform_consolidate(LY_cleaned1, matchtable="./subfolder/tobe_consolidated.txt")
 ```
 
 7.1. Apply systematic scaling to the dataset using `ms_scaling()`.  

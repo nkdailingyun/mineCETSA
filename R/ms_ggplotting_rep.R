@@ -157,6 +157,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
       mutate(description = getProteinName(description)) %>%
       mutate(id = paste(id, description, sep="\n"))
   }
+  data$description<-NULL
 
   if (length(extraidtocomplete)) {
     if (printGeneName) {
@@ -179,7 +180,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   #     data[i,'id']<-strsplit(cid, " OS")[[1]][1]
   #   }
   # }
-  data$description<-NULL
+
   checkpos <- c(1,2)
   if (withset) {
     setpos <- grep("^set", names(data))
