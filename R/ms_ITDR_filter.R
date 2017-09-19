@@ -21,9 +21,8 @@
 #' at least one condition pass fold change threshold will be segregated, default
 #' set to FALSE
 #' @param treatcondition specify the condition names to perform replicate check,
-#' no need to specify the replicate
-#' part of the full condition names, not commonly used in ITDR experimental
-#' setup, default value is NULL
+#' no need to specify the replicate part of the full condition names,
+#' not commonly used in ITDR experimental setup, default value is NULL
 #' @param ncheckpoint the number of dose groups (count down from highest
 #' concentration) to check whether their readings surpass fold change threshold
 #' @param excludelastpoint whether to exclude the last dose point for checking,
@@ -146,9 +145,19 @@ ms_ITDR_filter <- function(data, nread=10, fcthreshold=0.3, R2threshold=0.8,
   if (checkreplicate) {
     # If necessary, focus only on the treatment or heat challenged conditions,
     # however this is not common in ITDR samples
-    if(length(treatcondition)) {
+    if (length(treatcondition)==1) {
       pattern <- grep(pattern=paste0("^", treatcondition, "\\."), data_good_tem$condition)
       data_good_tem <- data_good_tem[pattern, ]
+    } else if(length(treatcondition)>1) {
+      allpattern <- NULL
+      for (i in 1:length(treatcondition)) {
+        pattern <- grep(pattern=paste0("^", treatcondition[i], "\\."), data_good_tem$condition)
+        allpattern <- c(allpattern, pattern)
+      }
+      data_good_tem <- data_good_tem[allpattern, ]
+    }
+    if (nrow(data_good_tem)==0) {
+      stop("Opps, no proteins remained in your treament groups! Pls double check!")
     }
     data_good_copy <- data_good_tem
     data_good_copy$condition <- gsub("\\.[Rr][Ee][Pp][1-9]+", "", data_good_copy$condition)

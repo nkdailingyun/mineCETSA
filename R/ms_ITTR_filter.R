@@ -125,9 +125,19 @@ ms_ITTR_filter <- function(data, nread=10, fcthreshold=0.3, R2threshold=0.8,
 
   if (checkreplicate) {
     # Focus only on the treatment or heat challenged conditions
-    if(length(treatcondition)) {
+    if (length(treatcondition)==1) {
       pattern <- grep(pattern=paste0("^", treatcondition, "\\."), data_good_tem$condition)
       data_good_tem <- data_good_tem[pattern, ]
+    } else if(length(treatcondition)>1) {
+      allpattern <- NULL
+      for (i in 1:length(treatcondition)) {
+        pattern <- grep(pattern=paste0("^", treatcondition[i], "\\."), data_good_tem$condition)
+        allpattern <- c(allpattern, pattern)
+      }
+      data_good_tem <- data_good_tem[allpattern, ]
+    }
+    if (nrow(data_good_tem)==0) {
+      stop("Opps, no proteins remained in your treament groups! Pls double check!")
     }
 
     data_good_copy <- data_good_tem
