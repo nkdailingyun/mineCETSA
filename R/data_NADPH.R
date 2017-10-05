@@ -11,7 +11,7 @@
 #' @keywords datasets
 #'
 #' @format A data frame with 24766 rows and 10 doses:
-#' \describe{
+#' \describe{t
 #'   \item{id}{Uniprot ID}
 #'   \item{description}{Protein annotation}
 #'   \item{condition}{Experimental treatment condition plus replicate number}

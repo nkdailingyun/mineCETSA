@@ -69,7 +69,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                               fitremout=FALSE, ctrlcond=NULL, bottomcutoff=0.4, topcutoff=0.8,
                               variancecutoff=FALSE, nMAD_var=2.5,
                               nreplicate=2, topasone=TRUE, normTop=TRUE, dotconnect=FALSE,
-                              pfdatabase=FALSE, printGeneName=FALSE,
+                              pfdatabase=FALSE, printBothName=TRUE, printGeneName=FALSE,
                               PSManno=TRUE, PSMannoypos=0.5, PSMannoyinterval=0.08,
                               presetcolor=TRUE, extraidtocomplete=NULL,
                               plotfitremout=TRUE, plotvarremout=TRUE,
@@ -148,7 +148,13 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
     data_extra <- data[fkeep, ]
   }
 
-  if (printGeneName) {
+  if (printBothName) {
+    data <- data %>% rowwise() %>% mutate(description1 = getProteinName(description)) %>%
+      mutate(description2 = getGeneName(description)) %>%
+      mutate(id = paste(id, description1, description2, sep="\n"))
+    data$description1<-NULL
+    data$description2<-NULL
+  } else if (printGeneName) {
     data <- data %>% rowwise() %>%
       mutate(description = getGeneName(description)) %>%
       mutate(id = paste(id, description, sep="\n"))

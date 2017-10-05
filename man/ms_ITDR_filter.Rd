@@ -37,9 +37,8 @@ at least one condition pass fold change threshold will be segregated, default
 set to FALSE}
 
 \item{treatcondition}{specify the condition names to perform replicate check,
-no need to specify the replicate
-part of the full condition names, not commonly used in ITDR experimental
-setup, default value is NULL}
+no need to specify the replicate part of the full condition names,
+not commonly used in ITDR experimental setup, default value is NULL}
 
 \item{ncheckpoint}{the number of dose groups (count down from highest
 concentration) to check whether their readings surpass fold change threshold}

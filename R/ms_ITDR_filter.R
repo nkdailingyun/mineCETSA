@@ -148,7 +148,7 @@ ms_ITDR_filter <- function(data, nread=10, fcthreshold=0.3, R2threshold=0.8,
     if (length(treatcondition)==1) {
       pattern <- grep(pattern=paste0("^", treatcondition, "\\."), data_good_tem$condition)
       data_good_tem <- data_good_tem[pattern, ]
-    } else if(length(treatcondition)>1) {
+    } else if (length(treatcondition)>1) {
       allpattern <- NULL
       for (i in 1:length(treatcondition)) {
         pattern <- grep(pattern=paste0("^", treatcondition[i], "\\."), data_good_tem$condition)

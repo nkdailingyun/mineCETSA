@@ -52,7 +52,7 @@ ms_ITTR_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondpro
                                remfragment=FALSE, remribosomal=FALSE,
                                orderET=FALSE, orderAUC=FALSE, plotseq=NULL,
                                loess=FALSE, dotconnect=FALSE, pfdatabase=FALSE,
-                               printGeneName=FALSE, PSManno=FALSE, unit="min",
+                               printBothName=TRUE, printGeneName=FALSE, PSManno=FALSE, unit="min",
                                xlinear=FALSE, xlog10=FALSE, xsqrt=TRUE, xcubert=FALSE,
                                xinterval=NULL, fixedy=FALSE, layout=c(5,5),
                                presetcolor=TRUE, colorpanel=NULL,
@@ -127,7 +127,13 @@ ms_ITTR_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondpro
   if (pfdatabase) {
     getProteinName <- function(x) {return (gsub("product=", "", strsplit(x, "\\|")[[1]][2]))}
   }
-  if (printGeneName) {
+  if (printBothName) {
+    data <- data %>% rowwise() %>% mutate(description1 = getProteinName(description)) %>%
+      mutate(description2 = getGeneName(description)) %>%
+      mutate(id = paste(id, description1, description2, sep="\n"))
+    data$description1<-NULL
+    data$description2<-NULL
+  } else if (printGeneName) {
     data <- data %>% rowwise() %>% mutate(description = getGeneName(description)) %>%
       mutate(id = paste(id, description, sep="\n"))
   } else {
