@@ -49,10 +49,11 @@
 #'
 
 
-ms_ITDR_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRUE,
+ms_ITDR_ggplotting <- function(data, legenddata=NULL, levelvector=NULL, nread=10, remsinglecondprot=TRUE,
                                PSMcutoff=FALSE, PSMthreshold=3, nreplicate=2,
                                remfragment=FALSE, remribosomal=FALSE,
                                orderEC=FALSE, orderAUC=FALSE, plotseq=NULL,
+                               barplotformat=FALSE, witherrorbar=TRUE,
                                loess=FALSE, dotconnect=FALSE, pfdatabase=FALSE,
                                printBothName=TRUE, printGeneName=FALSE, PSManno=FALSE, unit="mM",
                                xlinear=FALSE, xlog10=TRUE, xsqrt=FALSE, xcubert=FALSE,
@@ -182,7 +183,7 @@ ms_ITDR_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondpro
   }
 
   if (orderAUC) {
-    data$AUC <- rowSums(data[ ,c(3:(nread+2))])
+    data$AUC <- rowSums(data[ ,c(3:(nread+2))], na.rm=TRUE)
     plotseq <- names(sort(with(data, tapply(AUC, id, mean)), decreasing=TRUE))
     data$AUC <- NULL
     #plotseq <- names(sort(tapply(data_l$reading, data_l$id, mean), decreasing=TRUE))
@@ -200,11 +201,17 @@ ms_ITDR_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondpro
 
   if (external) { external_graphs(T) }
 
-  pl <- ms_isothermal_innerplot(data, legenddata, nread, nreplicate, loess,
-                                dotconnect, PSManno, PSM_annod, Pep_annod,
-                                xlinear, xlog10, xsqrt, xcubert, xinterval,
-                                fixedy, presetcolor, colorpanel, layout,
-                                top_label, bottom_label)
+  if (barplotformat) {
+    pl <- ms_isothermal_bar_innerplot(data, legenddata, levelvector, nread,
+                                  fixedy, presetcolor, colorpanel, layout,
+                                  top_label, bottom_label)
+  } else {
+    pl <- ms_isothermal_innerplot(data, legenddata, nread, nreplicate, loess,
+                                  dotconnect, PSManno, PSM_annod, Pep_annod,
+                                  xlinear, xlog10, xsqrt, xcubert, xinterval,
+                                  fixedy, presetcolor, colorpanel, layout,
+                                  top_label, bottom_label)
+  }
 
   if (length(outdir)) {
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"), pdfname),

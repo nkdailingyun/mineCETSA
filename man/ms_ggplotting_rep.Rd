@@ -10,11 +10,12 @@ ms_ggplotting_rep(data, legenddata = NULL, levelvector = NULL, nread = 10,
   ctrlcond = NULL, bottomcutoff = 0.4, topcutoff = 0.8,
   variancecutoff = FALSE, nMAD_var = 2.5, nreplicate = 2,
   topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
-  pfdatabase = FALSE, printGeneName = FALSE, PSManno = TRUE,
-  PSMannoypos = 0.5, PSMannoyinterval = 0.08, presetcolor = TRUE,
-  extraidtocomplete = NULL, plotfitremout = TRUE, plotvarremout = TRUE,
-  colorpanel = NULL, withset = FALSE, commonlegend = TRUE, layout = c(5,
-  5), pdfname = "ggplotting.pdf", external = TRUE)
+  pfdatabase = FALSE, printBothName = TRUE, printGeneName = FALSE,
+  PSManno = TRUE, PSMannoypos = 0.5, PSMannoyinterval = 0.08,
+  presetcolor = TRUE, extraidtocomplete = NULL, plotfitremout = TRUE,
+  plotvarremout = TRUE, colorpanel = NULL, withset = FALSE,
+  commonlegend = TRUE, layout = c(5, 5), pdfname = "ggplotting.pdf",
+  external = TRUE)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}

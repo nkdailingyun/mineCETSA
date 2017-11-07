@@ -8,12 +8,12 @@ ms_ITTR_ggplotting(data, legenddata = NULL, nread = 10,
   remsinglecondprot = TRUE, PSMcutoff = FALSE, PSMthreshold = 3,
   nreplicate = 2, remfragment = FALSE, remribosomal = FALSE,
   orderET = FALSE, orderAUC = FALSE, plotseq = NULL, loess = FALSE,
-  dotconnect = FALSE, pfdatabase = FALSE, printGeneName = FALSE,
-  PSManno = FALSE, unit = "min", xlinear = FALSE, xlog10 = FALSE,
-  xsqrt = TRUE, xcubert = FALSE, xinterval = NULL, fixedy = FALSE,
-  layout = c(5, 5), presetcolor = TRUE, colorpanel = NULL,
-  top_label = "ITTR CETSA data plotting", pdfname = "ITTR_ggplotting.pdf",
-  external = TRUE)
+  dotconnect = FALSE, pfdatabase = FALSE, printBothName = TRUE,
+  printGeneName = FALSE, PSManno = FALSE, unit = "min", xlinear = FALSE,
+  xlog10 = FALSE, xsqrt = TRUE, xcubert = FALSE, xinterval = NULL,
+  fixedy = FALSE, layout = c(5, 5), presetcolor = TRUE,
+  colorpanel = NULL, top_label = "ITTR CETSA data plotting",
+  pdfname = "ITTR_ggplotting.pdf", external = TRUE)
 }
 \arguments{
 \item{data}{ITTR dataset to plot}

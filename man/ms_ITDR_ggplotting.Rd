@@ -4,14 +4,16 @@
 \alias{ms_ITDR_ggplotting}
 \title{ms_ITDR_ggplotting}
 \usage{
-ms_ITDR_ggplotting(data, legenddata = NULL, nread = 10,
-  remsinglecondprot = TRUE, PSMcutoff = FALSE, PSMthreshold = 3,
-  nreplicate = 2, remfragment = FALSE, remribosomal = FALSE,
-  orderEC = FALSE, orderAUC = FALSE, plotseq = NULL, loess = FALSE,
-  dotconnect = FALSE, pfdatabase = FALSE, printGeneName = FALSE,
-  PSManno = FALSE, unit = "mM", xlinear = FALSE, xlog10 = TRUE,
-  xsqrt = FALSE, xcubert = FALSE, xinterval = NULL, fixedy = FALSE,
-  layout = c(5, 5), presetcolor = TRUE, colorpanel = NULL,
+ms_ITDR_ggplotting(data, legenddata = NULL, levelvector = NULL,
+  nread = 10, remsinglecondprot = TRUE, PSMcutoff = FALSE,
+  PSMthreshold = 3, nreplicate = 2, remfragment = FALSE,
+  remribosomal = FALSE, orderEC = FALSE, orderAUC = FALSE,
+  plotseq = NULL, barplotformat = FALSE, witherrorbar = TRUE,
+  loess = FALSE, dotconnect = FALSE, pfdatabase = FALSE,
+  printBothName = TRUE, printGeneName = FALSE, PSManno = FALSE,
+  unit = "mM", xlinear = FALSE, xlog10 = TRUE, xsqrt = FALSE,
+  xcubert = FALSE, xinterval = NULL, fixedy = FALSE, layout = c(5, 5),
+  presetcolor = TRUE, colorpanel = NULL,
   top_label = "ITDR CETSA data plotting", pdfname = "ITDR_ggplotting.pdf",
   external = TRUE)
 }

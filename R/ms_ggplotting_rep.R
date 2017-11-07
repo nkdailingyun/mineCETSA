@@ -299,10 +299,18 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
     if (external) { external_graphs(T) }
     # subsetting complete replicates:
     keep1 <- which(table(data$id) == ncond)
-    if(length(keep1)==0){ stop("No proteins contain complete replicate") }
-    nkeep1 <- names(keep1)
-    fkeep1 <- which(data$id %in% nkeep1)
-    data_complete <- data[fkeep1, ]
+    if(length(keep1)==0) {
+      #stop("No proteins contain complete replicate")
+      keep1 <- which(table(data$id) > ncond)
+      nkeep1 <- names(keep1)[1]
+      fkeep1 <- which(data$id %in% nkeep1)
+      data_complete <- data[fkeep1, ]
+      data_complete <- data_complete[duplicated(data_complete$condition), ]
+    } else {
+      nkeep1 <- names(keep1)
+      fkeep1 <- which(data$id %in% nkeep1)
+      data_complete <- data[fkeep1, ]
+    }
 
     plotlegend <- ms_melt_legend(data_complete, nread, colorpanel)
 
