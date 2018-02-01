@@ -6,7 +6,7 @@
 \usage{
 ms_isothermal_innerplot(data, legenddata, nread, nreplicate, loess, dotconnect,
   PSManno, PSM_annod, Pep_annod, xlinear, xlog10, xsqrt, xcubert, xinterval,
-  fixedy, presetcolor, colorpanel, layout, top_label, bottom_label)
+  fixedy, presetcolor, colorpanel, layout, top_label, left_label, bottom_label)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}
@@ -44,11 +44,13 @@ inside this dataset should contains the full set of experiment conditions}
 
 \item{layout}{a vector indicating the panel layout for multi-panel plots per page}
 
+\item{top_label}{textual label at the top of the page}
+
+\item{left_label}{textual label at the left side of the page}
+
+\item{bottom_label}{textual label at the bottom of the page}
+
 \item{xliner}{whether the x-axis should be in linear scale}
-
-\item{toplabel}{textual label at the top of the page}
-
-\item{bottomlabel}{textual label at the bottom of the page}
 }
 \value{
 a list of ggplot2 object

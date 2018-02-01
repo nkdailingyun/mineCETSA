@@ -9,13 +9,14 @@ ms_ITDR_ggplotting(data, legenddata = NULL, levelvector = NULL,
   PSMthreshold = 3, nreplicate = 2, remfragment = FALSE,
   remribosomal = FALSE, orderEC = FALSE, orderAUC = FALSE,
   plotseq = NULL, barplotformat = FALSE, witherrorbar = TRUE,
-  loess = FALSE, dotconnect = FALSE, pfdatabase = FALSE,
-  printBothName = TRUE, printGeneName = FALSE, PSManno = FALSE,
-  unit = "mM", xlinear = FALSE, xlog10 = TRUE, xsqrt = FALSE,
-  xcubert = FALSE, xinterval = NULL, fixedy = FALSE, layout = c(5, 5),
-  presetcolor = TRUE, colorpanel = NULL,
-  top_label = "ITDR CETSA data plotting", pdfname = "ITDR_ggplotting.pdf",
-  external = TRUE)
+  usegradient = TRUE, loess = FALSE, dotconnect = FALSE,
+  pfdatabase = FALSE, printBothName = TRUE, printGeneName = FALSE,
+  PSManno = FALSE, unit = "mM", xlinear = FALSE, xlog10 = TRUE,
+  xsqrt = FALSE, xcubert = FALSE, xinterval = NULL, fixedy = FALSE,
+  layout = c(5, 5), presetcolor = TRUE, colorpanel = NULL,
+  top_label = "ITDR CETSA data plotting",
+  left_label = "Non-denatured protein fraction", bottom_label = NULL,
+  pdfname = "ITDR_ggplotting.pdf", external = TRUE)
 }
 \arguments{
 \item{data}{ITDR dataset to plot}
@@ -70,7 +71,9 @@ per page, default value is c(5,5)}
 
 \item{colorpanel}{a vector of customizable color scheme provided by the user}
 
-\item{toplabel}{textual label at the top of the page}
+\item{top_label}{textual label at the top of the page}
+
+\item{left_label}{textual label at the top of the page}
 }
 \value{
 a list of ggplot2 object

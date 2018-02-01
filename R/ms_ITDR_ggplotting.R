@@ -31,7 +31,8 @@
 #' @param colorpanel a vector of customizable color scheme provided by the user
 #' @param layout a vector indicating the panel layout for multi-panel plots
 #' per page, default value is c(5,5)
-#' @param toplabel textual label at the top of the page
+#' @param top_label textual label at the top of the page
+#' @param left_label textual label at the top of the page
 #'
 #'
 #' @import tidyr
@@ -53,13 +54,15 @@ ms_ITDR_ggplotting <- function(data, legenddata=NULL, levelvector=NULL, nread=10
                                PSMcutoff=FALSE, PSMthreshold=3, nreplicate=2,
                                remfragment=FALSE, remribosomal=FALSE,
                                orderEC=FALSE, orderAUC=FALSE, plotseq=NULL,
-                               barplotformat=FALSE, witherrorbar=TRUE,
+                               barplotformat=FALSE, witherrorbar=TRUE, usegradient=TRUE,
                                loess=FALSE, dotconnect=FALSE, pfdatabase=FALSE,
                                printBothName=TRUE, printGeneName=FALSE, PSManno=FALSE, unit="mM",
                                xlinear=FALSE, xlog10=TRUE, xsqrt=FALSE, xcubert=FALSE,
                                xinterval=NULL, fixedy=FALSE, layout=c(5,5),
                                presetcolor=TRUE, colorpanel=NULL,
                                top_label="ITDR CETSA data plotting",
+                               left_label="Non-denatured protein fraction",
+                               bottom_label=NULL,
                                pdfname="ITDR_ggplotting.pdf", external=TRUE){
 
   # legenddata is any dataset containing the full levels of conditions, same as data
@@ -196,21 +199,24 @@ ms_ITDR_ggplotting <- function(data, legenddata=NULL, levelvector=NULL, nread=10
   }
 
   if (!length(legenddata)) { legenddata <- data }
-  bottom_label <- paste0("Compound concentration(", unit, ")")
+  if (length(bottom_label)==0) {
+    bottom_label <- paste0("Compound concentration(", unit, ")")
+  }
   #plotlegend <- ms_legend(data, nread, colorpanel)
 
   if (external) { external_graphs(T) }
 
   if (barplotformat) {
     pl <- ms_isothermal_bar_innerplot(data, legenddata, levelvector, nread,
-                                  fixedy, presetcolor, colorpanel, layout,
-                                  top_label, bottom_label)
+                                      witherrorbar, usegradient, fixedy,
+                                      presetcolor, colorpanel, layout,
+                                      top_label, left_label, bottom_label)
   } else {
     pl <- ms_isothermal_innerplot(data, legenddata, nread, nreplicate, loess,
                                   dotconnect, PSManno, PSM_annod, Pep_annod,
                                   xlinear, xlog10, xsqrt, xcubert, xinterval,
                                   fixedy, presetcolor, colorpanel, layout,
-                                  top_label, bottom_label)
+                                  top_label, left_label, bottom_label)
   }
 
   if (length(outdir)) {

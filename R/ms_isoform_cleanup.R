@@ -55,7 +55,8 @@ ms_isoform_resolve <- function(data) {
   counttable2 <- counttable1 %>% group_by(uniid) %>% mutate(unicount=n()) %>%
     filter(unicount>1) %>% arrange(uniid, desc(count))
   #return(counttable2)
-  resolvetable <- counttable2 %>% top_n(1, count) %>% top_n(-1, id)
+  resolvetable <- counttable2 %>% top_n(1, count) %>% filter(!duplicated(uniid))#top_n(-1, id)
+  # note the problem with ranking of character column
   resolvetable <- merge(resolvetable, unique(data[ ,c(1,2)]), all.x=TRUE)
   ambitable <- counttable2[ ,c(1:2)]
   ambitable <- merge(ambitable, unique(data[ ,c(1,2)]), all.x=TRUE)

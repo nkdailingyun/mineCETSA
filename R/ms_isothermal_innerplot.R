@@ -21,8 +21,9 @@
 #' @param presetcolor whether to use the pre-defined color scheme
 #' @param colorpanel a vector of customizable color scheme provided by the user
 #' @param layout a vector indicating the panel layout for multi-panel plots per page
-#' @param toplabel textual label at the top of the page
-#' @param bottomlabel textual label at the bottom of the page
+#' @param top_label textual label at the top of the page
+#' @param left_label textual label at the left side of the page
+#' @param bottom_label textual label at the bottom of the page
 #'
 #'
 #' @import tidyr
@@ -44,7 +45,7 @@ ms_isothermal_innerplot <- function(data, legenddata, nread, nreplicate, loess,
                                     dotconnect, PSManno, PSM_annod, Pep_annod,
                                     xlinear, xlog10, xsqrt, xcubert, xinterval,
                                     fixedy, presetcolor, colorpanel, layout,
-                                    top_label, bottom_label) {
+                                    top_label, left_label, bottom_label) {
 
   if (xlinear | xsqrt | xcubert) {
     xmin <- as.numeric(names(data)[3])
@@ -235,7 +236,7 @@ ms_isothermal_innerplot <- function(data, legenddata, nread, nreplicate, loess,
     gridExtra::grid.arrange(
       do.call(arrangeGrob,
               c(plots[groups[[i]]], params, top=top_label,
-                left="Non-denatured protein fraction",bottom=bottom_label)),
+                left=left_label, bottom=bottom_label)),
       legend,
       ncol = 1,
       heights = grid::unit.c(unit(1, "npc") - lheight, lheight))

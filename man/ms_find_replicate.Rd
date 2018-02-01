@@ -4,23 +4,20 @@
 \alias{ms_find_replicate}
 \title{ms_find_replicate}
 \usage{
-ms_find_replicate(data, nreplicate = 2, nread = 10, subsetonly = FALSE,
-  variancecutoff = TRUE, nMAD_var = 2.5)
+ms_find_replicate(data, nread = 10, getcompletesubsetonly = TRUE,
+  variancecutoff = FALSE, nMAD_var = 2.5)
 }
 \arguments{
 \item{data}{dataset to look for complete set}
 
-\item{nreplicate}{number of replicates, default value is 2, change the value
-accordingly}
-
 \item{nread}{number of reading channels or sample treatements, default value
 is 10}
 
-\item{subsetonly}{whether to just perform a simple subsetting of dataset
+\item{getcompletesubsetonly}{whether to just perform a simple subsetting of dataset
 with specified replicate numbers}
 
 \item{variancecutoff}{whether to segregate the proteins with large
-inter-replicate variance}
+inter-replicate variance, default set to TRUE, only used when there is single condition}
 
 \item{nMAD_var}{the significance level of MAD cutoff, default value is 2.5}
 }
@@ -32,7 +29,7 @@ Function to perform complete replicated dataset subsetting on dataframe
 }
 \examples{
 \dontrun{
-data_complete_set <- ms_finc_replicate(data_scaled, nreplicate=2)
+data_complete_set <- ms_find_replicate(data_scaled)
 }
 
 
