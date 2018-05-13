@@ -6,14 +6,17 @@
 #' @param nread number of reading channels or sample treatements
 #' @param topasone whether the top plateau has to be fixed, i.e., 1.0
 #' @param dotconnect whether to simply dot connect the readings for each curve
-#' @param PSManno whether to annotate the plots with PSM and uniPeptide number
+#' @param printcount whether to annotate the plots with PSM and uniPeptide number
 #' @param PSM_annod dataframe containing the PSM number information
 #' @param Pep_annod dataframe containing the uniPeptide number information
-#' @param PSMannoypos the starting y postion of PSM/uniPeptide number annotation from top
-#' @param PSMannoyinterval the interval of PSM/uniPeptide number annotation per line
+#' @param annotypos the starting y-axis position of textual annotation
+#' @param annotyinterval the interval on y-axis for textual annotation
 #' @param colorpanel a vector of customizable color scheme provided by the user
 #' @param plotlegend a legend object from ms_melt_legend
 #' @param commonlegend whether to use one common legend for whole page of plots
+#' @param toplabel textual label at the top of the page
+#' @param leftlabel textual label at the left side of the page
+#' @param bottomlabel textual label at the bottom of the page
 #' @param withset whether there is set column to perform facet_grid
 #' @param layout a vector indicating the panel layout for multi-panel plots per page
 #'
@@ -34,9 +37,10 @@
 #'
 #'
 
-ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
-                              PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
-                              colorpanel, plotlegend, commonlegend, withset, layout) {
+ms_melt_innerplot <- function(data, nread, topasone, dotconnect, printcount,
+                              PSM_annod, Pep_annod, annotypos, annotyinterval,
+                              colorpanel, plotlegend, commonlegend,
+                              toplabel, leftlabel, bottomlabel, withset, layout) {
 
   if (withset){
     setpos <- grep("^set", names(data))
@@ -63,7 +67,7 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
 
   plotting <- function(d1) {
 
-    if(PSManno){
+    if (printcount) {
       PSM_label <- PSM_annod[PSM_annod$id==unique(d1$id), ][ ,c(2:ncol(PSM_annod))]
       Pep_label <- Pep_annod[Pep_annod$id==unique(d1$id), ][ ,c(2:ncol(Pep_annod))]
     }
@@ -74,7 +78,7 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
       coord_cartesian(xlim=c(xmin,xmax), ylim = c(0,1.2)) + theme_classic() +
       scale_y_continuous(breaks=seq(0,1,0.2)) + labs(x=" ", y=" ") +
       scale_colour_manual(drop=FALSE, values=colorpanel) +
-      ggtitle(as.character(d1$id))
+      ggtitle(as.character(unique(d1$id)))
 
     if (withset) { q <- q + facet_grid(set~., drop=FALSE) }
 
@@ -82,21 +86,23 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
       # q <- q + geom_smooth(method = "drm", formula = t1,
       #                      fct = LL.4(fixed=c(NA,NA,top,NA)),
       #                      aes(colour=condition), se=FALSE, size=0.5)
-      q <- q + geom_smooth(method=drc::"drm", formula=t1, method.args=list(fct=LL.4(fixed=c(NA,NA,top,NA))), aes(colour=condition), se=FALSE, size=0.5)
+      q <- q + geom_smooth(method=drc::"drm", formula=t1,
+                           method.args=list(fct=LL.4(fixed=c(NA,NA,top,NA))),
+                           aes(colour=condition), se=FALSE, size=0.5)
     } else {
       q <- q + geom_line(aes(colour=condition), size=0.5)
     }
 
-    if (PSManno) {
-      q <- q + annotate("text", x=xpos, y=PSMannoypos, label="  #PSM  #Peptides", size=1.5)
+    if (printcount) {
+      q <- q + annotate("text", x=xpos, y=annotypos, label="  #PSM  #Peptides", size=1.5)
       for (i in 1:length(PSM_label)) {
-        q <- q + annotate("text", x=xpos, y=PSMannoypos-PSMannoyinterval*i,
+        q <- q + annotate("text", x=xpos, y=annotypos-annotyinterval*i,
                           label=paste0(names(PSM_label)[i], ":  ", as.character(PSM_label)[i], " "),
                           size=1.5, hjust=1)
         i <- i + 1
       }
       for (i in 1:length(Pep_label)) {
-        q <- q + annotate("text", x=xpos+2, y=PSMannoypos-PSMannoyinterval*i,
+        q <- q + annotate("text", x=xpos+2, y=annotypos-annotyinterval*i,
                           label=as.character(Pep_label)[i], size=1.5)
         i <- i + 1
       }
@@ -105,7 +111,7 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
     if (commonlegend==FALSE) {
       q <- q + theme(
         text = element_text(size=10),
-        plot.title = element_text(hjust=0.5, size = rel(0.7)),
+        plot.title = element_text(hjust=0.5, size=rel(0.7)),
         legend.background=element_rect(fill=NULL),
         legend.key.height=unit(0.05, "cm"),
         legend.key.width=unit(0.1, "cm"),
@@ -122,7 +128,7 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
     } else {
       q <- q + theme(
         text = element_text(size=10),
-        plot.title = element_text(hjust=0.5, size = rel(0.7)),
+        plot.title = element_text(hjust=0.5, size=rel(0.7)),
         legend.position="none",
         panel.grid.major=element_blank(),
         panel.grid.minor=element_blank(),
@@ -131,15 +137,13 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
         aspect.ratio = 1
       )
     }
-
     return(q)
   }
 
-  plots <- plyr::dlply(d1, .(id), plotting)
+  plots <- plyr::dlply(d1, .(id), .fun=plotting)
   #plots[[1]]
   legend <- plotlegend$legend
   lheight <- plotlegend$lheight
-
   params <- list(nrow=layout[1], ncol=layout[2])
   n <- with(params, nrow*ncol)
   ## add one page if division is not complete
@@ -149,18 +153,18 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
   if (commonlegend==FALSE) {
     pl <- lapply(names(groups), function(g) {
       do.call(gridExtra::arrangeGrob, c(plots[groups[[g]]], params,
-                                        top="CETSA data plotting_curve fitting",
-                                        left="Non-denatured protein fraction",
-                                        bottom="Temperature"))
+                                        top=toplabel,
+                                        left=leftlabel,
+                                        bottom=bottomlabel))
     })
   } else {
     pl <- lapply(names(groups), function(g) {
       gridExtra::grid.arrange(
         do.call(gridExtra::arrangeGrob,
                 c(plots[groups[[g]]], params,
-                  top="CETSA data plotting_curve fitting",
-                  left="Non-denatured protein fraction",
-                  bottom="Temperature")),
+                  top=toplabel,
+                  left=leftlabel,
+                  bottom=bottomlabel)),
                   #bottom=expression(Temperature~(R^{o}~C))
         legend,
         ncol = 1,
@@ -168,6 +172,5 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, PSManno,
     })
   }
   class(pl) <- c("arrangelist", "ggplot", class(pl))
-  # print(outdir)
   return(pl)
 }

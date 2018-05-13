@@ -31,6 +31,7 @@ ms_ITDR_scaling <- function(data, nread=10, abdnorm=TRUE, reftolowest=TRUE,
                             writefactortofile=TRUE, bottomlabel="Compound dose",
                             filename="ITDR_normalization_factors.txt") {
 
-  ms_isothermal_scaling(data, nread, abdnorm, reftolowest, remloadc, loadcname,
+  dataname <- deparse(substitute(data))
+  ms_isothermal_scaling(data, dataname, nread, abdnorm, reftolowest, remloadc, loadcname,
                         numcharmix, writefactortofile, bottomlabel, filename)
 }

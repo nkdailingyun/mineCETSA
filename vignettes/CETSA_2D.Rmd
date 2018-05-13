@@ -1,0 +1,132 @@
+---
+title: "Analyze 2-dimensional (2D) MS-CETSA datasets"
+author: "Dai Lingyun"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{analysis of 2D-MS-CETSA}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction  
+This script is designed to process 2-dimensional (2D, mainly the 3X3 format but could be expanded to other similar format) CETSA result from TMT10 labelling and quantification scheme.  
+The main tasks include:  
+1. Read in the quantitative data (Search result txt.file from Proteome Discoverer, PD) into R/Rstudio  
+2. Clean up data, mainly to remove the entries without quantitative information  
+3. Rearrange data into one unique protein per row format  
+4. Normalize data based on the principle that each sample (i.e.,treatment/temperature/replicate combination) should contain same amount of input material  
+5. Calculate the relative fold change between treatment for each temperature/replicate combination  
+6. Visualize the data using customizable barplot layout, for either all the data or the subsets  
+
+--------------------------------------------------------------------------------------------
+
+## Prerequisites
+* R version > 3.3.0 
+* Rstudio version > 1.0
+* Dependent packages:  
+"readr", "drc", "plyr", "tibble", "tidyr", "grid", "gtools", "gridExtra", "scales", "RColorBrewer", "dplyr", "ggplot2", "VennDiagram", "Nozzle.R1", "ggrepel", "Biobase", "limma", "arrayQualityMetrics"  
+Currently, during the package installiation process from local source, when these dependent packages are not available, complains would rise, use `install.packges()` command to manually install the required packages (as specified in the warning message), till there is no more complain.  
+
+--------------------------------------------------------------------------------------------
+
+
+## Proceessing
+1. For better organization of data analysisk, it is __highly recommended__ to use the [Project management feature](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) in Rstudio.   
+For each project, you are suggested to create a brand new working folder as your local working directory.  
+Save the PD derived data files to this working directory folder.  
+At the right up corner of Rstudio, click Project -> New Project -> Existing Directory -> browse and choose the designated working directory folder.  
+By establishing a specfic project for each experiment, all the data content and execution history will be saved in the project for future analysis even when R session is terminated.  
+
+2. Activate `mineCETSA` package by library it.  
+```{r, message=FALSE}
+library("mineCETSA")
+```
+
+3. Read in data from result files, `ms_2D_rawread()` is designed for read in one or many files in a vector of file names.  
+Unlike melt curve or ITDR/ITTR CETSA, only the protein abundance values would be extracted and used for sysmtematic normalization in the next step. Therefore make sure `PD21=TRUE`, i.e., the data is searched using PD2.1.  
+Refer to Slides "Data searching using PD2.1" for how-to.  
+Note that for simplicity, always use channel __126__ as control channel for data search in PD, regardless of the labelling arrangement.  
+You need to specify a `treatment` vector of the treatment used in the same order as the sample being labeled from 126 up to 131, ideally the replicate information should also be included, the replicate and treatment characters should be separated by an underline (_).  
+Note that both replicate and treatment character should not contain neither underline nor space.  
+```{r, eval=FALSE}
+Chem2D <- ms_2D_rawread(c("20170517_LY_K562_CellCycle_ChemArrest_37C_3bio_rep1_Proteins.txt","20170517_LY_K562_CellCycle_ChemArrest_47C_3bio_rep1_Proteins.txt","20170517_LY_K562_CellCycle_ChemArrest_50C_3bio_rep1_Proteins.txt","20170517_LY_K562_CellCycle_ChemArrest_52C_3bio_rep1_Proteins.txt","20170517_LY_K562_CellCycle_ChemArrest_54C_3bio_rep1_Proteins.txt","20170517_LY_K562_CellCycle_ChemArrest_57C_3bio_rep1_Proteins.txt"), treatment=c("B1_G1S","B1_S","B1_PM","B2_G1S","B2_S","B2_PM","B3_G1S","B3_S","B3_PM","Mix"))
+```
+
+4. Remove proteins without quantitative information by default using `ms_clean()`.  
+By default the Keratin family proteins are also removed.  
+By default the orphan proteins that even only appear in one of the datasets are not removed, however you can specify `remsinglecondprot=TRUE`, these orphan proteins will be excluded from downstream analysis. 
+```{r, eval=FALSE}
+Chem2D_c <- ms_clean(Chem2D)
+```
+
+5. Customize the condition names in dataset using `ms_conditionrename()`.  
+When read in multiple files, a number suffix is added to the condition of each data file in sequence. This feature seems redundanct but could allow retrieval of file read in sequence and more inportantly make sure the condition names are always unique and distinguishable.  
+In 2D format, each condition would be one heating temperature. When multiple sets of samples are present in a complex experimental layout, the user should use a format of _"set_temperature"_.   
+The argument `incondition` corresponses to the vector of current condition naming, whereas `outcondition` correponses to the vector of new condition naming, both order and length should match exactly.  
+```{r, eval=FALSE}
+Chem2D_c <- ms_conditionrename(Chem2D_c, incondition = c("C37C.1","C47C.2","C50C.3","C52C.4","C54C.5","C57C.6"),  outcondition=c("37C","47C","50C","52C","54C","57C"))
+Chem2D_c <- Chem2D_c[,-13] # to remove the "Mix" channel sample
+
+```
+
+6. Resolve isoform ambiguity from multiple runs of searches using `ms_isoform_resolve()`.  
+When two or more isoforms of the same parental proteins are present in the combined datasets but within each individual condition, only one isoform is identified, according to the principle of parsimony, the minor isoforms will be automatically adjusted to be the corresponding major or more frequent oberserved isoform. At the same time, a match table will be suggested to further consolidate the cases that when two or more isoforms of the same parental proteins are identified within the same individual conditioned dataset, which could then be achieved by using `ms_isoform_consolidate()`.   
+```{r, eval=FALSE}
+Chem2D_c1 <- ms_isoform_resolve(Chem2D_c)
+# The next isoform cleaning is optional. You are encouraged to double check and adjust the match table entries. 
+Chem2D_c2 <- ms_isoform_consolidate(Chem2D_c1, nread=9, matchtable = "./subfolder/tobe_consolidated.txt")
+
+```
+
+7. Rearrange the dataset into one unique protein per row format using `ms_2D_rearrange()`.  
+The arguments and its default value include:  
+    * `nread=9`, how many readings in the dataset, default is 9 for 3X3 format  
+    * `repthreshold=0.75`, the minimal percentage threshold of protein being sampled from multiple runs, default value is 75%  
+    * `averagecount=TRUE`, whether to average the supporting PSM/peptide/count numbers, default set to TRUE  
+    * `countthreshold=2`, the minimal threshold number of associated abundance count of proteins, default value is 2  
+Output in working directory:  
+* A copy of the rearranged dataset are written into a local file  
+```{r,eval=FALSE}
+Chem2D_c3 <- ms_2D_rearrange(Chem2D_c2, nread=9, repthreshold=0.8, countthreshold=3)
+```
+
+8. Perform a systematic normalization on the whole dataset using `ms_2D_normalization()`.  
+```{r,eval=FALSE}
+Chem2D_s <- ms_2D_normalization(Chem2D_c3)
+```
+
+9. Calculate the relative fold change between treatment for each temperature/replicate combination in the dataset using `ms_2D_caldiff()`.  
+The arguments and its default value include:  
+    * `treatmentlevel`, a vector to specify the treatment key word information, which the first one should be the reference treatment to calculate the relative fold changes  
+```{r,eval=FALSE}
+Chem2D_s1 <- ms_2D_caldiff(Chem2D_s, treatmentlevel=c("G1S","S","PM"))
+```
+
+10. Carry out data segregation based on the relative protein expression level change and thermal shift using `ms_2D_globalview()`.  
+The arguments and its default value include:  
+    * `treatment` a single character to specify the sample name  
+    * `set` a single character to specify the sample name if any  
+    * `cvthreshold` the CV threshold value for subsetting reproducible measurements, default value is 0.1  
+    * `corrthreshold` the Correlation threshold value for subsetting reproducible measurements, default value is 0.5  
+    * `expressionchange_nMAD` the number of MADs to set the significance cutoff on protein expression level change, default value is 2.5  
+    * `thermalchange_nMAD` the number of MADs to set the significance cutoff on protein thermal shift, default value is 2.5  
+    * `labelnodes` whether to text label the selected nodes in the graph, default set to FALSE  
+    * `labelcategory` the categories of nodes to label in the graph, default is c("CC","NC","CN")  
+```{r, eval=FALSE}
+Chem2D_category <- ms_2D_globalview(Chem2D_s1, treatment="PM", labelnodes=TRUE, labelcategory="CC")
+```
+
+11. Plot out the bar graph plot for each protein using `ms_2D_barplotting()`.  
+The arguments and its default value includes:  
+    * `treatmentlevel`, a vector to specify the treatment keyword information, the order determines the color arrangement as set in colorpanel  
+    * `setlevel`, a vector to specify the set key word infomation if any  
+    * `colorpanel=c("gray", "blue", "orange")` a vector to customize the colors. The user is encouraged to refer to [Colors in R](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf) or [R Color Cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) for more color selection.  
+```{r, eval=FALSE}
+ms_2D_barplotting(Chem2D_s1[grep("cyclin",Chem2D_s1$description),], treatmentlevel=c("G1S","S","PM"))  
+
+Chem2D_CC <- subset(Chem2D_s1, id %in% subset(Chem2D_category, category=="CC")$id)
+ms_2D_barplotting(Chem2D_CC, treatmentlevel=c("G1S","S","PM"))  
+
+ms_2D_barplotting(Chem2D_s1, treatmentlevel=c("G1S","S","PM"))
+```

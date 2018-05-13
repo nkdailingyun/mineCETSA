@@ -4,10 +4,10 @@
 \alias{ms_fileread}
 \title{ms_fileread}
 \usage{
-ms_fileread(file)
+ms_fileread(filename)
 }
 \arguments{
-\item{file}{name of the txt file, in the format of "./subfolder/datafile.txt"}
+\item{filename}{name of the txt file, in the format of "./subfolder/datafile.txt"}
 }
 \value{
 a dataframe

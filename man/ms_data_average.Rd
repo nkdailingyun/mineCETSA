@@ -12,7 +12,8 @@ ms_data_average(data, nread = 10, rep = "r", weightbycountnum = TRUE)
 \item{nread}{number of reading channels or sample treatements, default value
 is 10}
 
-\item{rep}{the rep indicator used in the naming of experimental conditions, such as "r", or "rep" or ""}
+\item{rep}{the rep indicator used in the naming of experimental conditions,
+such as "r", or "rep" or ""}
 
 \item{weightbycountnum}{whether weight the readings with count information, default to TRUE}
 }

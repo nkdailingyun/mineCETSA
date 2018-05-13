@@ -10,7 +10,7 @@
 #' default value is TRUE, soto exclude them from plotting
 #' @param fitremout whether to segregate the proteins with messy melt curves
 #' @param ctrlcond if necessary, could used to specify what conditions to be
-#' referred as control conditions
+#' referred as control conditions, Ctrl/Control/DMSO is included as default keyword
 #' @param bottomcutoff the average of the last three points should be lower than
 #' specified bottom cutoff value, which is 0.4 by default
 #' @param topcutoff the average of the first three points should be higher than
@@ -21,13 +21,20 @@
 #' @param topasone whether the top plateau has to be fixed, i.e., 1.0
 #' @param normTop whether to normalize the AUC based on Top three readings
 #' @param dotconnect whether to simply dot connect the readings for each curve
-#' @param PSManno whether to annotate the plots with PSM and uniPeptide number
+#' @param printcount whether to annotate the plots with PSM and uniPeptide number
+#' @param annotypos the starting y-axis position of textual annotation, default value 0.5
+#' @param annotyinterval the interval on y-axis for textual annotation, default valule 0.08
 #' @param presetcolor whether to use the pre-defined color scheme
 #' @param plotfitremout whether to plot out messy melt curves
 #' @param colorpanel a vector of customizable color scheme provided by the user
 #' @param commonlegend whether to use one common legend for whole page of plots
 #' @param layout a vector indicating the panel layout for multi-panel plots per page
+#' @param toplabel textual label at the top part of the page
+#' @param leftlabel textual label at the left side of the page
+#' @param bottomlabel textual label at the bottom part of the page
 #' @param pdfname name for the pdf plots file
+#' @param pdfheight a number indicate the height of pdf file, default value 12
+#' @param pdfwidth a number indicate the width of pdf file, default value 12
 #'
 #'
 #' @import tidyr
@@ -51,23 +58,17 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
                           fitremout=FALSE, ctrlcond=NULL, bottomcutoff=0.4, topcutoff=0.8,
                           orderAUCdiff=TRUE, nreplicate=1, topasone=TRUE, normTop=TRUE,
                           dotconnect=FALSE, pfdatabase=FALSE, printBothName=TRUE, printGeneName=FALSE,
-                          PSManno=TRUE, PSMannoypos=0.5, PSMannoyinterval=0.08,
+                          printcount=TRUE, annotypos=0.5, annotyinterval=0.08,
                           presetcolor=TRUE, colorpanel=NULL,
                           extraidtocomplete=NULL, plotfitremout=TRUE, withset=FALSE,
-                          commonlegend=TRUE,
-                          layout=c(5,5), pdfname="ggplotting.pdf", external=TRUE) {
+                          commonlegend=TRUE, layout=c(5,5), external=TRUE,
+                          toplabel="CETSA data plotting_curve fitting",
+                          leftlabel="Non-denatured protein fraction",
+                          bottomlabel="Temperature",
+                          pdfname="ggplotting.pdf", pdfheight=12, pdfwidth=12) {
 
   dataname <- deparse(substitute(data))
-  outdir <- data$outdir[1]
-  data$outdir <- NULL
-
-  # to prevent the change of sub-directory folder
-  if (!length(outdir)) {
-    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
-    dir.create(outdir)
-  } else if (dir.exists(outdir)==FALSE) {
-    dir.create(outdir)
-  }
+  outdir <- ms_directory(data, dataname)
 
   if (any(duplicated(data[, c(1,3)]))) {
     print("Warning for duplicated protein name entries")
@@ -109,12 +110,6 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
 
   # to concatenate id and description
   nrowdata <- nrow(data)
-  getGeneName <- function(x) {return (strsplit(strsplit(x, "GN=")[[1]][2], " ")[[1]][1])}
-  getProteinName <- function(x) {return (strsplit(x, " OS=")[[1]][1])}
-  if (pfdatabase) {
-    getProteinName <- function(x) {return (gsub("product=", "", strsplit(x, "\\|")[[1]][2]))}
-  }
-
   if (length(extraidtocomplete)) {
     fkeep <- NULL
     for (i in 1:length(extraidtocomplete)){
@@ -125,7 +120,7 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   }
 
   if (printBothName) {
-    data <- data %>% rowwise() %>% mutate(description1 = getProteinName(description)) %>%
+    data <- data %>% rowwise() %>% mutate(description1 = getProteinName(description, pfdatabase)) %>%
       mutate(description2 = getGeneName(description)) %>%
       mutate(id = paste(id, description1, description2, sep="\n"))
     data$description1<-NULL
@@ -136,7 +131,7 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
       mutate(id = paste(id, description, sep="\n"))
   } else {
     data <- data %>% rowwise() %>%
-      mutate(description = getProteinName(description)) %>%
+      mutate(description = getProteinName(description, pfdatabase)) %>%
       mutate(id = paste(id, description, sep="\n"))
   }
   data$description<-NULL
@@ -162,15 +157,13 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
     stop("2.Remove the duplicated entires from original dataset then start again!")
   }
 
-  if (PSManno) {
+  if (printcount) {
     PSMcol <- grep("PSM", names(data), value=FALSE)
     PSM_annod <- data[ ,c(1,2,PSMcol)]
     PSM_annod <- tidyr::spread(PSM_annod, condition, sumPSMs, drop=FALSE)
-    #PSM_annod <- dcast(PSM_annod, id~condition, value.var="sumPSMs", drop=FALSE)
     Pepcol <- grep("Pep", names(data), value=FALSE)
     Pep_annod <- data[ ,c(1,2,Pepcol)]
     Pep_annod <- tidyr::spread(Pep_annod, condition, sumUniPeps, drop=FALSE)
-    #Pep_annod <- dcast(Pep_annod, id~condition, value.var="sumUniPeps", drop=FALSE)
     #return(list(PSM=PSM_annod, Pep=Pep_annod))
   } else {
     PSM_annod <- NULL
@@ -185,7 +178,7 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
     ctrllist2 <- unique(grep("[Cc][Oo][Nn][Tt][Rr][Oo][Ll]", data$condition, value=TRUE))
     ctrllist3 <- unique(grep("[Dd][Mm][Ss][Oo]", data$condition, value=TRUE))
     ctrllist <- c(ctrllist1, ctrllist2, ctrllist3, ctrlcond)
-    if(length(ctrllist)==0) {
+    if (length(ctrllist)==0) {
       stop("Name your control conditions with prefix [Ctrl] or [Control] or [DMSO], or specify in ctrlcond argument")
     }
     data$Top <- rowMeans(data[, c(3:5)])
@@ -258,18 +251,20 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   if (external) { external_graphs(T) }
 
   pl <- ms_melt_innerplot(data, nread, topasone, dotconnect,
-                          PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
-                          colorpanel, plotlegend, commonlegend, withset, layout)
+                          printcount, PSM_annod, Pep_annod,
+                          annotypos, annotyinterval,
+                          colorpanel, plotlegend, commonlegend,
+                          toplabel, leftlabel, bottomlabel, withset, layout)
 
   if (dotconnect) { pdfname=paste("simple",pdfname,sep="_") }
   else { pdfname=paste("fitted",pdfname,sep="_") }
 
   if (length(outdir)){
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"), pdfname),
-           pl, height=12, width=12)
+           pl, height=pdfheight, width=pdfwidth)
   } else {
     ggsave(file=paste0(format(Sys.time(), "%y%m%d_%H%M_"), pdfname),
-           pl, height=12, width=12)
+           pl, height=pdfheight, width=pdfwidth)
   }
 
   if (external) { external_graphs(F) } # switch off the external graphs

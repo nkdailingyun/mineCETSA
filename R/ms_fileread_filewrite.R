@@ -23,26 +23,27 @@ ms_filewrite <- function(data, filename, outdir=NULL, withdescription=TRUE) {
 
   # add variable name to output
   dataname <- deparse(substitute(data))
-  #print(outdir)
-  if (length(grep("outdir", names(data)))) {
-    outdir <- data$outdir[1]
-    if (dir.exists(outdir)==FALSE) {
-      dir.create(outdir)
+  if (!length(outdir)) {
+    if (length(grep("outdir",names(data)))) {
+      outdir <- data$outdir[1]
+      data$outdir <- NULL
+    } else {
+      outdir <- attr(data,"outdir")
     }
-  } else if (!length(outdir)) {
-    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
-    dir.create(outdir)
   }
 
+  # to prevent the change of sub-directory folder
+  if (!length(outdir)) {
+    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
+    dir.create(outdir)
+  } else if (dir.exists(outdir)==FALSE) {
+    dir.create(outdir)
+  }
+  #print(outdir)
+
   if (!length(grep("description", names(data))) & withdescription) {
-    #if(printout){print("ids in the original data are in composite format")}
-    # list <- strsplit(as.character(data$id), "\n")
-    # df <- ldply(list)
-    # colnames(df) <- c("id", "description")
-    # data <- cbind(df, data[ ,-1])
     data <- tidyr::separate(data, id, into=c("id", "description"), sep="\n")
   }
-  data$outdir <- NULL
 
   if (length(outdir)) {
     readr::write_tsv(data, paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"), filename))
@@ -59,7 +60,7 @@ ms_filewrite <- function(data, filename, outdir=NULL, withdescription=TRUE) {
 #' The file should be within a subfolder under current working directory
 #' The input such as in the format of "./subfolder/datafile.txt", where the first . indicated the current working directory
 #'
-#' @param file name of the txt file, in the format of "./subfolder/datafile.txt"
+#' @param filename name of the txt file, in the format of "./subfolder/datafile.txt"
 #'
 #' @importFrom readr read_tsv locale
 #'
@@ -71,15 +72,16 @@ ms_filewrite <- function(data, filename, outdir=NULL, withdescription=TRUE) {
 #'
 #'
 
-ms_fileread <- function(file) {
+ms_fileread <- function(filename) {
 
   # file contains the subfolder information from working directory
   # such as "./subfolder/datafile.txt"
   # The first . indicated the current working directory
-  outdir <- strsplit(file,"/")[[1]][2]
-  data <- readr::read_tsv(file=file) #, sep="\t", header=T, quote="", na.string="", as.is=T, check.names=F );
-  #for (i in 4:ncol(data)) { data[ ,i] <- as.numeric(data[ ,i]) }
-  data$outdir <- outdir
+  outdir <- strsplit(filename,"/")[[1]][2]
+  data <- readr::read_tsv(file=filename)
+  if (length(attr(data,"outdir"))==0 & length(outdir)>0) {
+    attr(data,"outdir") <- outdir
+  }
   return(data)
 
 }

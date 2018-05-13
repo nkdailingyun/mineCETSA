@@ -30,21 +30,13 @@
 #'
 #'
 
-ms_isothermal_scaling <- function(data, nread, abdnorm, reftolowest, remloadc,
+ms_isothermal_scaling <- function(data, dataname, nread, abdnorm,
+                                  reftolowest, remloadc,
                                   loadcname, numcharmix, writefactortofile,
                                   bottomlabel, filename) {
 
-  dataname <- deparse(substitute(data))
-  outdir <- data$outdir[1]
-  data$outdir <- NULL
-
-  # to prevent the change of sub-directory folder
-  if (!length(outdir)) {
-    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
-    dir.create(outdir)
-  } else if (dir.exists(outdir)==FALSE) {
-    dir.create(outdir)
-  }
+  if (length(dataname)==0) { dataname <- deparse(substitute(data)) }
+  outdir <- ms_directory(data, dataname)
 
   abdcol <- grep("Abundance", names(data), value=FALSE)
   if(length(abdcol) > 0 & abdnorm) {
@@ -206,7 +198,9 @@ ms_isothermal_scaling <- function(data, nread, abdnorm, reftolowest, remloadc,
     outdata <- cbind(outdata[ ,c(1:3)], int_data, outdata[,c((nread+4):(ncol(outdata)))])
   }
 
-  outdata$outdir <- outdir
+  if (length(attr(outdata,"outdir"))==0  & length(outdir)>0) {
+    attr(outdata,"outdir") <- outdir
+  }
   ms_filewrite(outdata, paste0(dataname,"_","Scaled_data.txt"), outdir=outdir)
   return(tibble::as_tibble(outdata))
 }

@@ -5,7 +5,7 @@
 \title{ms_force_scaling}
 \usage{
 ms_forcescaling(data, refcondition = NULL, nread = 10, reorder = FALSE,
-  writefactortofile = TRUE, bottom_label = "Temperature",
+  writefactortofile = TRUE, bottomlabel = "Temperature",
   filename = "CETSA_normalization_factors.txt")
 }
 \arguments{
@@ -21,9 +21,9 @@ group as the reference to derive ratios}
 
 \item{writefactortofile}{whether to save a copy of scaling factors}
 
-\item{filename}{name for the file}
-
 \item{bottomlabel}{textual label at the bottom of the plot}
+
+\item{filename}{name for the file}
 }
 \value{
 a dataframe

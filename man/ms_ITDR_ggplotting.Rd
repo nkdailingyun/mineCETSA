@@ -5,18 +5,21 @@
 \title{ms_ITDR_ggplotting}
 \usage{
 ms_ITDR_ggplotting(data, legenddata = NULL, levelvector = NULL,
-  nread = 10, remsinglecondprot = TRUE, PSMcutoff = FALSE,
-  PSMthreshold = 3, nreplicate = 2, remfragment = FALSE,
-  remribosomal = FALSE, orderEC = FALSE, orderAUC = FALSE,
-  plotseq = NULL, barplotformat = FALSE, witherrorbar = TRUE,
-  usegradient = TRUE, loess = FALSE, dotconnect = FALSE,
-  pfdatabase = FALSE, printBothName = TRUE, printGeneName = FALSE,
-  PSManno = FALSE, unit = "mM", xlinear = FALSE, xlog10 = TRUE,
-  xsqrt = FALSE, xcubert = FALSE, xinterval = NULL, fixedy = FALSE,
-  layout = c(5, 5), presetcolor = TRUE, colorpanel = NULL,
-  top_label = "ITDR CETSA data plotting",
-  left_label = "Non-denatured protein fraction", bottom_label = NULL,
-  pdfname = "ITDR_ggplotting.pdf", external = TRUE)
+  nread = 10, remsinglecondprot = TRUE, robustfitting = FALSE,
+  PSMcutoff = FALSE, PSMthreshold = 3, nreplicate = 2,
+  minireplicate = NULL, orderEC = FALSE, orderAUC = FALSE,
+  orderRep = FALSE, plotseq = NULL, barplotformat = FALSE,
+  witherrorbar = FALSE, usegradient = TRUE, loess = FALSE,
+  dotconnect = FALSE, pfdatabase = FALSE, printBothName = TRUE,
+  printGeneName = FALSE, printcount = FALSE, unit = "mM",
+  xlinear = FALSE, xlog10 = TRUE, xsqrt = FALSE, xcubert = FALSE,
+  xinterval = NULL, fixedy = FALSE, layout = c(5, 5),
+  presetcolor = TRUE, colorpanel = NULL,
+  toplabel = "ITDR CETSA data plotting", bottomlabel = NULL,
+  leftlabel = "Non-denatured protein fraction", shadearea = NULL,
+  shadeoutlinecolor = "black", shadefillcolor = "gray90",
+  pdfname = "ITDR_ggplotting.pdf", external = TRUE, pdfheight = 12,
+  pdfwidth = 12)
 }
 \arguments{
 \item{data}{ITDR dataset to plot}
@@ -25,10 +28,14 @@ ms_ITDR_ggplotting(data, legenddata = NULL, levelvector = NULL,
 inside this dataset should contains the full set of experiment conditions,
 most of the time there is no need to supply, just use the data instead}
 
+\item{levelvector}{a vector of experimental conditions, not complusory for isothermal functions}
+
 \item{nread}{number of reading channels or sample treatements, default value 10}
 
 \item{remsinglecondprot}{whether orphan proteins to be plotted,
 default to exclude them from plotting}
+
+\item{robustfitting}{whether to apply robust fitting, which is new since v.0.3.7}
 
 \item{PSMcutoff}{whether to apply PSM threshold cutoff on hit selection,
 default set to FALSE}
@@ -38,17 +45,37 @@ quantification as reliable, default value is 3}
 
 \item{nreplicate}{number of replicates, default value is 2}
 
+\item{minireplicate}{number of replicates to keep in final data, default set
+to NULL, this is an added-on feature to subset enough replicated samples
+especially for the format with error bar option as discussed below}
+
 \item{orderEC}{whether to order the plots based on EC (Effective concentration)}
 
 \item{orderAUC}{whether to order the plots based on AUC (Area Under the Curve)}
 
+\item{orderRep}{whether to order the plots based on the measurement replicate numbers}
+
 \item{plotseq}{a vector of plots arragement sequence (composite ID)}
+
+\item{barplotformat}{whether to plot in a bar graph format, default to FALSE}
+
+\item{witherrorbar}{whether to plot in a mean +/- error bar(se) graph format, default to FALSE}
+
+\item{usegradient}{whether to plot the bar plot in a color-gradient format,
+which is only applicable to 1-sample format, default set to TRUE}
 
 \item{loess}{whether to perform curve fitting using loess model}
 
 \item{dotconnect}{whether to simply dot connect the readings for each curve}
 
-\item{PSManno}{whether to annotate the plots with PSM and uniPeptide number}
+\item{pfdatabase}{whether it is Plasmodium falciparum dataset, default to FALSE}
+
+\item{printBothName}{whether to print both Protein and Gene names, default to TRUE}
+
+\item{printGeneName}{whether to print only Gene names, default to FALSE, when
+both printBothName and printBothName are FALSE, the protein name will be print out}
+
+\item{printcount}{whether to annotate the plots with PSM and uniPeptide number}
 
 \item{unit}{textual annotation for the dose unit, default is "mM"}
 
@@ -71,9 +98,21 @@ per page, default value is c(5,5)}
 
 \item{colorpanel}{a vector of customizable color scheme provided by the user}
 
-\item{top_label}{textual label at the top of the page}
+\item{toplabel}{textual label at the top of the page}
 
-\item{left_label}{textual label at the top of the page}
+\item{bottomlabel}{textual label at the bottom of the page}
+
+\item{leftlabel}{textual label at the left side of the page}
+
+\item{shadearea}{a four element vector indicating the xmin, xmax, ymin, ymax for x and y axis for shading}
+
+\item{shadeoutlinecolor}{color used to shade the area, default value is black}
+
+\item{shadefillcolor}{color used to shade the area, default value is gray90}
+
+\item{pdfheight}{a number indicate the height of pdf file, default value 12}
+
+\item{pdfwidth}{a number indicate the width of pdf file, default value 12}
 }
 \value{
 a list of ggplot2 object

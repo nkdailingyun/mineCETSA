@@ -4,8 +4,8 @@
 \alias{ms_ITTR_fitting}
 \title{ms_ITTR_fitting}
 \usage{
-ms_ITTR_fitting(data, nread = 10, fc = 0.3, forcestart = FALSE,
-  nbaseline = 2, baselineMAD = 0, nMAD = 2.5, writetofile = TRUE,
+ms_ITTR_fitting(data, nread = 10, fc = 0.3, calMTT = FALSE,
+  nbaseline = 3, baselineMAD = NULL, nMAD = 2.5, writetofile = TRUE,
   keepfittedvalue = FALSE)
 }
 \arguments{
@@ -17,8 +17,8 @@ default value 10}
 \item{fc}{short for fold change, indicate the response level the fitting
 function used to back-calculate the corresponding effective concentration}
 
-\item{forcestart}{whether the base of time-reponse curve start from 1.0,
-default set to FALSE to allow free baseline}
+\item{calMTT}{whether to calculate the Mininal Time Threshold(MTT), this is
+useful when do follow-up analysis such as R2-AUC plot}
 
 \item{writetofile}{whether to keep a local file copy of the original data
 with fitting parameters, default set to TRUE}

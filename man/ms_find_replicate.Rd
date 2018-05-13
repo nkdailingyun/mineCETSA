@@ -4,8 +4,7 @@
 \alias{ms_find_replicate}
 \title{ms_find_replicate}
 \usage{
-ms_find_replicate(data, nread = 10, getcompletesubsetonly = TRUE,
-  variancecutoff = FALSE, nMAD_var = 2.5)
+ms_find_replicate(data, nread = 10, keepfullrep = FALSE)
 }
 \arguments{
 \item{data}{dataset to look for complete set}
@@ -13,13 +12,9 @@ ms_find_replicate(data, nread = 10, getcompletesubsetonly = TRUE,
 \item{nread}{number of reading channels or sample treatements, default value
 is 10}
 
-\item{getcompletesubsetonly}{whether to just perform a simple subsetting of dataset
-with specified replicate numbers}
-
-\item{variancecutoff}{whether to segregate the proteins with large
-inter-replicate variance, default set to TRUE, only used when there is single condition}
-
-\item{nMAD_var}{the significance level of MAD cutoff, default value is 2.5}
+\item{keepfullrep}{whether to only keep the proteins with full replicates in
+all the experimental conditions, default is FALSE, therefore, to keep the curves
+that in at least one condition with full replicates, which is same as `keepcompleterep`}
 }
 \value{
 dataframe containing the full replicated complete dataset

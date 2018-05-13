@@ -52,7 +52,6 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, refchan
   collength <- length(names(data))
 
   # remove standard error and variability
-
   pattern <- grep("Standard Error", names(data), value=FALSE)
   if (length(pattern) > 0) {
     data <- data[ ,-pattern]
@@ -183,6 +182,5 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, refchan
 
   # data$id <- as.character(data$id)
   # data$description <- as.character(data$description)
-
   return(data)
 }

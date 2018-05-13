@@ -4,9 +4,9 @@
 \alias{ms_melt_innerplot}
 \title{ms_melt_innerplot}
 \usage{
-ms_melt_innerplot(data, nread, topasone, dotconnect, PSManno, PSM_annod,
-  Pep_annod, PSMannoypos, PSMannoyinterval, colorpanel, plotlegend,
-  commonlegend, withset, layout)
+ms_melt_innerplot(data, nread, topasone, dotconnect, printcount, PSM_annod,
+  Pep_annod, annotypos, annotyinterval, colorpanel, plotlegend, commonlegend,
+  toplabel, leftlabel, bottomlabel, withset, layout)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}
@@ -17,21 +17,27 @@ ms_melt_innerplot(data, nread, topasone, dotconnect, PSManno, PSM_annod,
 
 \item{dotconnect}{whether to simply dot connect the readings for each curve}
 
-\item{PSManno}{whether to annotate the plots with PSM and uniPeptide number}
+\item{printcount}{whether to annotate the plots with PSM and uniPeptide number}
 
 \item{PSM_annod}{dataframe containing the PSM number information}
 
 \item{Pep_annod}{dataframe containing the uniPeptide number information}
 
-\item{PSMannoypos}{the starting y postion of PSM/uniPeptide number annotation from top}
+\item{annotypos}{the starting y-axis position of textual annotation}
 
-\item{PSMannoyinterval}{the interval of PSM/uniPeptide number annotation per line}
+\item{annotyinterval}{the interval on y-axis for textual annotation}
 
 \item{colorpanel}{a vector of customizable color scheme provided by the user}
 
 \item{plotlegend}{a legend object from ms_melt_legend}
 
 \item{commonlegend}{whether to use one common legend for whole page of plots}
+
+\item{toplabel}{textual label at the top of the page}
+
+\item{leftlabel}{textual label at the left side of the page}
+
+\item{bottomlabel}{textual label at the bottom of the page}
 
 \item{withset}{whether there is set column to perform facet_grid}
 

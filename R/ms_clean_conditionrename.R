@@ -21,16 +21,8 @@ ms_clean <- function(data, nread=10, remkeratin=TRUE, remsinglecondprot=FALSE) {
 
   # add variable name to output
   dataname <- deparse(substitute(data))
-  outdir <- data$outdir[1]
+  outdir <- ms_directory(data, dataname)
 
-  # to prevent the change of sub-directory folder
-  if (!length(outdir)) {
-    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
-    dir.create(outdir)
-  } else if (dir.exists(outdir)==FALSE) {
-    dir.create(outdir)
-  }
-  #print(outdir)
   nrowdata <- nrow(data)
   row_na <- apply(data, 1, function(x) {any(is.na(x[c(1:(nread+3))]))})
   if (sum(row_na)!=0) {
@@ -63,6 +55,9 @@ ms_clean <- function(data, nread=10, remkeratin=TRUE, remsinglecondprot=FALSE) {
   }
   print(paste("The data composition under each experimental condition (after cleanup) is:"))
   print(table(data$condition))
+  if (length(attr(data,"outdir"))==0  & length(outdir)>0) {
+    attr(data,"outdir") <- outdir
+  }
   return(data)
 }
 

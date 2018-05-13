@@ -1,7 +1,7 @@
 Package: mineCETSA
 Type: Package
 Title: Processing and Visualization of MS-CETSA data
-Version: 0.3.6
+Version: 0.3.7
 Author: Dai Lingyun
 Maintainer: Dai Lingyun <nkdailingyun@gmail.com>
 Description: This package is designed to process MS-CETSA result from TMT10 labelling and quantification scheme.
@@ -18,7 +18,11 @@ Imports:
   scales, 
   VennDiagram, 
   Nozzle.R1,
-  ggrepel (>= 0.7.0)
+  ggrepel (>= 0.7.0),
+  Biobase,
+  limma,
+  arrayQualityMetrics,
+  ggpubr
 Depends: 
   R (>= 3.2), 
   readr (>= 1.1.0), 

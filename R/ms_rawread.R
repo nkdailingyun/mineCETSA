@@ -32,8 +32,9 @@
 #'
 #'
 #'
-ms_rawread <- function(filevector, fchoose=FALSE, temp=c(37,40,43,46,49,52,55,58,61,64), nread=10, abdread=FALSE, PD21=TRUE,
-                       refchannel="126", channels=c("126","127N","127C","128N","128C","129N","129C","130N","130C","131")) {
+ms_rawread <- function(filevector, fchoose=FALSE, temp=c(37,40,43,46,49,52,55,58,61,64),
+                       nread=10, abdread=FALSE, PD21=TRUE, refchannel="126",
+                       channels=c("126","127N","127C","128N","128C","129N","129C","130N","130C","131")) {
 
   flength <- length(filevector)
   if (flength < 2) {
@@ -43,7 +44,7 @@ ms_rawread <- function(filevector, fchoose=FALSE, temp=c(37,40,43,46,49,52,55,58
     dirname <- dirname_l[length(dirname_l)]
     data <- ms_innerread(filevector, fchoose, treatment=temp, nread, abdread, PD21, refchannel, channels)
     data <- ms_dircreate(dirname, data)
-    print("The data composition under each experimental condition is:")
+    print("The data composition under each experimental condition (read in) is:")
     print(table(data$condition))
     return(data)
   } else {

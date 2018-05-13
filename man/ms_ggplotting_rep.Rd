@@ -6,16 +6,17 @@
 \usage{
 ms_ggplotting_rep(data, legenddata = NULL, levelvector = NULL, nread = 10,
   remsinglecondprot = TRUE, PSMcutoff = FALSE, PSMthreshold = 3,
-  remfragment = FALSE, remribosomal = FALSE, fitremout = FALSE,
-  ctrlcond = NULL, bottomcutoff = 0.4, topcutoff = 0.8,
-  variancecutoff = FALSE, nMAD_var = 2.5, nreplicate = 2,
-  topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
+  fitremout = FALSE, ctrlcond = NULL, bottomcutoff = 0.4,
+  topcutoff = 0.8, variancecutoff = FALSE, nMAD_var = 2.5,
+  nreplicate = 2, topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
   pfdatabase = FALSE, printBothName = TRUE, printGeneName = FALSE,
-  PSManno = TRUE, PSMannoypos = 0.5, PSMannoyinterval = 0.08,
+  printcount = TRUE, annotypos = 0.5, annotyinterval = 0.08,
   presetcolor = TRUE, extraidtocomplete = NULL, plotfitremout = TRUE,
   plotvarremout = TRUE, colorpanel = NULL, withset = FALSE,
-  commonlegend = TRUE, layout = c(5, 5), pdfname = "ggplotting.pdf",
-  external = TRUE)
+  commonlegend = TRUE, layout = c(5, 5), external = TRUE,
+  toplabel = "CETSA data plotting_curve fitting",
+  leftlabel = "Non-denatured protein fraction", bottomlabel = "Temperature",
+  pdfname = "ggplotting.pdf", pdfheight = 12, pdfwidth = 12)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}
@@ -62,13 +63,11 @@ up to 4 is possible for now}
 
 \item{dotconnect}{whether to simply dot connect the readings for each curve}
 
-\item{PSManno}{whether to annotate the plots with PSM and uniPeptide number}
+\item{printcount}{whether to annotate the plots with PSM and uniPeptide number}
 
-\item{PSMannoypos}{the starting y postion of PSM/uniPeptide number annotation from top,
-default value is 0.5}
+\item{annotypos}{the starting y-axis position of textual annotation, default value 0.5}
 
-\item{PSMannoyinterval}{the interval of PSM/uniPeptide number annotation per line,
-default value is 0.08}
+\item{annotyinterval}{the interval on y-axis for textual annotation, default valule 0.08}
 
 \item{presetcolor}{whether to use the pre-defined color scheme}
 
@@ -84,7 +83,17 @@ default value is 0.08}
 
 \item{layout}{a vector indicating the panel layout for multi-panel plots per page}
 
+\item{toplabel}{textual label at the top part of the page}
+
+\item{leftlabel}{textual label at the left side of the page}
+
+\item{bottomlabel}{textual label at the bottom part of the page}
+
 \item{pdfname}{name for the pdf plots file}
+
+\item{pdfheight}{a number indicate the height of pdf file, default value 12}
+
+\item{pdfwidth}{a number indicate the width of pdf file, default value 12}
 }
 \value{
 a list of ggplot2 object

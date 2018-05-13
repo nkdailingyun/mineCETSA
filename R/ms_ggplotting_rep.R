@@ -30,11 +30,9 @@
 #' @param topasone whether the top plateau has to be fixed, i.e., 1.0
 #' @param normTop whether to normalize the AUC based on Top three readings
 #' @param dotconnect whether to simply dot connect the readings for each curve
-#' @param PSManno whether to annotate the plots with PSM and uniPeptide number
-#' @param PSMannoypos the starting y postion of PSM/uniPeptide number annotation from top,
-#' default value is 0.5
-#' @param PSMannoyinterval the interval of PSM/uniPeptide number annotation per line,
-#' default value is 0.08
+#' @param printcount whether to annotate the plots with PSM and uniPeptide number
+#' @param annotypos the starting y-axis position of textual annotation, default value 0.5
+#' @param annotyinterval the interval on y-axis for textual annotation, default valule 0.08
 #' @param presetcolor whether to use the pre-defined color scheme
 #' @param plotfitremout whether to plot out messy melt curves
 #' @param plotvarremout whether to plot out large inter-replicate variance melt curves
@@ -42,7 +40,12 @@
 #' @param withset whether there is set column to perform facet_grid
 #' @param commonlegend whether to use one common legend for whole page of plots
 #' @param layout a vector indicating the panel layout for multi-panel plots per page
+#' @param toplabel textual label at the top part of the page
+#' @param leftlabel textual label at the left side of the page
+#' @param bottomlabel textual label at the bottom part of the page
 #' @param pdfname name for the pdf plots file
+#' @param pdfheight a number indicate the height of pdf file, default value 12
+#' @param pdfwidth a number indicate the width of pdf file, default value 12
 #'
 #'
 #' @import tidyr
@@ -65,43 +68,22 @@
 
 ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                               remsinglecondprot=TRUE, PSMcutoff=FALSE, PSMthreshold=3,
-                              remfragment=FALSE, remribosomal=FALSE,
                               fitremout=FALSE, ctrlcond=NULL, bottomcutoff=0.4, topcutoff=0.8,
                               variancecutoff=FALSE, nMAD_var=2.5,
                               nreplicate=2, topasone=TRUE, normTop=TRUE, dotconnect=FALSE,
                               pfdatabase=FALSE, printBothName=TRUE, printGeneName=FALSE,
-                              PSManno=TRUE, PSMannoypos=0.5, PSMannoyinterval=0.08,
+                              printcount=TRUE, annotypos=0.5, annotyinterval=0.08,
                               presetcolor=TRUE, extraidtocomplete=NULL,
                               plotfitremout=TRUE, plotvarremout=TRUE,
-                              colorpanel=NULL, withset=FALSE, commonlegend=TRUE,
-                              layout=c(5,5), pdfname="ggplotting.pdf", external=TRUE) {
+                              colorpanel=NULL, withset=FALSE,
+                              commonlegend=TRUE, layout=c(5,5), external=TRUE,
+                              toplabel="CETSA data plotting_curve fitting",
+                              leftlabel="Non-denatured protein fraction",
+                              bottomlabel="Temperature",
+                              pdfname="ggplotting.pdf", pdfheight=12, pdfwidth=12) {
 
   dataname <- deparse(substitute(data))
-  outdir <- data$outdir[1]
-  data$outdir <- NULL
-
-  # to prevent the change of sub-directory folder
-  if (!length(outdir)) {
-    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
-    dir.create(outdir)
-  } else if (dir.exists(outdir)==FALSE) {
-    dir.create(outdir)
-  }
-
-  if (remfragment) {
-    if(length(grep("Fragment", data$description))) {
-      data <- data[-grep("Fragment", data$description), ]
-    }
-  }
-
-  if (remribosomal) {
-    if (length(grep("ribosomal", data$description))) {
-      data_ribo <- data[grep("ribosomal", data$description), ]
-      data <- data[-grep("ribosomal", data$description), ]
-    } else{
-      data_ribo <- data[0, ]
-    }
-  }
+  outdir <- ms_directory(data, dataname)
 
   png(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                       dataname, "_curve replicate distribution.png"))
@@ -133,12 +115,6 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
 
   # to concatenate id and description
   nrowdata <- nrow(data)
-  getGeneName <- function(x) {return (strsplit(strsplit(x, "GN=")[[1]][2], " ")[[1]][1])}
-  getProteinName <- function(x) {return (strsplit(x, " OS=")[[1]][1])}
-  if (pfdatabase) {
-    getProteinName <- function(x) {return (gsub("product=", "", strsplit(x, "\\|")[[1]][2]))}
-  }
-
   if (length(extraidtocomplete)) {
     fkeep <- NULL
     for (i in 1:length(extraidtocomplete)){
@@ -177,15 +153,6 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
     }
     data_extra$description<-NULL
   }
-  # for(i in 1:nrowdata){
-  #   if(geneName){
-  #     data[i, 'description']<-strsplit(strsplit(data[i, 'description'], "GN=")[[1]][2], " ")[[1]][1]
-  #     data[i,'id']<-paste(data[i, 'id'], data[i, 'description'], sep="\n")
-  #   }else{
-  #     cid<-paste(data[i, 'id'], data[i, 'description'], sep="\n")
-  #     data[i,'id']<-strsplit(cid, " OS")[[1]][1]
-  #   }
-  # }
 
   checkpos <- c(1,2)
   if (withset) {
@@ -200,15 +167,13 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
     stop("Remove the duplicated entires from original dataset then start again!")
   }
 
-  if (PSManno) {
+  if (printcount) {
     PSMcol <- grep("PSM", names(data), value=FALSE)
     PSM_annod <- data[ ,c(1,2,PSMcol)]
     PSM_annod <- tidyr::spread(PSM_annod, condition, sumPSMs, drop=FALSE)
-    #PSM_annod <- dcast(PSM_annod, id~condition, value.var="sumPSMs", drop=FALSE)
     Pepcol <- grep("Pep", names(data), value=FALSE)
     Pep_annod <- data[ ,c(1,2,Pepcol)]
     Pep_annod <- tidyr::spread(Pep_annod, condition, sumUniPeps, drop=FALSE)
-    #Pep_annod <- dcast(Pep_annod, id~condition, value.var="sumUniPeps", drop=FALSE)
     #return(list(PSM=PSM_annod, Pep=Pep_annod))
   } else {
     PSM_annod <- NULL
@@ -223,7 +188,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
     ctrllist2 <- unique(grep("[Cc][Oo][Nn][Tt][Rr][Oo][Ll]", data$condition, value=TRUE))
     ctrllist3 <- unique(grep("[Dd][Mm][Ss][Oo]", data$condition, value=TRUE))
     ctrllist <- c(ctrllist1, ctrllist2, ctrllist3, ctrlcond)
-    if(length(ctrllist)==0) {
+    if (length(ctrllist)==0) {
       stop("Name your control conditions with prefix [Ctrl] or [Control] or [DMSO], or specify in ctrlcond argument")
     }
     data$Top <- rowMeans(data[, c(3:5)])
@@ -272,7 +237,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
     names(data)[PSMcol] <- "PSM"
     PSMkeep <- data %>% group_by(id) %>%
       summarize(PSMmean=mean(PSM)) %>%
-      filter(PSMmean>PSMthreshold)
+      filter(PSMmean>=PSMthreshold)
     fkeep <- which(data$id %in% PSMkeep$id)
     names(data)[PSMcol] <- PSMname
     data_PSMsmall <- data[-fkeep, ]
@@ -299,7 +264,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
     if (external) { external_graphs(T) }
     # subsetting complete replicates:
     keep1 <- which(table(data$id) == ncond)
-    if(length(keep1)==0) {
+    if (length(keep1)==0) {
       #stop("No proteins contain complete replicate")
       keep1 <- which(table(data$id) > ncond)
       nkeep1 <- names(keep1)[1]
@@ -315,16 +280,17 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
     plotlegend <- ms_melt_legend(data_complete, nread, colorpanel)
 
     pl <- ms_melt_innerplot(data, nread, topasone, dotconnect,
-                            PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
-                            colorpanel, plotlegend, commonlegend, withset, layout)
+                            printcount, PSM_annod, Pep_annod,
+                            annotypos, annotyinterval,
+                            colorpanel, plotlegend, commonlegend,
+                            toplabel, leftlabel, bottomlabel, withset, layout)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data$id)),
-                       "_whole_set_", pdfname), pl, height=12, width=12)
+                       "_whole_set_", pdfname), pl, height=pdfheight, width=pdfwidth)
     if (external) { external_graphs(F) } # switch off the external graphs
     print("whole set plot file generated successfully.")
     stop("Done")
   }
-
 
   # subsetting complete replicates:
   keep1 <- which(table(data$id) == ncond)
@@ -459,19 +425,23 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   # print out the PSM small data file
   if (PSMcutoff) {
     pl <- ms_melt_innerplot(data_PSMsmall, nread, topasone, dotconnect,
-                            PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
-                            colorpanel, plotlegend, commonlegend, withset, layout)
+                            printcount, PSM_annod, Pep_annod,
+                            annotypos, annotyinterval,
+                            colorpanel, plotlegend, commonlegend,
+                            toplabel, leftlabel, bottomlabel, withset, layout)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data_PSMsmall$id)),
-                       "_PSMsmall proteins", pdfname), pl, height=12, width=12)
+                       "_PSMsmall proteins", pdfname), pl, height=pdfheight, width=pdfwidth)
     print("PSMsmall plot file generated successfully.")
   }
 
   # print out the outliers data file
   if (fitremout & plotfitremout) {
     pl <- ms_melt_innerplot(outliers, nread, topasone, dotconnect,
-                            PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
-                            colorpanel, plotlegend, commonlegend, withset, layout)
+                            printcount, PSM_annod, Pep_annod,
+                            annotypos, annotyinterval,
+                            colorpanel, plotlegend, commonlegend,
+                            toplabel, leftlabel, bottomlabel, withset, layout)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(outliers$id)),
                        "_Messy_proteins_", pdfname), pl, height=12, width=12)
@@ -481,11 +451,13 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   # print out the large variance data file
   if (variancecutoff & plotvarremout) {
     pl <- ms_melt_innerplot(data_largevar, nread, topasone, dotconnect,
-                            PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
-                            colorpanel, plotlegend, commonlegend, withset, layout)
+                            printcount, PSM_annod, Pep_annod,
+                            annotypos, annotyinterval,
+                            colorpanel, plotlegend, commonlegend,
+                            toplabel, leftlabel, bottomlabel, withset, layout)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data_largevar$id)),
-                       "_Non_reproducible_proteins_", pdfname), pl, height=12, width=12)
+                       "_Non_reproducible_proteins_", pdfname), pl, height=pdfheight, width=pdfwidth)
     print("Non reproducible plot file generated successfully.")
   }
 
@@ -500,11 +472,13 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   }
 
   pl <- ms_melt_innerplot(data_complete, nread, topasone, dotconnect,
-                          PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
-                          colorpanel, plotlegend, commonlegend, withset, layout)
+                          printcount, PSM_annod, Pep_annod,
+                          annotypos, annotyinterval,
+                          colorpanel, plotlegend, commonlegend,
+                          toplabel, leftlabel, bottomlabel, withset, layout)
   ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                      length(unique(data_complete$id)),
-                     "_Complete replicates_", pdfname), pl, height=12, width=12)
+                     "_Complete replicates_", pdfname), pl, height=pdfheight, width=pdfwidth)
 
   print("first complete plot file generated successfully.")
 
@@ -523,7 +497,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   }
   if (normTop) {
     data_incomp$Top <- rowMeans(data_incomp[ ,c(3:5)])
-  }else {
+  } else {
     data_incomp$Top <- rep(1.0, nrow(data_incomp))
   }
   # This section is for un-fitted data
@@ -538,11 +512,13 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   data_incomp$id <- factor(data_incomp$id, levels=plotseq)
 
   pl <- ms_melt_innerplot(data_incomp, nread, topasone, dotconnect,
-                          PSManno, PSM_annod, Pep_annod, PSMannoypos, PSMannoyinterval,
-                          colorpanel, plotlegend, commonlegend, withset, layout)
+                          printcount, PSM_annod, Pep_annod,
+                          annotypos, annotyinterval,
+                          colorpanel, plotlegend, commonlegend,
+                          toplabel, leftlabel, bottomlabel, withset, layout)
   ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                      length(unique(data_incomp$id)),
-                     "_Non_replicates_", pdfname), pl, height=12, width=12)
+                     "_Non_replicates_", pdfname), pl, height=pdfheight, width=pdfwidth)
   if (external) { external_graphs(F) } # switch off the external graphs
   print("second incomplete plot file generated successfully.")
 }

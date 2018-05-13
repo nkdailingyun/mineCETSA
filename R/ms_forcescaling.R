@@ -28,20 +28,11 @@
 #'
 #'
 ms_forcescaling <- function(data, refcondition=NULL, nread=10, reorder=FALSE,
-                            writefactortofile=TRUE, bottom_label="Temperature",
+                            writefactortofile=TRUE, bottomlabel="Temperature",
                             filename="CETSA_normalization_factors.txt") {
 
   dataname <- deparse(substitute(data))
-  outdir <- data$outdir[1]
-  data$outdir <- NULL
-
-  # to prevent the change of sub-directory folder
-  if (!length(outdir)) {
-    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
-    dir.create(outdir)
-  } else if (dir.exists(outdir)==FALSE) {
-    dir.create(outdir)
-  }
+  outdir <- ms_directory(data, dataname)
 
   if (reorder) {
     # make sure the temperature is in ascending trend
@@ -59,7 +50,7 @@ ms_forcescaling <- function(data, refcondition=NULL, nread=10, reorder=FALSE,
 
   ms_innerplotbox(data[ ,c(1,3,4:(nread+3))],
                   filename=paste0(dataname,"_Pre_Normalization_wholeset_trend.pdf"),
-                  xlabel=bottom_label, ylabel="Pre_Normalization_Ratio",
+                  xlabel=bottomlabel, ylabel="Pre_Normalization_Ratio",
                   isratio=TRUE, isothermalstyle=FALSE, outdir=outdir)
 
   # calculate median for protein ratio data
@@ -118,7 +109,7 @@ ms_forcescaling <- function(data, refcondition=NULL, nread=10, reorder=FALSE,
 
   ms_innerplotbox(outdata[ ,c(1,3,4:(nread+3))],
                   filename=paste0(dataname,"_Post_Normalization_wholeset_trend.pdf"),
-                  xlabel=bottom_label, ylabel="Post_Normalization_Ratio",
+                  xlabel=bottomlabel, ylabel="Post_Normalization_Ratio",
                   isratio=TRUE, isothermalstyle=FALSE, outdir=outdir)
 
   #return(outdata)
@@ -151,10 +142,12 @@ ms_forcescaling <- function(data, refcondition=NULL, nread=10, reorder=FALSE,
                                  levels=sort(as.numeric(unique(mediandata$treatment)), decreasing=FALSE))
 
   ms_innerplotmedian(mediandata, filename=paste0(dataname, "_forcescaling_median.pdf"),
-                     xlabel=bottom_label, ylabel="Median value of soluble proteins",
+                     xlabel=bottomlabel, ylabel="Median value of soluble proteins",
                      isothermalstyle=FALSE, outdir=outdir)
 
-  outdata$outdir <- outdir
+  if (length(attr(outdata,"outdir"))==0 & length(outdir)>0) {
+    attr(outdata,"outdir") <- outdir
+  }
   ms_filewrite(outdata, paste0(dataname,"_","Forcescaled_data.txt"), outdir=outdir)
   return(as_tibble(outdata))
 }

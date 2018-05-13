@@ -19,17 +19,8 @@ ms_isoform_resolve <- function(data) {
 
   # add variable name to output
   dataname <- deparse(substitute(data))
-  outdir <- data$outdir[1]
+  outdir <- ms_directory(data, dataname)
 
-  # to prevent the change of sub-directory folder
-  if (!length(outdir)) {
-    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
-    dir.create(outdir)
-  } else if (dir.exists(outdir)==FALSE) {
-    dir.create(outdir)
-  }
-
-  data$outdir <- NULL
   ncondition <- length(unique(data$condition))
 
   # To look for the ids found in same conditions
@@ -103,7 +94,9 @@ ms_isoform_resolve <- function(data) {
   write.table(questionid_table4, paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"), dataname, "_tobe_consolidated.txt"),
               sep="\t", row.names=FALSE, quote=FALSE)
   #return(questionid_table)
-  data$outdir <- outdir
+  if (length(attr(data,"outdir"))==0 & length(outdir)>0) {
+    attr(data,"outdir") <- outdir
+  }
   ms_filewrite(data, paste0(dataname,"_isoform_resolved.txt"))
 
   return(data)
@@ -144,16 +137,7 @@ ms_isoform_consolidate <- function(data, matchtable, nread=10, withabd=FALSE, we
 
   # add variable name to output
   dataname <- deparse(substitute(data))
-  outdir <- data$outdir[1]
-
-  # to prevent the change of sub-directory folder
-  if (!length(outdir)) {
-    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
-    dir.create(outdir)
-  } else if (dir.exists(outdir)==FALSE) {
-    dir.create(outdir)
-  }
-  data$outdir <- NULL
+  outdir <- ms_directory(data, dataname)
 
   matchtable <- read.delim(file=matchtable, quote="", na.string="", as.is=T, check.names=F)
   matchtable$id <- gsub("_", "-", matchtable$id)
@@ -161,7 +145,7 @@ ms_isoform_consolidate <- function(data, matchtable, nread=10, withabd=FALSE, we
   stopifnot("id" %in% names(matchtable), "Tobe_id" %in% names(matchtable))
   #return(matchtable)
 
-  originalname <- unique(data[ ,c(1:2)])
+  proteininfo <- unique(data[ ,c(1:2)])
   data$description <- NULL
 
   if (withabd) {
@@ -181,7 +165,7 @@ ms_isoform_consolidate <- function(data, matchtable, nread=10, withabd=FALSE, we
     d1[grep(paste0("^", unsolvedid, "$"), d1$id), "id"] <- tobeid
   }
 
-  d1_aveaged <- plyr::ddply(d1, plyr::.(id,condition,treatment), .drop=TRUE,
+  d1_averaged <- plyr::ddply(d1, plyr::.(id,condition,treatment), .drop=TRUE,
                             .fun = function(xx) {
                               c(mean = weighted.mean(xx[["reading"]], xx[["countNum"]], na.rm=TRUE),
                                 sumUniPeps_new = sum(xx[["sumUniPeps"]]),
@@ -190,17 +174,21 @@ ms_isoform_consolidate <- function(data, matchtable, nread=10, withabd=FALSE, we
                               )
                             }
   )
-  #return(d1_aveaged)
-  d1_aveaged_w <- tidyr::spread(d1_aveaged[ ,c(1:4)], treatment, mean)
-  d1_aveaged_w <- merge(d1_aveaged_w, unique(d1_aveaged[ ,c(1,2,5:7)]), all=FALSE)
+  #return(d1_averaged)
+  d1_averaged_w <- tidyr::spread(d1_averaged[ ,c(1:4)], treatment, mean)
+  d1_averaged_w <- merge(d1_averaged_w, unique(d1_averaged[ ,c(1,2,5:7)]), all=FALSE)
 
-  data <- merge(d1_aveaged_w, originalname)
-  data <- data[ ,c(1, ncol(data), 2:(ncol(data)-1))]
+  data <- merge(proteininfo, d1_averaged_w)
+  #data <- data[ ,c(1, ncol(data), 2:(ncol(data)-1))]
   names(data) <- gsub("_new","", names(data))
   if (withabd) {
     data <- data[ ,c(1:3, gtools::mixedorder(names(data)[c(4:(2*nread+3))])+3, (2*nread+4):ncol(data))]
+  } else {
+    data <- data[ ,c(1:3, gtools::mixedorder(names(data)[c(4:(nread+3))])+3, (nread+4):ncol(data))]
   }
-  data$outdir <- outdir
+  if (length(attr(data,"outdir"))==0  & length(outdir)>0) {
+    attr(data,"outdir") <- outdir
+  }
   ms_filewrite(data, paste0(dataname,"_isoform_consolidated.txt"))
   return(data)
 

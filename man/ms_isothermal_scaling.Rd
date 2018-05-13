@@ -4,8 +4,8 @@
 \alias{ms_isothermal_scaling}
 \title{ms_isothermal_scaling}
 \usage{
-ms_isothermal_scaling(data, nread, abdnorm, reftolowest, remloadc, loadcname,
-  numcharmix, writefactortofile, bottomlabel, filename)
+ms_isothermal_scaling(data, dataname, nread, abdnorm, reftolowest, remloadc,
+  loadcname, numcharmix, writefactortofile, bottomlabel, filename)
 }
 \arguments{
 \item{data}{dataset to be scaled}

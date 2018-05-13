@@ -31,16 +31,7 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
                        writetofile=TRUE, keepfittedvalue=FALSE) {
 
   dataname <- deparse(substitute(data))
-  outdir <- data$outdir[1]
-  data$outdir <- NULL
-
-  # to prevent the change of sub-directory folder
-  if (!length(outdir)) {
-    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
-    dir.create(outdir)
-  } else if (dir.exists(outdir)==FALSE) {
-    dir.create(outdir)
-  }
+  outdir <- ms_directory(data, dataname)
 
   nrowdata <- nrow(data)
   nametempvector <- names(data[4:(nread+3)])
@@ -50,7 +41,7 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
   R2result <- NULL
   Sloperesult <- NULL
   RSEresult <- NULL
-  fitted_y <- matrix(nrow = nrowdata, ncol = nread)
+  fitted_y <- matrix(data=NA, nrow = nrowdata, ncol = nread)
 
   if (topasone==TRUE) {
     ep <- 3
@@ -62,7 +53,8 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
   for (i in 1:nrowdata) {
     y <- as.numeric(data[i,c(4:(nread+3))])
     x <- numtempvector
-    fit.dat <- try(drc::drm(formula = y ~ x, fct = drc::LL.4(fixed=c(NA,NA,top,NA))))
+    valueindex = which(!is.na(y))
+    fit.dat <- try(drc::drm(formula = y ~ x, fct = drc::LL.4(fixed=c(NA,NA,top,NA)),na.action=na.omit))
     if (class(fit.dat) != "try-error") {
       coeffs <- data.frame(coefficients(fit.dat))
       slope <- coeffs[1,1]
@@ -74,8 +66,11 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
       }else if (halfmelt) {
         Tm <- ED(fit.dat, respLev=0.5*(coeffs[3,1]+coeffs[2,1]), interval="delta", reference="upper", type="absolute", uref=coeffs[3,1], display=FALSE)
       }
-      fitted_y[i, ] <- fitted.values(fit.dat)
-      R2 <- 1 - sum((residuals(fit.dat)^2))/sum((y-mean(y))^2)
+      #fitted_y[i, ] <- fitted.values(fit.dat)
+      fitted_y[i, valueindex] <- fitted.values(fit.dat)
+      y1 <- na.omit(y)
+      R2 <- 1 - sum((residuals(fit.dat)^2))/sum((y1-mean(y1))^2)
+      #R2 <- 1 - sum((residuals(fit.dat)^2))/sum((y-mean(y))^2)
       RSE <- summary(fit.dat)$rseMat[[1]]
     } else {
       Tm = NA; R2 = NA; slope = NA; RSE=NA;
@@ -105,9 +100,11 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
                  outdir=outdir)
   }
 
-  if (length(outdir) > 0) {
-    data$outdir <- outdir
-    Fitted$outdir <- outdir
+  if (length(attr(data,"outdir"))==0  & length(outdir)>0) {
+    attr(data,"outdir") <- outdir
+  }
+  if (length(attr(Fitted,"outdir"))==0  & length(outdir)>0) {
+    attr(Fitted,"outdir") <- outdir
   }
   if (keepfittedvalue) {
     return(list(Rawdata=data, Fitteddata=Fitted))

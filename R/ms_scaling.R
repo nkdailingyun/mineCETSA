@@ -30,16 +30,7 @@ ms_scaling <- function(data, nread=10, reorder=FALSE, writefactortofile=TRUE,
                        filename="CETSA_normalization_factors.txt") {
 
   dataname <- deparse(substitute(data))
-  outdir <- data$outdir[1]
-  data$outdir <- NULL
-
-  # to prevent the change of sub-directory folder
-  if (!length(outdir)) {
-    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
-    dir.create(outdir)
-  } else if (dir.exists(outdir)==FALSE) {
-    dir.create(outdir)
-  }
+  outdir <- ms_directory(data, dataname)
 
   if (reorder) {
     # make sure the temperature is in ascending trend
@@ -164,7 +155,9 @@ ms_scaling <- function(data, nread=10, reorder=FALSE, writefactortofile=TRUE,
   message("\nScalingfactors: \n")
   cat(Scalingfactor, "\n")
 
-  outdata$outdir <- outdir
+  if (length(attr(outdata,"outdir"))==0  & length(outdir)>0) {
+    attr(outdata,"outdir") <- outdir
+  }
   ms_filewrite(outdata, paste0(dataname,"_","Scaled_data.txt"), outdir=outdir)
   return(as_tibble(outdata))
 }

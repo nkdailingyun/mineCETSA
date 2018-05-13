@@ -4,11 +4,10 @@
 \alias{ms_ITDR_filter}
 \title{ms_ITDR_filter}
 \usage{
-ms_ITDR_filter(data, nread = 10, fcthreshold = 0.3, R2threshold = 0.8,
-  nbaseline = 2, baselineMAD = 0, nMAD = 2.5, checkreplicate = FALSE,
-  treatcondition = NULL, ncheckpoint = 3, excludelastpoint = FALSE,
-  excludeNA = FALSE, nreplicate = 2, PSMcutoff = FALSE,
-  PSMthreshold = 3, remfragment = FALSE, remribosomal = FALSE)
+ms_ITDR_filter(data, nread = 10, checkpointposition = NULL,
+  fcthreshold = 0.3, R2threshold = 0.8, baselineMAD = 0, nbaseline = 3,
+  nMAD = 2.5, checkreplicate = TRUE, treatcondition = NULL,
+  PSMcutoff = TRUE, PSMthreshold = 3)
 }
 \arguments{
 \item{data}{dataset to be filtered}
@@ -16,52 +15,39 @@ ms_ITDR_filter(data, nread = 10, fcthreshold = 0.3, R2threshold = 0.8,
 \item{nread}{number of reading channels or sample treatements, default value
 is 10}
 
+\item{checkpointposition}{refering to the positions of dose points to check
+whether their readings surpass fcthreshold, default value is NULL, which
+would automatically check the highest 3 dose points}
+
 \item{fcthreshold}{short for fold change threshold, indicate the threshold
 fold change compared to baseline (i.e.,1.0) above which the readings can be
 considered significantly stabilized or destabilized, default value is 0.3}
 
 \item{R2threshold}{minimal R2 to consider dose-reponse fitting as reliable}
 
-\item{nbaseline}{the number of points (count from lowest concentration) used
-for calculate the baseline MAD, default is 2}
-
 \item{baselineMAD}{MAD of baseline variation, default value is 0; if not
-provided, it will be calculated based on the readings from the lowest two
-dose groups}
+provided, it will be calculated based on the readings from the lowest few
+dose points, specified by nbaseline value}
+
+\item{nbaseline}{the number of points (count from lowest concentration) used
+for calculate the baseline MAD, default is 3}
 
 \item{nMAD}{the significance level of MAD cutoff, default value is 2.5}
 
 \item{checkreplicate}{whether to check replicated measurements, when set to
-TRUE, make sure the proteins with all the replicated measurements from
-at least one condition pass fold change threshold will be segregated, default
-set to FALSE}
+TRUE, further segregate the proteins that all the replicated measurements from
+at least one experimental condition surpass fold change threshold, default
+set to TRUE}
 
 \item{treatcondition}{specify the condition names to perform replicate check,
-no need to specify the replicate part of the full condition names,
-not commonly used in ITDR experimental setup, default value is NULL}
-
-\item{ncheckpoint}{the number of dose groups (count down from highest
-concentration) to check whether their readings surpass fold change threshold}
-
-\item{excludelastpoint}{whether to exclude the last dose point for checking,
-default set to FALSE, only set to TRUE when you believe that that last dose
-point is not trustworthy}
-
-\item{excludeNA}{whether to exclude the NA points when counting points to check,
-default set to FALSE, when set to TRUE, the exact number of points with readings
-would be used as specified by ncheckpoint parameter}
-
-\item{nreplicate}{number of replicates}
+no need to specify the replicate part of the full condition names, useful when
+multiple experimental conditions are contained in the dataset}
 
 \item{PSMcutoff}{whether to apply PSM threshold cutoff on hit selection,
-default set to FALSE}
+default set to TRUE}
 
 \item{PSMthreshold}{the threshold of averaged PSM numbers to consider protein
 quantification as reliable, default value is 3}
-
-\item{remfragment}{whether to remove fragment proteins, default set to FALSE}
-
-\item{remribosomal}{whether to remove ribosomal proteins, default set to FALSE}
 }
 \value{
 a list of segregated dataframes
@@ -73,8 +59,11 @@ on desired fc threshold level and the associated fitting parameters
 \examples{
 \dontrun{
 ITDRdata_filtered <- ms_ITDR_filter(ITDRdata_fitted, fcthreshold=0.3,
-checkreplicate=TRUE, PSMcutoff=TRUE)
+                     checkreplicate=TRUE, PSMcutoff=TRUE)
 }
 
 
+whether to exclude the NA points when counting points to check,
+default set to FALSE, when set to TRUE, the exact number of points with readings
+would be used as specified by ncheckpoint parameter
 }

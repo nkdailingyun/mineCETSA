@@ -7,6 +7,7 @@
 #' @param sumf whether to calculate sum or not, default to FALSE, i.e., to calculate median
 #'
 #' @importFrom gtools mixedsort
+#'
 #' @keywords internal
 #'
 #' @return a dataframe

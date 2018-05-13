@@ -40,15 +40,7 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
   cat("for maximal utilization of this QC function. \n")
 
   dataname <- deparse(substitute(data))
-  outdir <- data$outdir[1]
-  data$outdir <- NULL
-  # to prevent the change of sub-directory folder
-  if (!length(outdir)) {
-    outdir <- paste0(dataname,"_",format(Sys.time(), "%y%m%d_%H%M"))
-    dir.create(outdir)
-  } else if (dir.exists(outdir)==FALSE) {
-    dir.create(outdir)
-  }
+  outdir <- ms_directory(data, dataname)
 
   if (!length(foldername)) {
     foldername <- paste0(dataname, "_QCreports")
@@ -58,7 +50,9 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
   }
   dir.create( paste0(outdir,"/",foldername), showWarnings=FALSE )
 
+
   #to separate condition into condition and replicates
+  nset <- length(unique(data$condition))
   data <- tidyr::separate(data, condition, into=c("condition", "replicate"), sep="\\.")
   # list <- strsplit(as.character(data$condition), "\\.")
   # df <- ldply(list)
@@ -66,7 +60,7 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
   # data <- cbind(data[,c(1,2)], df, data[,-c(1:3)])
   ncondition <- length(unique(data$condition))
   nreplicate <- length(unique(data$replicate))
-  nset <- ncondition * nreplicate
+  #nset <- ncondition * nreplicate
   if (nset > 5) {print("To plot venn diagram, maximum five unique data sets.")}
 
   data_N1 <- plyr::ddply(data, .(condition, replicate), summarise, Number_run=length(unique(id)))
@@ -99,14 +93,13 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
     data_id1 <- plyr::dlply(data, .(condition, replicate), function(x) n=unique(x$id))
     drawvennplot(data_id1, nset, foldername, "Quantified_IDs_run.png")
   }
-  if (ncondition > 1 & ncondition<=5) {
+  if (ncondition>1 & ncondition<=5) {
     data_id2 <- plyr::dlply(data, .(condition), function(x) condition=unique(x$id))
     drawvennplot(data_id2, ncondition, foldername, "Quantified_IDs_sample.png")
   }
 
   d1 <- tidyr::gather(data[,c(1,3,5:(4+nread))], treatment, reading, -id, -condition)
   d1$treatment <- factor(d1$treatment, levels=sort(as.numeric(unique(d1$treatment)), decreasing=FALSE))
-  #d1 <- melt(data[,c(1,3,5:(4+nread))], id.vars=c("id", "condition"), variable.name="treatment", value.name="reading");
   q <- ggplot(d1, aes(x = treatment, y = reading)) +
     coord_cartesian(ylim = c(0,2)) +
     scale_y_continuous(breaks=c(0,0.8,1,1.25,2))
@@ -158,7 +151,6 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
             legend.position="bottom", aspect.ratio=1)
     ggsave(filename = paste0(outdir,"/",foldername,"/","R2_CV_distribution1.png"), n2, height=4, width=8)
 
-
     n3 <- ggplot(data, aes(x=R2, y=AUC)) + geom_point(aes(colour=condition),size=0.5,alpha=0.3) +
       geom_vline(xintercept=0.8, colour="blue", linetype = "longdash") +
       coord_cartesian(ylim = c(0,20))
@@ -174,16 +166,16 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
     b$parameter <- "AUC"
     c<-data.frame(t(as.matrix(summary(data$R2))), stringsAsFactors=F, check.names=F)
     c$parameter <- "R2"
-    R2CV<-rbind(a,b)
-    R2CV<-rbind(R2CV,c)
-    R2CV<-R2CV[ ,c(7,1:6)]
+    R2CV<-plyr::rbind.fill(a,b)
+    R2CV<-plyr::rbind.fill(R2CV,c)
+    R2CV<-R2CV[ ,c((ncol(R2CV)-1),1:(ncol(R2CV)-2),ncol(R2CV))]
   } else {
     a<-data.frame(t(as.matrix(summary(data$CV))), stringsAsFactors=F, check.names=F)
     a$parameter <- "CV"
     b<-data.frame(t(as.matrix(summary(data$AUC))), stringsAsFactors=F, check.names=F)
     b$parameter <- "AUC"
-    R2CV<-rbind(a,b)
-    R2CV<-R2CV[ ,c(7,1:6)]
+    R2CV<-plyr::rbind.fill(a,b)
+    R2CV<-R2CV[ ,c((ncol(R2CV)-1),1:(ncol(R2CV)-2),ncol(R2CV))]
   }
   #print(R2CV)
 
@@ -198,7 +190,7 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
       theme_bw() + theme(text = element_text(size=12), axis.text.x = element_text(angle = 45,hjust = 1), aspect.ratio=1);
     ggsave(filename = paste0(outdir,"/",foldername,"/","PSM_distribution.png"), PSMplot, height=8, width=8);
 
-    PSMtable <- subset(PSMtable, PSMmean>3)
+    PSMtable <- subset(PSMtable, PSMmean>=PSMthreshold)
     nkeep <- PSMtable$id
     fkeep <- which(data$id %in% nkeep)
     names(data)[PSMcol] <- PSMname
@@ -230,7 +222,6 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
             legend.position="bottom", aspect.ratio=1)
     ggsave(filename = paste0(outdir,"/",foldername,"/","R2_CV_distribution2.png"), n2, height=4, width=8)
 
-
     n3 <- ggplot(data_PSMbig, aes(x=R2, y=AUC)) + geom_point(aes(colour=condition),size=0.5,alpha=0.3) +
       geom_vline(xintercept=0.8, colour="blue", linetype = "longdash") +
       coord_cartesian(ylim = c(0,20))
@@ -246,16 +237,16 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
     b$parameter <- "AUC"
     c<-data.frame(t(as.matrix(summary(data_PSMbig$R2))), stringsAsFactors=F, check.names=F)
     c$parameter <- "R2"
-    R2CV_PSMbig<-rbind(a,b)
-    R2CV_PSMbig<-rbind(R2CV_PSMbig,c)
-    R2CV_PSMbig<-R2CV_PSMbig[ ,c(7,1:6)]
-  }else{
+    R2CV_PSMbig<-plyr::rbind.fill(a,b)
+    R2CV_PSMbig<-plyr::rbind.fill(R2CV_PSMbig,c)
+    R2CV_PSMbig<-R2CV_PSMbig[ ,c((ncol(R2CV_PSMbig)-1),1:(ncol(R2CV_PSMbig)-2),ncol(R2CV_PSMbig))]
+  } else {
     a<-data.frame(t(as.matrix(summary(data_PSMbig$CV))), stringsAsFactors=F, check.names=F)
     a$parameter <- "CV"
     b<-data.frame(t(as.matrix(summary(data_PSMbig$AUC))), stringsAsFactors=F, check.names=F)
     b$parameter <- "AUC"
-    R2CV_PSMbig<-rbind(a,b)
-    R2CV_PSMbig<-R2CV_PSMbig[ ,c(7,1:6)]
+    R2CV_PSMbig<-plyr::rbind.fill(a,b)
+    R2CV_PSMbig<-R2CV_PSMbig[ ,c((ncol(R2CV_PSMbig)-1),1:(ncol(R2CV_PSMbig)-2),ncol(R2CV_PSMbig))]
   }
   #print(R2CV_PSMbig)
 
@@ -270,7 +261,7 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
   } else {
     fig1 <- NULL
   }
-  if(ncondition>1 & ncondition<=5) {
+  if (ncondition>1 & ncondition<=5) {
     fig2 <- newFigure( "Quantified_IDs_sample.png", "The overlapping of proteins from each sample.")
   } else {
     fig2 <- NULL
@@ -303,15 +294,15 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
   p3 <- newParagraph( "PSM>3 group is the subset of quantified proteins with on average more than 3 Peptide Spectrum Match (PSM) support." );
 
   ss1 <- addTo( ss1, t1)
-  if(ncondition>1){
+  if (ncondition>1) {
     ss2 <- addTo( ss2, fig1, fig2 ) # parent, child_1, ..., child_n
-  }else{
+  } else {
     ss2 <- addTo( ss2, fig1)
   }
-  if(isdatafitted){
+  if (isdatafitted) {
     ss3 <- addTo( ss3, t2, p1, fig3, fig4, fig5, fig6, fig8, fig10, p2 )
     ss4 <- addTo( ss4, p3, fig12, t3, t4, fig7, fig9, fig11, p2 )
-  }else{
+  } else {
     ss3 <- addTo( ss3, t2, p1, fig3, fig4, fig5, fig6, p2 )
     ss4 <- addTo( ss4, p3, fig12, t3, t4, fig7, p2 )
   }
