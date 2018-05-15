@@ -37,7 +37,10 @@
 #' @param keepreplicate whether to only keep the curves that are measured with
 #' all replicates under at least one experimental conditions, default set to
 #' FALSE, when there is only one experimental condition in the dataset, this
-#' means only keep the full replicates
+#' means only keep the full replicates, ie, same as keepfullrep=TRUE
+#' @param keepfullrep whether to only keep the curves that are measured with
+#' all replicates under all experimental conditions, default set to FALSE, this
+#' is useful for the dataset containing more than one experimental condtion
 #' @param stableref whether to only keep the curves with stable/flat reference
 #' (most of the time, 37C) curves, default set to FALSE
 #' @param stableref_nMAD level of significance for control of the reference
@@ -89,7 +92,8 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=TRUE, printGeneName=FAL
                            normalizedAUC=FALSE, refkeyword="37C",
                            AUC_uplimit=NULL, AUC_lowlimit=NULL,
                            nMAD=2.5, baselineMAD=0, fcthreshold=0, checkpointposition=NULL,
-                           keepreplicate=FALSE, stableref=FALSE, stableref_nMAD=3.5,
+                           keepreplicate=FALSE, keepfullrep=FALSE,
+                           stableref=FALSE, stableref_nMAD=3.5,
                            colorbackground=TRUE, graybackground=FALSE, nodesizebyMDT=TRUE,
                            colornodes=TRUE, labelnodes=TRUE, yscale=NULL,
                            PSMcutoff=TRUE, PSMthreshold=3, PSMcutoffbycondition=FALSE,
@@ -132,29 +136,36 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=TRUE, printGeneName=FAL
                                             " entries not properly parsed..."))}
   else { print("Protein labels were successfully parsed.") }
 
+  #to keep the data proper replicates as specified
   #to separate condition into condition and replicates
   nset <- length(unique(data$condition))
-  data <- tidyr::separate(data, condition, into=c("condition", "replicate"), sep="\\.")
-  ncondition <- length(unique(data$condition))
-  nreplicate <- length(unique(data$replicate))
-  uniquecond <- unique(data[ ,c("condition", "replicate")])
+  data1 <- tidyr::separate(data, condition, into=c("condition", "replicate"), sep="\\.")
+  ncondition <- length(unique(data1$condition))
+  nreplicate <- length(unique(data1$replicate))
+  uniquecond <- unique(data1[ ,c("condition", "replicate")])
   row.names(uniquecond) <- NULL
   print("Replicates information were extracted as follows:")
   print(as.data.frame(uniquecond))
-
-  # to keep the data in at least one condition with full replicates
-  if (keepreplicate) {
-    conditionrep <- dplyr::count(uniquecond, condition)
-    data_freq <- dplyr::count(data, id, condition)
+  conditionrep <- dplyr::count(uniquecond, condition)
+  data_freq <- dplyr::count(data1, id, condition)
+  if (keepfullrep) {
+    id_keep1 <- unique(data_freq$id)
+    for (i in 1: nrow(conditionrep)) {
+      id_keep1 <- intersect(id_keep1, subset(data_freq, condition==conditionrep$condition[i] & n==conditionrep$n[i])$id)
+    }
+    data1 <- subset(data1, id %in% id_keep1)
+    print(paste(nrow(data1), "measurements were measured with fully complete replicates in all conditions.", sep=" "))
+  } else if (keepreplicate) {
     id_keep <- data_freq[0, ]
     for (i in 1: nrow(conditionrep)) {
       id_keep <- rbind(id_keep, subset(data_freq, condition==conditionrep$condition[i] & n==conditionrep$n[i]))
     }
-    data <- merge(data, id_keep)
-    data$n <- NULL
-    print(paste(nrow(data), "measurements were measured with complete replicates in at least one condition.", sep=" "))
+    data1 <- merge(data1, id_keep, by=c("id","condition"), all=FALSE)
+    data1$n <- NULL
+    print(paste(nrow(data1), "measurements were measured with complete replicates in at least one condition.", sep=" "))
   }
-  #return(data)
+  data <- data1
+
   # To select the proteins with more than 3 PSM (average)
   if (PSMcutoff) {
     PSMcol <- grep("PSM", names(data), value=F)
@@ -162,16 +173,18 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=TRUE, printGeneName=FAL
     names(data)[PSMcol] <- "PSM"
     if (PSMcutoffbycondition) {
       PSMtable <- plyr::ddply(data, plyr::.(id,condition), summarize, PSMmean=mean(PSM))
-      PSMtable <- PSMtable %>% filter(PSMmean>=PSMthreshold) %>% count(id) %>% filter(n==ncondition)
     } else {
       PSMtable <- plyr::ddply(data, plyr::.(id), summarize, PSMmean=mean(PSM))
-      PSMtable <- subset(PSMtable, PSMmean>=PSMthreshold)
     }
-    nkeep <- PSMtable$id
-    fkeep <- which(data$id %in% nkeep)
+    PSMtable <- subset(PSMtable, PSMmean>=PSMthreshold)
     names(data)[PSMcol] <- PSMname
-    data_PSMsmall <- data[-fkeep, ]
-    data <- data[fkeep, ]
+    data <- merge(data, PSMtable)
+    data$PSMmean <- NULL
+    # nkeep <- PSMtable$id
+    # fkeep <- which(data$id %in% nkeep)
+    # names(data)[PSMcol] <- PSMname
+    # data_PSMsmall <- data[-fkeep, ]
+    # data <- data[fkeep, ]
     print("PSM cutoff was applied.")
   }
 
@@ -269,6 +282,7 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=TRUE, printGeneName=FAL
 
   if (byAUC) {
     nrowdata <- nrow(averageddata)
+    print("The number of total proteins to consider is:")
     print(nrowdata)
     #return(averageddata)
     if (onlyshowstabilized) {

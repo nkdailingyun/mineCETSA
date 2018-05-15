@@ -24,6 +24,8 @@ the order determines the arrangement, so in this case DMSO group would be the fi
 \item{layout}{a vector indicating the panel layout for multi-panel plots
 per page, default value is c(2,3) for set containing data, otherwise c(4,3)}
 
+\item{log2scale}{whether the yscales should be in log2 scale, default set to TRUE}
+
 \item{toplabel}{textual label at the top part of the page}
 
 \item{leftlabel}{textual label at the left side of the page}

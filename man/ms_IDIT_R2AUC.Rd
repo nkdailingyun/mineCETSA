@@ -9,12 +9,12 @@ ms_IDIT_R2AUC(data, nread = 10, printBothName = TRUE,
   onlyshowstabilized = FALSE, byAUC = TRUE, standardizedAUC = TRUE,
   preaveraged = FALSE, normalizedAUC = FALSE, refkeyword = "37C",
   AUC_uplimit = NULL, AUC_lowlimit = NULL, nMAD = 2.5, baselineMAD = 0,
-  fcthreshold = 0, checkpointposition = NULL, keepreplicate = FALSE,
-  stableref = FALSE, stableref_nMAD = 3.5, colorbackground = TRUE,
-  graybackground = FALSE, nodesizebyMDT = TRUE, colornodes = TRUE,
-  labelnodes = TRUE, yscale = NULL, PSMcutoff = TRUE, PSMthreshold = 3,
-  PSMcutoffbycondition = FALSE, idtoshow = NULL, idtoexclude = NULL,
-  plottitle = NULL)
+  fcthreshold = 0, checkpointposition = NULL, keeprep = FALSE,
+  keepfullrep = FALSE, stableref = FALSE, stableref_nMAD = 3.5,
+  colorbackground = TRUE, graybackground = FALSE, nodesizebyMDT = TRUE,
+  colornodes = TRUE, labelnodes = TRUE, yscale = NULL, PSMcutoff = TRUE,
+  PSMthreshold = 3, PSMcutoffbycondition = FALSE, idtoshow = NULL,
+  idtoexclude = NULL, plottitle = NULL)
 }
 \arguments{
 \item{data}{ITDR or ITTR dataset to generate R2 vs AUC plot, the provided
@@ -63,10 +63,14 @@ so default value is 0}
 whether their readings surpass fcthreshold, default value is NULL, which
 would automatically check the highest 3 dose points}
 
-\item{keepreplicate}{whether to only keep the curves that are measured with
+\item{keeprep}{whether to only keep the curves that are measured with
 all replicates under at least one experimental conditions, default set to
 FALSE, when there is only one experimental condition in the dataset, this
-means only keep the full replicates}
+means only keep the full replicates, ie, same as keepfullrep=TRUE}
+
+\item{keepfullrep}{whether to only keep the curves that are measured with
+all replicates under all experimental conditions, default set to FALSE, this
+is useful for the dataset containing more than one experimental condtion}
 
 \item{stableref}{whether to only keep the curves with stable/flat reference
 (most of the time, 37C) curves, default set to FALSE}

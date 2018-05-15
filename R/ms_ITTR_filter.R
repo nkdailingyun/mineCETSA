@@ -67,12 +67,14 @@ ms_ITTR_filter <- function(data, nread=10, checkpointposition=NULL,
   }
   #return(list(PSMsmall_protein=data_PSMsmall, PSMlarge_protein=data))
 
+  #to keep the data proper replicates as specified
   #to separate condition into condition and replicates
   nset <- length(unique(data$condition))
-  data_copy <- tidyr::separate(data, condition, into=c("condition", "replicate"), sep="\\.")
-  ncondition <- length(unique(data_copy$condition))
-  nreplicate <- length(unique(data_copy$replicate))
-  uniquecond <- unique(data_copy[ ,c("condition", "replicate")])
+  data1 <- tidyr::separate(data, condition, into=c("condition", "replicate"), sep="\\.")
+  ncondition <- length(unique(data1$condition))
+  nreplicate <- length(unique(data1$replicate))
+  uniquecond <- unique(data1[ ,c("condition", "replicate")])
+  row.names(uniquecond) <- NULL
   # print("Replicates information were extracted as follows:")
   # print(as.data.frame(uniquecond))
 

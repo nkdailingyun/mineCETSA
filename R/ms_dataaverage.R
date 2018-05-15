@@ -116,7 +116,8 @@ ms_find_replicate <- function(data, nread=10, keepfullrep=FALSE) {
   nrowdata <- nrow(data)
   colorders <- names(data)
 
-  # to keep the data in at least one condition with full replicates
+  #to keep the data proper replicates as specified
+  #to separate condition into condition and replicates
   nset <- length(unique(data$condition))
   data1 <- tidyr::separate(data, condition, into=c("condition", "replicate"), sep="\\.")
   ncondition <- length(unique(data1$condition))
@@ -134,16 +135,17 @@ ms_find_replicate <- function(data, nread=10, keepfullrep=FALSE) {
       id_keep1 <- intersect(id_keep1, subset(data_freq, condition==conditionrep$condition[i] & n==conditionrep$n[i])$id)
     }
     data_complete <- subset(data, id %in% id_keep1)
+    print(paste(nrow(data_complete), "measurements were measured with fully complete replicates in all conditions.", sep=" "))
   } else {
     id_keep <- data_freq[0, ]
     for (i in 1: nrow(conditionrep)) {
       id_keep <- rbind(id_keep, subset(data_freq, condition==conditionrep$condition[i] & n==conditionrep$n[i]))
     }
-    data_complete <- merge(data1, id_keep, by=c("id","condition"), all = FALSE)
+    data_complete <- merge(data1, id_keep, by=c("id","condition"), all=FALSE)
     data_complete <- tidyr::unite(data_complete, condition, condition, replicate, sep=".")
     data_complete$n <- NULL
+    print(paste(nrow(data_complete), "measurements were measured with complete replicates in at least one condition.", sep=" "))
   }
-  print(paste(nrow(data_complete), "measurements were measured with complete replicates in at least one condition.", sep=" "))
 
   # keep1 <- which(table(data$id) == nreplicate)
   # if(length(keep1)==0){ stop("No proteins contain complete replicate") }
