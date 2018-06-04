@@ -9,7 +9,7 @@ ms_IDIT_R2AUC(data, nread = 10, printBothName = TRUE,
   onlyshowstabilized = FALSE, byAUC = TRUE, standardizedAUC = TRUE,
   preaveraged = FALSE, normalizedAUC = FALSE, refkeyword = "37C",
   AUC_uplimit = NULL, AUC_lowlimit = NULL, nMAD = 2.5, baselineMAD = 0,
-  fcthreshold = 0, checkpointposition = NULL, keeprep = FALSE,
+  fcthreshold = 0, checkpointposition = NULL, keepreplicate = FALSE,
   keepfullrep = FALSE, stableref = FALSE, stableref_nMAD = 3.5,
   colorbackground = TRUE, graybackground = FALSE, nodesizebyMDT = TRUE,
   colornodes = TRUE, labelnodes = TRUE, yscale = NULL, PSMcutoff = TRUE,
@@ -63,7 +63,7 @@ so default value is 0}
 whether their readings surpass fcthreshold, default value is NULL, which
 would automatically check the highest 3 dose points}
 
-\item{keeprep}{whether to only keep the curves that are measured with
+\item{keepreplicate}{whether to only keep the curves that are measured with
 all replicates under at least one experimental conditions, default set to
 FALSE, when there is only one experimental condition in the dataset, this
 means only keep the full replicates, ie, same as keepfullrep=TRUE}

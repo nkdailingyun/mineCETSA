@@ -60,5 +60,5 @@ ms_directory <- function(data, dataname) {
   } else if (dir.exists(outdir)==FALSE) {
     dir.create(outdir)
   }
-  return(outdir)
+  return(list(outdir=outdir, data=data))
 }

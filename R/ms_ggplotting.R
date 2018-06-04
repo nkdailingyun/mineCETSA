@@ -68,7 +68,8 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
                           pdfname="ggplotting.pdf", pdfheight=12, pdfwidth=12) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   if (any(duplicated(data[, c(1,3)]))) {
     print("Warning for duplicated protein name entries")

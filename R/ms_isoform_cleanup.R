@@ -19,7 +19,8 @@ ms_isoform_resolve <- function(data) {
 
   # add variable name to output
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   ncondition <- length(unique(data$condition))
 
@@ -137,7 +138,8 @@ ms_isoform_consolidate <- function(data, matchtable, nread=10, withabd=FALSE, we
 
   # add variable name to output
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   matchtable <- read.delim(file=matchtable, quote="", na.string="", as.is=T, check.names=F)
   matchtable$id <- gsub("_", "-", matchtable$id)

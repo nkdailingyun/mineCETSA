@@ -133,7 +133,7 @@ ms_isothermal_line_innerplot <- function(data, legenddata, levelvector, nread,
     if (length(levelvector)) {
       data_l$condition<-factor(as.character(data_l$condition), levels=levelvector)
     } else {
-      data_l$condition<-factor(data_l$condition, levels=unique(data_l$condition))
+      data_l$condition<-factor(data_l$condition, levels=sort(unique(data_l$condition)))
     }
     data_l$treatment <- as.numeric(as.character(data_l$treatment))
     #data_l<-data.frame(data_l)

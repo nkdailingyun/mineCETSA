@@ -83,7 +83,8 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                               pdfname="ggplotting.pdf", pdfheight=12, pdfwidth=12) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   png(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                       dataname, "_curve replicate distribution.png"))

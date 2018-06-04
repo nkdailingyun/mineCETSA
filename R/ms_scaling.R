@@ -30,7 +30,8 @@ ms_scaling <- function(data, nread=10, reorder=FALSE, writefactortofile=TRUE,
                        filename="CETSA_normalization_factors.txt") {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   if (reorder) {
     # make sure the temperature is in ascending trend

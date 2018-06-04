@@ -100,7 +100,8 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=TRUE, printGeneName=FAL
                            idtoshow=NULL, idtoexclude=NULL, plottitle=NULL) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   if (length(grep("description", names(data)))) {
     proteininfo <- unique(data[ ,c("id","description")])
@@ -414,6 +415,7 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=TRUE, printGeneName=FAL
       if (labelnodes) {
         n1 <- n1 + geom_text_repel(data=data_changed, aes(x=R2, y=AUC, label=id, colour=id), size=3)
       }
+      n1 <- n1 + guides(colour=FALSE)
     } else if (nrow(data_changed)) {
       if (nodesizebyMDT) {
         n1 <- n1 + geom_point(data=data_changed, aes(x=R2, y=AUC, shape=condition, size=-log10(MDT)), colour="orange")

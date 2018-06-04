@@ -34,7 +34,8 @@ ms_2D_globalview <- function(data, set=NULL, treatment=NULL, cvthreshold=0.1, co
                              labelnodes=FALSE, labelcategory=c("CC","NC","CN")) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   if (length(set)>0) { data <- data[ ,c(1,2,grep(set,names(data)))] }
   if (length(treatment)!=1) {stop("Provide only one treatment keyword for globalview")}
@@ -82,8 +83,8 @@ ms_2D_globalview <- function(data, set=NULL, treatment=NULL, cvthreshold=0.1, co
     datal_change <- na.omit(merge(datal_Echange, datal_Cchange))
     names(datal_change)[c(3,4)] <- c("expressionchange", "thermalchange")
   }
-    expressioncutoff <- median(datal_change$expressionchange) + expressionchange_nMAD*mad(datal_change$expressionchange)
-    thermalcutoff <- median(datal_change$thermalchange) + expressionchange_nMAD*mad(datal_change$thermalchange)
+    expressioncutoff <- median(datal_change$expressionchange,na.rm=T) + expressionchange_nMAD*mad(datal_change$expressionchange,na.rm=T)
+    thermalcutoff <- median(datal_change$thermalchange,na.rm=T) + thermalchange_nMAD*mad(datal_change$thermalchange,na.rm=T)
 
     datal_change <- datal_change %>% rowwise() %>%
       mutate(expression = ifelse(abs(expressionchange)<expressioncutoff, "N", "C")) %>%
@@ -110,7 +111,7 @@ ms_2D_globalview <- function(data, set=NULL, treatment=NULL, cvthreshold=0.1, co
   q <- q + geom_hline(yintercept=thermalcutoff, linetype="dashed", color="black") +
     geom_vline(xintercept=-expressioncutoff, linetype="dashed", color="black") +
     geom_vline(xintercept=expressioncutoff, linetype="dashed", color="black") +
-    theme(text = element_text(size=8), plot.title = element_text(hjust=0.5, size=rel(1.2)), aspect.ratio=0.5)
+    theme(text = element_text(size=12), plot.title = element_text(hjust=0.5, size=rel(1.2)), aspect.ratio=0.5)
 
   ggsave(file=paste0(format(Sys.time(), "%y%m%d_%H%M"), "_Changes_in_", treatment, ".pdf"), q, width=11.69, height=8.27)
   ms_filewrite(datal_change, paste0("Changes_in_", treatment, ".txt"), outdir=outdir)

@@ -75,7 +75,7 @@ ms_isothermal_legend <- function(legenddata, levelvector, nread, nreplicate, pre
   if (length(levelvector)) {
     d1$condition<-factor(as.character(d1$condition), levels=levelvector)
   } else {
-    d1$condition<-factor(d1$condition, levels=unique(d1$condition))
+    d1$condition<-factor(d1$condition, levels=sort(unique(d1$condition)))
   }
   ncond <- length(unique(d1$condition))
   if (presetcolor & length(colorpanel)==0) {
@@ -148,7 +148,7 @@ ms_isothermal_legend2 <- function(legenddata, levelvector, nread, nsample, prese
   if (length(levelvector)) {
     d2$sample<-factor(as.character(d2$sample), levels=levelvector)
   } else {
-    d2$sample<-factor(d2$sample, levels=unique(d2$sample))
+    d2$sample<-factor(d2$sample, levels=sort(unique(d2$sample)))
   }
 
   nsample <- length(unique(d2$sample))

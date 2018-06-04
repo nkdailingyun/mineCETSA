@@ -30,7 +30,8 @@ ms_ITDR_fitting <- function(data, nread=10, fc=0.3, calMDT=FALSE,
                             writetofile=TRUE, keepfittedvalue=FALSE) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   nrowdata <- nrow(data)
   nametempvector <- names(data[4:(nread+3)])
@@ -137,10 +138,10 @@ ms_ITDR_fitting <- function(data, nread=10, fc=0.3, calMDT=FALSE,
     }
   }
 
-  if (length(attr(data,"outdir"))==0  & length(outdir)>0) {
+  if (length(attr(data,"outdir"))==0 & length(outdir)>0) {
     attr(data,"outdir") <- outdir
   }
-  if (length(attr(Fitted,"outdir"))==0  & length(outdir)>0) {
+  if (length(attr(Fitted,"outdir"))==0 & length(outdir)>0) {
     attr(Fitted,"outdir") <- outdir
   }
   if (keepfittedvalue) {
@@ -187,7 +188,8 @@ ms_ITDR_fitting_new <- function(data, nread=10, calMDT=TRUE, modelbestR2=TRUE,
                                 writetofile=TRUE, keepfittedvalue=FALSE) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   nrowdata <- nrow(data)
   nametempvector <- names(data[4:(nread+3)])
@@ -349,7 +351,8 @@ ms_ITTR_fitting <- function(data, nread=10, fc=0.3, calMTT=FALSE,
                             writetofile=TRUE, keepfittedvalue=FALSE) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   nrowdata <- nrow(data)
   nametempvector <- names(data[4:(nread+3)])

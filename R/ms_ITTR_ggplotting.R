@@ -84,7 +84,8 @@ ms_ITTR_ggplotting <- function(data, legenddata=NULL, levelvector=NULL, nread=10
 
   # legenddata is any dataset containing the full levels of conditions, same as data
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   # To select the proteins with more than 3 PSM (average)
   if (PSMcutoff) {

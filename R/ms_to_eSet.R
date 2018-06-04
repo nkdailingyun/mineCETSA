@@ -74,7 +74,7 @@ ms_to_eSet <- function(data, matrixonly=FALSE, proteininfo=NULL, nread=NULL,
   }
   #print(summary(pdata))
   #print(sapply(pdata, class))
-  stopifnot(all(rownames(pdata)==colnames(exprs)))
+  stopifnot(all(row.names(pdata)==colnames(exprs)))
   metadata <- data.frame(labelDescription=names(pdata),
                          row.names=names(pdata))
   phenodata <- new("AnnotatedDataFrame", data=pdata, varMetadata=metadata)
@@ -86,7 +86,6 @@ ms_to_eSet <- function(data, matrixonly=FALSE, proteininfo=NULL, nread=NULL,
   } else {
     fdata <- fData(refeset)
   }
-
   metadata <- data.frame(labelDescription=names(fdata),
                          row.names=names(fdata))
   featuredata <- new("AnnotatedDataFrame", data=fdata, varMetadata=metadata)

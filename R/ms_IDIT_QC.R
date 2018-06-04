@@ -40,7 +40,8 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
   cat("for maximal utilization of this QC function. \n")
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   if (!length(foldername)) {
     foldername <- paste0(dataname, "_QCreports")

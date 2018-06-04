@@ -32,7 +32,9 @@ ms_goodctrlcurve_selection <- function(data, nread=10, ctrlcond=NULL,
                                    topcutoff=NULL, bottomcutoff=NULL, nMAD=2.5) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
+
   # look for outlier proteins based on melting behavior in controls
   outliers <- NULL
   print("Make sure you provide fitted data with Tm and R2 values for this option!")
@@ -111,7 +113,8 @@ ms_find_replicate <- function(data, nread=10, keepfullrep=FALSE) {
   #, variancecutoff=FALSE, nMAD_var=2.5) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   nrowdata <- nrow(data)
   colorders <- names(data)
@@ -249,7 +252,8 @@ ms_find_replicate <- function(data, nread=10, keepfullrep=FALSE) {
 ms_data_average <- function(data, nread=10, rep="r", weightbycountnum=TRUE) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   nrowdata <- nrow(data)
   colorders <- names(data)

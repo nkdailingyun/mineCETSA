@@ -18,7 +18,8 @@
 ms_2D_caldiff <- function(data, treatmentlevel=NULL) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   if (length(treatmentlevel)==0) {
     stop("Need to specify a vector of treatments")

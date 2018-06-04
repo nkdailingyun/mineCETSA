@@ -66,7 +66,8 @@ ms_ggplotting_errorbar <- function(data, legenddata=NULL, levelvector=NULL,
                               pdfname="ggplotting.pdf", pdfheight=12, pdfwidth=12) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   if (length(grep("description", names(data)))) {
     proteininfo <- unique(data[ ,c("id","description")])

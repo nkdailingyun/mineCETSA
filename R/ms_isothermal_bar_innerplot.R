@@ -70,7 +70,7 @@ ms_isothermal_bar_innerplot <- function(data, legenddata, levelvector, nread,
   if (length(levelvector)) {
     cdata$sample<-factor(as.character(cdata$sample), levels=levelvector)
   } else {
-    cdata$sample<-factor(cdata$sample, levels=unique(cdata$sample))
+    cdata$sample<-factor(cdata$sample, levels=sort(unique(cdata$sample)))
   }
   cdata$treatment<-factor(as.character(cdata$treatment), levels=nametreatmentvector)
 

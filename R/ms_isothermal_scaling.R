@@ -36,7 +36,8 @@ ms_isothermal_scaling <- function(data, dataname, nread, abdnorm,
                                   bottomlabel, filename) {
 
   if (length(dataname)==0) { dataname <- deparse(substitute(data)) }
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   abdcol <- grep("Abundance", names(data), value=FALSE)
   if(length(abdcol) > 0 & abdnorm) {

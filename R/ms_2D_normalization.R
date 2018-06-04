@@ -42,7 +42,8 @@ ms_2D_normalization <- function(datafile, isfile=FALSE, todf=TRUE) {
   } else {
     data <- datafile
     dataname <- deparse(substitute(datafile))
-    outdir <- ms_directory(datafile, dataname)
+    outdir <- ms_directory(datafile, dataname)$outdir
+    data <- ms_directory(datafile, dataname)$data
     cname <- setdiff(names(datafile), c("id","description","sumUniPeps","sumPSMs","countNum"))
     if (length(unlist(strsplit(cname[1], "_")))==3) {
       temperature <- unlist(lapply(strsplit(cname, "_"),`[`,1))

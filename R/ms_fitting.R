@@ -31,7 +31,8 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
                        writetofile=TRUE, keepfittedvalue=FALSE) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   nrowdata <- nrow(data)
   nametempvector <- names(data[4:(nread+3)])

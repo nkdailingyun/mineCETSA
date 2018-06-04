@@ -40,7 +40,8 @@ ms_2D_barplotting <- function(data, treatmentlevel=NULL, setlevel=NULL,
 
   # legenddata is any dataset containing the full levels of conditions, same as data
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   # to concatenate id and description
   nrowdata <- nrow(data)

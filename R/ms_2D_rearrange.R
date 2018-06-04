@@ -24,7 +24,8 @@
 ms_2D_rearrange <- function(data, nread=9, repthreshold=0.75, averagecount=TRUE, countthreshold=2) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   if (repthreshold>0) {
     counttable <- count(data, id) %>% mutate(freq=n/max(n)) %>% filter(freq>=repthreshold)

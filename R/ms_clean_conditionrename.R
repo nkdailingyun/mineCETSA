@@ -21,7 +21,8 @@ ms_clean <- function(data, nread=10, remkeratin=TRUE, remsinglecondprot=FALSE) {
 
   # add variable name to output
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   nrowdata <- nrow(data)
   row_na <- apply(data, 1, function(x) {any(is.na(x[c(1:(nread+3))]))})

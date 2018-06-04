@@ -48,7 +48,8 @@ ms_ITDR_filter <- function(data, nread=10, checkpointposition=NULL,
                            PSMcutoff=TRUE, PSMthreshold=3) {
 
   dataname <- deparse(substitute(data))
-  outdir <- ms_directory(data, dataname)
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
 
   if (PSMcutoff) { # To select the proteins with more than 3 PSM (average)
     PSMcol <- grep("PSM", names(data), value=FALSE)
