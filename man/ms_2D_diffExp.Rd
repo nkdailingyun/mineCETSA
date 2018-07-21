@@ -5,7 +5,7 @@
 \title{ms_2D_diffExp}
 \usage{
 ms_2D_diffExp(data, set = NULL, basetemp = "37C", contrast = NULL,
-  logFC_threshold = 0.2, adjp_threshold = 0.01, labelnodes = TRUE,
+  logFC_threshold = 0.3, adjp_threshold = 0.01, labelnodes = TRUE,
   xlimit = NULL, ylimit = NULL, returneset = FALSE)
 }
 \arguments{

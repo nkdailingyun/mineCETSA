@@ -8,13 +8,14 @@ ms_IDIT_R2AUC(data, nread = 10, printBothName = TRUE,
   printGeneName = FALSE, pfdatabase = FALSE, rep = "r",
   onlyshowstabilized = FALSE, byAUC = TRUE, standardizedAUC = TRUE,
   preaveraged = FALSE, normalizedAUC = FALSE, refkeyword = "37C",
-  AUC_uplimit = NULL, AUC_lowlimit = NULL, nMAD = 2.5, baselineMAD = 0,
-  fcthreshold = 0, checkpointposition = NULL, keepreplicate = FALSE,
-  keepfullrep = FALSE, stableref = FALSE, stableref_nMAD = 3.5,
-  colorbackground = TRUE, graybackground = FALSE, nodesizebyMDT = TRUE,
-  colornodes = TRUE, labelnodes = TRUE, yscale = NULL, PSMcutoff = TRUE,
-  PSMthreshold = 3, PSMcutoffbycondition = FALSE, idtoshow = NULL,
-  idtoexclude = NULL, plottitle = NULL)
+  AUC_uplimit = NULL, AUC_lowlimit = NULL, log2scale = FALSE,
+  nMAD = 2.5, baselineMAD = 0, fcthreshold = 0,
+  checkpointposition = NULL, keepreplicate = FALSE, keepfullrep = FALSE,
+  stableref = FALSE, stableref_nMAD = 3.5, colorbackground = TRUE,
+  graybackground = FALSE, nodesizebyMDT = TRUE, colornodes = TRUE,
+  labelnodes = TRUE, yscale = NULL, PSMcutoff = TRUE, PSMthreshold = 3,
+  PSMcutoffbycondition = FALSE, idtoshow = NULL, idtoexclude = NULL,
+  plottitle = NULL)
 }
 \arguments{
 \item{data}{ITDR or ITTR dataset to generate R2 vs AUC plot, the provided
@@ -47,6 +48,8 @@ such as 37C readings, default set to FALSE}
 
 \item{refkeyword}{a keyword used for the indication of reference control, as
 most of the time the reference is 37C expression level, default value is 37C}
+
+\item{log2scale}{whether to transform the readings into log2 scale}
 
 \item{nMAD}{level of significance, default set at 2.5}
 

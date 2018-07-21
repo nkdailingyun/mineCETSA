@@ -96,8 +96,8 @@ ms_goodctrlcurve_selection <- function(data, nread=10, ctrlcond=NULL,
 #' @param nread number of reading channels or sample treatements, default value
 #' is 10
 #' @param keepfullrep whether to only keep the proteins with full replicates in
-#' all the experimental conditions, default is FALSE, therefore, to keep the curves
-#' that in at least one condition with full replicates, which is same as `keepcompleterep`
+#' all the experimental conditions, default is FALSE, just to keep the curves
+#' that in at least one condition with full replicates
 #'
 #' @importFrom plyr daply
 #' @import tidyr
@@ -110,7 +110,6 @@ ms_goodctrlcurve_selection <- function(data, nread=10, ctrlcond=NULL,
 #'
 
 ms_find_replicate <- function(data, nread=10, keepfullrep=FALSE) {
-  #, variancecutoff=FALSE, nMAD_var=2.5) {
 
   dataname <- deparse(substitute(data))
   outdir <- ms_directory(data, dataname)$outdir
@@ -150,83 +149,118 @@ ms_find_replicate <- function(data, nread=10, keepfullrep=FALSE) {
     print(paste(nrow(data_complete), "measurements were measured with complete replicates in at least one condition.", sep=" "))
   }
 
-  # keep1 <- which(table(data$id) == nreplicate)
-  # if(length(keep1)==0){ stop("No proteins contain complete replicate") }
-  # nkeep1 <- names(keep1)
-  # fkeep1 <- which(data$id %in% nkeep1)
-  # data_complete <- data[fkeep1, ]
-  # print(paste0("The number of proteins with complete replicates is: ",
-  #              length(unique(data_complete$id))))
-  # print(paste0("The percentage of proteins with complete replicates is: ",
-  #              round(length(unique(data_complete$id))/length(unique(data$id)),3)*100, "%"))
-
   data_complete <- data_complete[ ,colorders]
   if (length(attr(data_complete,"outdir"))==0 & length(outdir)>0) {
     attr(data_complete,"outdir") <- outdir
   }
   return(data_complete)
-
-  # if (nset==2) {
-  #   dism <- plyr::daply(data_complete, "id", function(data) {
-  #     data<-data[order(data$condition), ]
-  #     dm<-as.vector(dist(data[ ,c(4:(nread+3))]))
-  #     eucl<-dm
-  #     eucl
-  #   })
-  #
-  #   dism <- data.frame(id=names(dism), distance=dism, row.names=NULL)
-  #   #return(dism)
-  #   print("The distances of inter-replicates readings distribution is as follows:")
-  #   print(summary(dism$distance))
-  # } else {
-  #   dism <- plyr::daply(data_complete, "id", function(data) {
-  #     data<-data[order(data$condition), ]
-  #     dm<-as.vector(dist(data[ ,c(4:(nread+3))]))
-  #     n<-nrow(data)
-  #     nsd<-sd(dm)
-  #     nmean<-mean(dm,na.rm=T)
-  #     ncv<-nsd/nmean
-  #     eucl<-c(n, nmean, nsd, ncv)
-  #     eucl
-  #   })
-  #
-  #   dism <- data.frame(id=rownames(dism), dism, row.names=NULL)
-  #   #nlength <- nreplicate*(nreplicate-1)/2
-  #   #colnames(dism) <- c("id", paste0("distance_", 1:nlength), "mean", "sd", "cv")
-  #   colnames(dism) <- c("id", "num", "mean", "sd", "cv")
-  #   #return(dism)
-  #   print("The CVs of inter-replicates readings distribution is as follows:")
-  #   print(summary(dism$cv))
-  # }
-  #
-  # data_largevar <- NULL
-  # if (variancecutoff) {
-  #   cutoff <- NULL
-  #   # MAD guided significance
-  #   print("use MAD scheme to assign variance cutoff...")
-  #   if (nset==2) {
-  #     cutoff <- round(median(dism$distance,na.rm=T)+nMAD_var*mad(dism$distance,na.rm=T), 3)
-  #     print(paste0("The distance cutoff limit (", nMAD_var, "*mad) sets at ", cutoff))
-  #     dism1 <- subset(dism, distance<cutoff)
-  #   } else {
-  #     cutoff <- round(median(dism$cv,na.rm=T)+nMAD_var*mad(dism$cv,na.rm=T), 3)
-  #     print(paste0("The variance (CV) cutoff limit (", nMAD_var, "*mad) sets at ", cutoff))
-  #     dism1 <- subset(dism, cv<cutoff)
-  #   }
-  #   fkeep1 <- which(data_complete$id %in% dism1$id)
-  #   data_largevar <- data_complete[-fkeep1, ]
-  #   data_complete <- data_complete[fkeep1, ]
-  #   print(paste0("The number of reproducible proteins with complete replicates is: ",
-  #                length(unique(data_complete$id))))
-  #   data_complete$outdir <- outdir
-  #   data_largevar$outdir <- outdir
-  #   return(list(data_complete=data_complete, data_largevar=data_largevar, dism=dism))
-  # } else {
-  #   data_complete$outdir <- outdir
-  #   return(list(data_complete=data_complete, dism=dism))
-  # }
 }
 
+#' ms_reproducible_replicate
+#'
+#' Function to perform subset the reproducible replicated measurements on dataframe
+#'
+#' @param data dataset to subset reproducible replicates
+#' @param nread number of reading channels or sample treatements, default value
+#' is 10
+#' @param variancecutoff whether to check the variance of the readings
+#' from replicated measurements, default is TRUE
+#' @param nMAD_var the variance cutoff value would be determined using MAD scheme,
+#' nMAD_var indicates the significance level of MAD cutoff, default value is 2.5
+#'
+#' @importFrom plyr daply
+#' @import tidyr
+#' @export
+#' @return dataframe containing the reproducible replicates subset
+#' @examples \dontrun{
+#' data_reproducible_set <- ms_reproducible_replicate(data_complete_set)
+#' }
+#'
+#'
+ms_reproducible_replicate <- function(data, nread=10, variancecutoff=TRUE,
+                                      nMAD_var=2.5) {
+
+  dataname <- deparse(substitute(data))
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
+
+  nrowdata <- nrow(data)
+  colorders <- names(data)
+
+  #to keep the data proper replicates as specified
+  #to separate condition into condition and replicates
+  nset <- length(unique(data$condition))
+  data1 <- tidyr::separate(data, condition, into=c("condition", "replicate"), sep="\\.")
+  ncondition <- length(unique(data1$condition))
+  nreplicate <- length(unique(data1$replicate))
+  uniquecond <- unique(data1[ ,c("condition", "replicate")])
+  row.names(uniquecond) <- NULL
+  print("Replicates information were extracted as follows:")
+  print(as.data.frame(uniquecond))
+  conditionrep <- dplyr::count(uniquecond, condition)
+  data_freq <- dplyr::count(data1, id, condition)
+  #print(head(data_freq, n=20))
+
+  if (nset==2) {
+    dism <- plyr::daply(data, "id", function(data) {
+      data<-data[order(data$condition), ]
+      dm<-as.vector(dist(data[ ,c(4:(nread+3))]))
+      eucl<-dm
+      eucl
+    })
+
+    dism <- data.frame(id=names(dism), distance=dism, row.names=NULL)
+    #return(dism)
+    print("The distances of inter-replicates readings distribution is as follows:")
+    print(summary(dism$distance))
+  } else {
+    dism <- plyr::daply(data, "id", function(data) {
+      data<-data[order(data$condition), ]
+      dm<-as.vector(dist(data[ ,c(4:(nread+3))]))
+      n<-nrow(data)
+      nsd<-sd(dm)
+      nmean<-mean(dm,na.rm=T)
+      ncv<-nsd/nmean
+      eucl<-c(n, nmean, nsd, ncv)
+      eucl
+    })
+
+    dism <- data.frame(id=rownames(dism), dism, row.names=NULL)
+    #nlength <- nreplicate*(nreplicate-1)/2
+    #colnames(dism) <- c("id", paste0("distance_", 1:nlength), "mean", "sd", "cv")
+    colnames(dism) <- c("id", "num", "mean", "sd", "cv")
+    #return(dism)
+    print("The CVs of inter-replicates readings distribution is as follows:")
+    print(summary(dism$cv))
+  }
+
+  data_largevar <- NULL
+  if (variancecutoff) {
+    cutoff <- NULL
+    # MAD guided significance
+    print("use MAD scheme to assign variance cutoff...")
+    if (nset==2) {
+      cutoff <- round(median(dism$distance,na.rm=T)+nMAD_var*mad(dism$distance,na.rm=T), 3)
+      print(paste0("The distance cutoff limit (", nMAD_var, "*mad) sets at ", cutoff))
+      dism1 <- subset(dism, distance<cutoff)
+    } else {
+      cutoff <- round(median(dism$cv,na.rm=T)+nMAD_var*mad(dism$cv,na.rm=T), 3)
+      print(paste0("The variance (CV) cutoff limit (", nMAD_var, "*mad) sets at ", cutoff))
+      dism1 <- subset(dism, cv<cutoff)
+    }
+    fkeep1 <- which(data$id %in% dism1$id)
+    data_largevar <- data[-fkeep1, ]
+    data_reproducible <- data[fkeep1, ]
+    print(paste0("The number of reproducible proteins with complete replicates is: ",
+                 length(unique(data_reproducible$id))))
+    data_reproducible$outdir <- outdir
+    data_largevar$outdir <- outdir
+    return(list(data_reproducible=data_reproducible, data_largevar=data_largevar, dism=dism))
+  } else {
+    data$outdir <- outdir
+    return(list(data=data, dism=dism))
+  }
+}
 
 #' ms_data_average
 #'
@@ -309,7 +343,7 @@ ms_data_average <- function(data, nread=10, rep="r", weightbycountnum=TRUE) {
   averageddata <- merge(averageddata, proteininfo)
   averageddata <- averageddata[ ,colorders]
 
-  if (length(attr(averageddata,"outdir"))==0  & length(outdir)>0) {
+  if (length(attr(averageddata,"outdir"))==0 & length(outdir)>0) {
     attr(averageddata,"outdir") <- outdir
   }
   return(averageddata)

@@ -188,7 +188,7 @@ ms_isoform_consolidate <- function(data, matchtable, nread=10, withabd=FALSE, we
   } else {
     data <- data[ ,c(1:3, gtools::mixedorder(names(data)[c(4:(nread+3))])+3, (nread+4):ncol(data))]
   }
-  if (length(attr(data,"outdir"))==0  & length(outdir)>0) {
+  if (length(attr(data,"outdir"))==0 & length(outdir)>0) {
     attr(data,"outdir") <- outdir
   }
   ms_filewrite(data, paste0(dataname,"_isoform_consolidated.txt"))

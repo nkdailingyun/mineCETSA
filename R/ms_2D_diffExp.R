@@ -25,7 +25,7 @@
 #' }
 #'
 ms_2D_diffExp <- function(data, set=NULL, basetemp="37C", contrast=NULL,
-                          logFC_threshold=0.2, adjp_threshold=0.01,
+                          logFC_threshold=0.3, adjp_threshold=0.01,
                           labelnodes=TRUE, xlimit=NULL, ylimit=NULL, returneset=FALSE) {
 
   dataname <- deparse(substitute(data))
@@ -95,28 +95,26 @@ ms_2D_diffExp <- function(data, set=NULL, basetemp="37C", contrast=NULL,
     top$category <- ifelse(abs(top$logFC)>=logFC_threshold & top$adj.P.Val<=adjp_threshold, "C", "N")
     print(paste0("The category of expression level change in ", contrast.name, " are as follows: "))
     print(table(top$category))
-    write.csv(top, paste0(format(Sys.time(), "%y%m%d_%H%M_"), "_", dataname, "_", contrast.name, "_eBays.csv"), row.names=F)
+    write.csv(top, paste0(format(Sys.time(),"%y%m%d_%H%M_"),dataname,"_",contrast.name,"_eBays.csv"), row.names=F)
+
+    top <- top %>% rowwise() %>% mutate(gene=getGeneName(description), log10p=-log10(adj.P.Val))
+    q <- ggpubr::ggscatter(top, x = "logFC", y = "log10p",
+                           color = "category", shape=20, alphla=0.1,
+                           palette = c("#FC4E07", "gray"),
+                           title = paste0("Expression Changes of ",contrast.name),
+                           xlab = "fold change of 37C expression level [log2]",
+                           ylab = "adjusted p values [-log10]")
+    if (length(xlimit)) { q <- q + coord_cartesian(xlim=xlimit)}
+    if (length(ylimit)) { q <- q + coord_cartesian(ylim=ylimit)}
+    if (labelnodes) {
+      q <- q + ggrepel::geom_text_repel(data=subset(top, category=="C"),
+                                        aes(label=gene))
+    }
+    q <- q + theme(text=element_text(size=12), plot.title=element_text(hjust=0.5, size=rel(1.2)), aspect.ratio=1)
+    ggsave(file=paste0(format(Sys.time(), "%y%m%d_%H%M"), "_Changes_in_", contrast, ".pdf"), q, width=8.27, height=11.69)
+
     fittoptable <- rbind(fittoptable, top)
   }
-
-  fittoptable <- fittoptable %>% rowwise() %>%
-    mutate(gene = getGeneName(description), log10p=-log10(adj.P.Val))
-
-  q <- ggpubr::ggscatter(fittoptable, x = "logFC", y = "log10p",
-                         color = "category", shape=20, alphla=0.1,
-                         palette = c("#FC4E07", "gray"),
-                         title = paste0("Expression Changes of ",contrast),
-                         xlab = "fold change of 37C expression level [log2]",
-                         ylab = "adjusted p values [-log10]")
-  if (length(xlimit)) { q <- q + coord_cartesian(xlim=xlimit)}
-  if (length(ylimit)) { q <- q + coord_cartesian(ylim=ylimit)}
-  if (labelnodes) {
-    q <- q + ggrepel::geom_text_repel(data=subset(fittoptable, category=="C"),
-                                      aes(label=gene))
-  }
-  q <- q + theme(text = element_text(size=12), plot.title = element_text(hjust=0.5, size=rel(1.2)), aspect.ratio=1)
-
-  ggsave(file=paste0(format(Sys.time(), "%y%m%d_%H%M"), "_Changes_in_", contrast, ".pdf"), q, width=8.27, height=11.69)
 
   return(fittoptable)
 }

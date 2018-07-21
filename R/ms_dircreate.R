@@ -56,7 +56,9 @@ ms_directory <- function(data, dataname) {
     dirname <- gsub("\\.[A-z]*$", "", dirname)
     dirname <- gsub("\\.", "", dirname)
     outdir <- paste0(dirname,"_",format(Sys.time(), "%y%m%d_%H%M"))
-    dir.create(outdir)
+    if (dir.exists(outdir)==FALSE) {
+      dir.create(outdir)
+    }
   } else if (dir.exists(outdir)==FALSE) {
     dir.create(outdir)
   }

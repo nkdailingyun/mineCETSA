@@ -6,6 +6,7 @@
 #' @param nread number of reading channels, default value 9 in 2D-CETSA scheme
 #' @param repthreshold the minimal percentage threshold of protein being sampled
 #' from multiple runs, default value is 0.75
+#' @param with37Creading whether the kept proteins should have readings at 37C
 #' @param averagecount whether to average the supporting PSM/peptide/count numbers,
 #' default set to TRUE
 #' @param countthreshold the minimal threshold number of associated abundance
@@ -21,7 +22,8 @@
 #'
 
 
-ms_2D_rearrange <- function(data, nread=9, repthreshold=0.75, averagecount=TRUE, countthreshold=2) {
+ms_2D_rearrange <- function(data, nread=9, repthreshold=0.75, with37Creading=TRUE,
+                            averagecount=TRUE, countthreshold=2) {
 
   dataname <- deparse(substitute(data))
   outdir <- ms_directory(data, dataname)$outdir
@@ -31,6 +33,13 @@ ms_2D_rearrange <- function(data, nread=9, repthreshold=0.75, averagecount=TRUE,
     counttable <- count(data, id) %>% mutate(freq=n/max(n)) %>% filter(freq>=repthreshold)
     data <- subset(data, id %in% counttable$id)
     print(paste0(nrow(counttable), " proteins pass the measurement replicates cutoff ", repthreshold*100, "%."))
+  }
+
+  if (with37Creading) {
+    cond37C <- unique(data$condition)[grep("37C", unique(data$condition))]
+    data37C <- subset(data, condition==cond37C)
+    print(paste0(nrow(data37C), " proteins are measured at 37C and they are kept."))
+    data <- subset(data, id %in% data37C$id)
   }
 
   d1 <- tidyr::gather(data[ ,c(1,3,4:(3+nread))], treatment, reading, -id, -condition)

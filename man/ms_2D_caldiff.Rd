@@ -4,19 +4,22 @@
 \alias{ms_2D_caldiff}
 \title{ms_2D_caldiff}
 \usage{
-ms_2D_caldiff(data, treatmentlevel = NULL)
+ms_2D_caldiff(data, treatmentlevel = NULL, withinrep = TRUE)
 }
 \arguments{
 \item{data}{Normalized dataset to calculate the relative protein abundance differences}
 
 \item{treatmentlevel}{a vector of treatment labels, the control should be the first element,
 such as c("DMSO","TNFa","AT26533")}
+
+\item{withinrep}{whether the calculation of the relative protein abundance difference should
+still within the same biorep, default set to TRUE, when the bioreps are balanced}
 }
 \value{
 a dataframe
 }
 \description{
-Function to reformat dataframe or matrix data into an expressionset (eSet) format
+Function to calculate the pair-wise (per replicate and temperature) protein abundance differences
 }
 \examples{
 \dontrun{

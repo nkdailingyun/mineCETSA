@@ -4,7 +4,7 @@
 \alias{ms_2D_normalization}
 \title{ms_2D_normalization}
 \usage{
-ms_2D_normalization(datafile, isfile = FALSE, todf = TRUE)
+ms_2D_normalization(datafile, isfile = FALSE, todf = TRUE, pertemp = TRUE)
 }
 \arguments{
 \item{datafile}{a directory pathway pointing to a file with pre-normalization
@@ -18,12 +18,14 @@ with keyword information of “temperature”, “treatment”, “replicate”,
 
 \item{todf}{whether to return the normalized data in a dataframe format,
 default set to TRUE}
+
+\item{pertemp}{whether do the normalization on each heating temperature separately}
 }
 \value{
 a dataframe
 }
 \description{
-Function to transform 2D-CETSA data into an eSet format and perform normalization
+Function to transform 2D-CETSA data into an eSet format and perform vsn normalization
 }
 \examples{
 \dontrun{

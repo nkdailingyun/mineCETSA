@@ -23,6 +23,7 @@
 #' such as 37C readings, default set to FALSE
 #' @param refkeyword a keyword used for the indication of reference control, as
 #' most of the time the reference is 37C expression level, default value is 37C
+#' @param log2scale whether to transform the readings into log2 scale
 #' @param nMAD level of significance, default set at 2.5
 #' @param baselineMAD MAD of baseline variation, default value is 0; if not
 #' provided, it will be calculated based on the readings from the lowest two
@@ -90,7 +91,7 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=TRUE, printGeneName=FAL
                            pfdatabase=FALSE, rep="r", onlyshowstabilized=FALSE,
                            byAUC=TRUE, standardizedAUC=TRUE, preaveraged=FALSE,
                            normalizedAUC=FALSE, refkeyword="37C",
-                           AUC_uplimit=NULL, AUC_lowlimit=NULL,
+                           AUC_uplimit=NULL, AUC_lowlimit=NULL, log2scale=FALSE,
                            nMAD=2.5, baselineMAD=0, fcthreshold=0, checkpointposition=NULL,
                            keepreplicate=FALSE, keepfullrep=FALSE,
                            stableref=FALSE, stableref_nMAD=3.5,
@@ -134,7 +135,7 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=TRUE, printGeneName=FAL
   data$description<-NULL
 
   if (sum(is.na(data$id))>0) { print(paste0("There were ", sum(is.na(data$id)),
-                                            " entries not properly parsed..."))}
+                                            " entries not properly parsed...")) }
   else { print("Protein labels were successfully parsed.") }
 
   #to keep the data proper replicates as specified
@@ -198,6 +199,12 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=TRUE, printGeneName=FAL
     if (length(fkeep)>0) { data <- data[-fkeep, ] }
   }
 
+  if (log2scale) {
+    #print(head(data))
+    data.m <- data.frame(log2(as.matrix(data[ ,c(4:(nread+3))])))
+    names(data.m) <- names(data)[c(4:(nread+3))]
+    data <- cbind(data[,c(1:3)], data.m, data[ ,c((nread+4):ncol(data))])
+  }
   data$STD <- apply(data[,c(4:(nread+3))], 1, sd, na.rm=T)
   data$Mean <- apply(data[,c(4:(nread+3))], 1, mean, na.rm=T)
   data <- dplyr::mutate(data, CV=STD/Mean, AUC=rowSums(data[, c(4:(nread+3))],na.rm=T))
@@ -206,6 +213,11 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=TRUE, printGeneName=FAL
   if (standardizedAUC) {
     data <- dplyr::mutate(data, AUC=AUC/nread)
   }
+  if (length(attr(data,"outdir"))==0 & length(outdir)>0) {
+    attr(data,"outdir") <- outdir
+  }
+  ms_filewrite(data, paste0(dataname, "_data_selected_plus_AUC.txt"),
+               outdir=outdir)
   #return(data)
 
   if (!preaveraged) {
@@ -258,7 +270,11 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=TRUE, printGeneName=FAL
     averageddata1 <- plyr::ddply(averageddata1, plyr::.(id), function(data) {
       base_AUC=data[(data$role=="denominator"), ]$AUC
       #print(base_AUC)
-      data <- plyr::mutate(data, AUC=AUC/base_AUC)
+      if (log2scale) {
+        data <- plyr::mutate(data, AUC=AUC-base_AUC)
+      } else {
+        data <- plyr::mutate(data, AUC=AUC/base_AUC)
+      }
     })
     averageddata$AUC <- NULL
     averageddata <- merge(averageddata, averageddata1[ ,c("id","condition","AUC")])
@@ -297,6 +313,10 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=TRUE, printGeneName=FAL
     if (fcthreshold>0) { # similar cutoff as the ms_ITDR_filter
       cutoff_high <- round((1+nMAD*baselineMAD)*(1+fcthreshold), 3)
       cutoff_low <- round((1-nMAD*baselineMAD)/(1+fcthreshold), 3)
+      if (log2scale) {
+        cutoff_high <- round(log2(cutoff_high),3)
+        cutoff_low <- round(log2(cutoff_low),3)
+      }
       print(paste0("The upper cutoff threshold for shift set at ", cutoff_high, "."))
       print(paste0("The lower cutoff threshold for shift set at ", cutoff_low, "."))
       nrowdata <- nrow(data_changed)

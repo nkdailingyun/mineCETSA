@@ -1,6 +1,6 @@
 #' ms_2D_normalization
 #'
-#' Function to transform 2D-CETSA data into an eSet format and perform normalization
+#' Function to transform 2D-CETSA data into an eSet format and perform vsn normalization
 #'
 #'
 #' @param datafile a directory pathway pointing to a file with pre-normalization
@@ -12,6 +12,7 @@
 #' “set” in the case of complex experimental layout, default set to FALSE
 #' @param todf whether to return the normalized data in a dataframe format,
 #' default set to TRUE
+#' @param pertemp whether do the normalization on each heating temperature separately
 #'
 #' @import dplyr vsn limma arrayQualityMetrics
 #' @export
@@ -22,7 +23,7 @@
 #'
 #'
 
-ms_2D_normalization <- function(datafile, isfile=FALSE, todf=TRUE) {
+ms_2D_normalization <- function(datafile, isfile=FALSE, todf=TRUE, pertemp=TRUE) {
 
   if (isfile) {
     outdir <- strsplit(datafile,"/")[[1]][2]
@@ -74,12 +75,34 @@ ms_2D_normalization <- function(datafile, isfile=FALSE, todf=TRUE) {
                                                intgroup=phenoData(data_eset_mock)@varMetadata$labelDescription,
                                                reporttitle="Pre Normalization QC report"))
 
-  # to perform vsn normalization
-  data_eset <- vsn::justvsn(data_eset)
+  # to perform vsn normalization, whether per temperature can be controlled
+  if (pertemp) {
+    data1 <- exprs(data_eset)
+    unitemp <- unique(as.character(data_eset$temperature))
+    for (temp in unitemp) {
+      pos <- grep(temp, colnames(data1))
+      data_sub <- exprs(data_eset[ ,data_eset$temperature==temp])
+      if (nrow(data_sub)<43) {
+        data_sub <- vsn::justvsn(data_sub,minDataPointsPerStratum=nrow(data_sub)-1)
+      } else {
+        data_sub <- vsn::justvsn(data_sub)
+      }
+      data1[ ,pos] <- data_sub
+    }
+    # print(head(data1))
+    data_eset <- ms_to_eSet(data1, matrixonly=TRUE, nread=ncol(data1), refeset=data_eset)
+  } else {
+    if (nrow(exprs(data_eset))<43) {
+      data_eset <- vsn::justvsn(data_eset,minDataPointsPerStratum=nrow(exprs(data_eset))-1)
+    } else {
+    data_eset <- vsn::justvsn(data_eset)
+    # print(head(exprs(data_eset)))
+    }
+  }
   data_eset1 <- limma::removeBatchEffect(exprs(data_eset),
                                          batch=as.character(pData(data_eset)$replicate),
                                          design=model.matrix(~pData(data_eset)$treatment))
-  data_eset1 <- ms_to_eSet(data_eset1, matrixonly=TRUE, nread=ncol(data_eset1), refeset = data_eset)
+  data_eset1 <- ms_to_eSet(data_eset1, matrixonly=TRUE, nread=ncol(data_eset1), refeset=data_eset)
 
   try(arrayQualityMetrics::arrayQualityMetrics(expressionset=data_eset1, outdir="post_norm_QC_report",
                                                force=TRUE, do.logtransform=FALSE,

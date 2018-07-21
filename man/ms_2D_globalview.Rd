@@ -4,10 +4,12 @@
 \alias{ms_2D_globalview}
 \title{ms_2D_globalview}
 \usage{
-ms_2D_globalview(data, set = NULL, treatment = NULL, cvthreshold = 0.1,
-  corrthreshold = 0.5, basetemp = "37C", expressionchange_nMAD = 2.5,
-  thermalchange_nMAD = 2.5, labelnodes = FALSE, labelcategory = c("CC",
-  "NC", "CN"))
+ms_2D_globalview(data, set = NULL, treatment = NULL, qc = TRUE,
+  cvthreshold = 0.1, corrthreshold = 0.5, basetemp = "37C",
+  expressionchange_cutoff = NULL, stabilitychange_cutoff = NULL,
+  expressionchange_nMAD = 2.5, stabilitychange_nMAD = 2.5,
+  labelnodes = FALSE, labelcategory = c("CC", "NC", "CN"), xrange = NULL,
+  yrange = NULL, getplot = FALSE)
 }
 \arguments{
 \item{data}{dataset after ms_2D_caldiff() function}
@@ -15,6 +17,9 @@ ms_2D_globalview(data, set = NULL, treatment = NULL, cvthreshold = 0.1,
 \item{set}{a single character to indicate the sample name}
 
 \item{treatment}{a single character to indicate the sample name}
+
+\item{qc}{whether to apply the reproducibility quality control on input data,
+default set to TRUE}
 
 \item{cvthreshold}{the CV threshold value for subsetting reproducible
 measurements, default value is 0.1}
@@ -28,19 +33,21 @@ expression levels, default value is 37C}
 \item{expressionchange_nMAD}{the number of MADs to set the significance
 cutoff on protein expression level change, default value is 2.5}
 
-\item{thermalchange_nMAD}{the number of MADs to set the significance cutoff
-on protein thermal shift, default value is 2.5}
+\item{stabilitychange_nMAD}{the number of MADs to set the significance cutoff
+on protein thermal stability shift, default value is 2.5}
 
 \item{labelnodes}{whether to text-label the selected nodes, default set to FALSE}
 
 \item{labelcategory}{the categories of nodes to label, default value is c("CC","NC","CN")}
+
+\item{getplot}{whether to return the plot object, default set to FALSE}
 }
 \value{
 a dataframe
 }
 \description{
 Function to have a global overview of the 2D CETSA dataset, regarding to
-expression level changes and thermal shifts
+expression level changes and stability shifts
 }
 \examples{
 \dontrun{

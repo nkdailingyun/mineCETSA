@@ -4,8 +4,8 @@
 \alias{ms_2D_rearrange}
 \title{ms_2D_rearrange}
 \usage{
-ms_2D_rearrange(data, nread = 9, repthreshold = 0.75, averagecount = TRUE,
-  countthreshold = 2)
+ms_2D_rearrange(data, nread = 9, repthreshold = 0.75,
+  with37Creading = TRUE, averagecount = TRUE, countthreshold = 2)
 }
 \arguments{
 \item{data}{dataset to transform into a wide format}
@@ -14,6 +14,8 @@ ms_2D_rearrange(data, nread = 9, repthreshold = 0.75, averagecount = TRUE,
 
 \item{repthreshold}{the minimal percentage threshold of protein being sampled
 from multiple runs, default value is 0.75}
+
+\item{with37Creading}{whether the kept proteins should have readings at 37C}
 
 \item{averagecount}{whether to average the supporting PSM/peptide/count numbers,
 default set to TRUE}

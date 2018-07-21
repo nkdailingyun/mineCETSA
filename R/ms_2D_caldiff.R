@@ -1,10 +1,12 @@
 #' ms_2D_caldiff
 #'
-#' Function to reformat dataframe or matrix data into an expressionset (eSet) format
+#' Function to calculate the pair-wise (per replicate and temperature) protein abundance differences
 #'
 #' @param data Normalized dataset to calculate the relative protein abundance differences
 #' @param treatmentlevel a vector of treatment labels, the control should be the first element,
 #' such as c("DMSO","TNFa","AT26533")
+#' @param withinrep whether the calculation of the relative protein abundance difference should
+#' still within the same biorep, default set to TRUE, when the bioreps are balanced
 #'
 #' @import dplyr Biobase
 #' @export
@@ -15,7 +17,7 @@
 #'
 #'
 
-ms_2D_caldiff <- function(data, treatmentlevel=NULL) {
+ms_2D_caldiff <- function(data, treatmentlevel=NULL, withinrep=TRUE) {
 
   dataname <- deparse(substitute(data))
   outdir <- ms_directory(data, dataname)$outdir
@@ -30,20 +32,29 @@ ms_2D_caldiff <- function(data, treatmentlevel=NULL) {
   }
   if (length(grep("countNum", names(data)))) {
     countinfo <- unique(data[ ,c("id","sumUniPeps","sumPSMs","countNum")])
+    data <- data[ ,!(names(data) %in% c("sumUniPeps","sumPSMs","countNum"))]
   }
 
-  data <- gather(data[ ,-c((ncol(data)-2):ncol(data))], condition, reading, -id)
+  data <- gather(data, condition, reading, -id)
   if (length(unlist(strsplit(data$condition[1], "_")))==4) {
     data <- tidyr::separate(data, condition, into=c("set","temperature","replicate","treatment"), sep="_")
     if(!identical(sort(unique(data$treatment)),sort(treatmentlevel))) {
       stop("Need to specify the right treatments")
     }
     data$treatment <- factor(data$treatment, levels=treatmentlevel)
-    data1 <- plyr::ddply(data, c("set","temperature","replicate","id"), function(data) {
-      data<-data[order(data$treatment), ]
-      base=data$reading[1]
-      data<-mutate(data, reading=reading-base)
-    })
+    if (withinrep) {
+      data1 <- plyr::ddply(data, c("set","temperature","replicate","id"), function(data) {
+        data<-data[order(data$treatment), ]
+        base=data$reading[1]
+        data<-mutate(data, reading=reading-base)
+      })
+    } else{
+      data1 <- plyr::ddply(data1, c("set","temperature","id"), function(data) {
+        data<-data[order(data$treatment), ]
+        base=mean(subset(data, treatment==treatmentlevel[1])$reading,na.rm=T)
+        data<-mutate(data, reading=ifelse(treatment==treatmentlevel[1], 0.0, reading-base))
+      })
+    }
     data1 <- tidyr::unite(data1, condition, set, temperature, replicate, treatment, sep="_")
   } else if (length(unlist(strsplit(data$condition[1], "_")))==3) {
     data <- tidyr::separate(data, condition, into=c("temperature","replicate","treatment"), sep="_")
@@ -51,11 +62,19 @@ ms_2D_caldiff <- function(data, treatmentlevel=NULL) {
       stop("Need to specify the right treatments")
     }
     data$treatment <- factor(data$treatment, levels=treatmentlevel)
-    data1 <- plyr::ddply(data, c("temperature","replicate","id"), function(data) {
-      data<-data[order(data$treatment), ]
-      base=data$reading[1]
-      data<-mutate(data, reading=reading-base)
-    })
+    if (withinrep) {
+      data1 <- plyr::ddply(data, c("temperature","replicate","id"), function(data) {
+        data<-data[order(data$treatment), ]
+        base=data$reading[1]
+        data<-mutate(data, reading=reading-base)
+      })
+    } else {
+      data1 <- plyr::ddply(data, c("temperature","id"), function(data) {
+        data<-data[order(data$treatment), ]
+        base=mean(subset(data, treatment==treatmentlevel[1])$reading,na.rm=T)
+        data<-mutate(data, reading=ifelse(treatment==treatmentlevel[1], 0.0, reading-base))
+      })
+    }
     data1 <- tidyr::unite(data1, condition, temperature, replicate, treatment, sep="_")
   } else {
     stop("make sure the namings of the columns of the dasaset are correct.")

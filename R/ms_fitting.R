@@ -8,7 +8,8 @@
 #' default value 10
 #' @param topasone whether the top plateau has to be fixed, i.e., 1.0
 #' @param halfmelt whether calculate Tm based on the half way between
-#' top and bottom plateaus, default is FALSE
+#' top and bottom plateaus, default is TRUE, note that this is essentially
+#' the inflection point
 #' @param halforiginal whether calculate Tm based on the point with absolute
 #' reading of 0.5, default is FALSE
 #' @param writetofile whether to keep a local file copy of the original data
@@ -27,7 +28,7 @@
 #'
 
 ms_fitting <- function(data, nread=10, topasone=TRUE,
-                       halfmelt=FALSE, halforiginal=FALSE,
+                       halfmelt=TRUE, halforiginal=FALSE,
                        writetofile=TRUE, keepfittedvalue=FALSE) {
 
   dataname <- deparse(substitute(data))
@@ -42,7 +43,7 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
   R2result <- NULL
   Sloperesult <- NULL
   RSEresult <- NULL
-  fitted_y <- matrix(data=NA, nrow = nrowdata, ncol = nread)
+  fitted_y <- matrix(data=NA, nrow=nrowdata, ncol=nread)
 
   if (topasone==TRUE) {
     ep <- 3
@@ -55,18 +56,21 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
     y <- as.numeric(data[i,c(4:(nread+3))])
     x <- numtempvector
     valueindex = which(!is.na(y))
-    fit.dat <- try(drc::drm(formula = y ~ x, fct = drc::LL.4(fixed=c(NA,NA,top,NA)),na.action=na.omit))
+    fit.dat <- try(drc::drm(formula=y ~ x,fct=drc::LL.4(fixed=c(NA,NA,top,NA)),na.action=na.omit))
     if (class(fit.dat) != "try-error") {
       coeffs <- data.frame(coefficients(fit.dat))
       slope <- coeffs[1,1]
-      Tm <- coeffs[ep,1]
+      if (halfmelt) {
+        Tm <- coeffs[ep,1]
+      }
       if (halforiginal) {
         Tm <- ED(fit.dat, respLev=0.5, reference="control", type="absolute", display=FALSE)
-      }else if (halfmelt & topasone) {
-        Tm <- ED(fit.dat, respLev=0.5*(top+coeffs[2,1]), interval="delta", reference="upper", type="absolute", uref=top, display=FALSE)
-      }else if (halfmelt) {
-        Tm <- ED(fit.dat, respLev=0.5*(coeffs[3,1]+coeffs[2,1]), interval="delta", reference="upper", type="absolute", uref=coeffs[3,1], display=FALSE)
       }
+      # else if (halfmelt & topasone) {
+      #   Tm <- ED(fit.dat, respLev=0.5*(top+coeffs[2,1]), interval="delta", reference="upper", type="absolute", uref=top, display=FALSE)
+      # } else if (halfmelt) {
+      #   Tm <- ED(fit.dat, respLev=0.5*(coeffs[3,1]+coeffs[2,1]), interval="delta", reference="upper", type="absolute", uref=coeffs[3,1], display=FALSE)
+      # }
       #fitted_y[i, ] <- fitted.values(fit.dat)
       fitted_y[i, valueindex] <- fitted.values(fit.dat)
       y1 <- na.omit(y)
@@ -74,7 +78,7 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
       #R2 <- 1 - sum((residuals(fit.dat)^2))/sum((y-mean(y))^2)
       RSE <- summary(fit.dat)$rseMat[[1]]
     } else {
-      Tm = NA; R2 = NA; slope = NA; RSE=NA;
+      Tm = NA; R2 = NA; slope = NA; RSE = NA;
     }
     Tmresult[i] = Tm
     R2result[i] = R2
@@ -101,10 +105,10 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
                  outdir=outdir)
   }
 
-  if (length(attr(data,"outdir"))==0  & length(outdir)>0) {
+  if (length(attr(data,"outdir"))==0 & length(outdir)>0) {
     attr(data,"outdir") <- outdir
   }
-  if (length(attr(Fitted,"outdir"))==0  & length(outdir)>0) {
+  if (length(attr(Fitted,"outdir"))==0 & length(outdir)>0) {
     attr(Fitted,"outdir") <- outdir
   }
   if (keepfittedvalue) {

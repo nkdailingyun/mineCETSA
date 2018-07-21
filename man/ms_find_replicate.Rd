@@ -13,8 +13,8 @@ ms_find_replicate(data, nread = 10, keepfullrep = FALSE)
 is 10}
 
 \item{keepfullrep}{whether to only keep the proteins with full replicates in
-all the experimental conditions, default is FALSE, therefore, to keep the curves
-that in at least one condition with full replicates, which is same as `keepcompleterep`}
+all the experimental conditions, default is FALSE, just to keep the curves
+that in at least one condition with full replicates}
 }
 \value{
 dataframe containing the full replicated complete dataset
