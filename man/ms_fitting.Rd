@@ -4,8 +4,8 @@
 \alias{ms_fitting}
 \title{ms_fitting}
 \usage{
-ms_fitting(data, nread = 10, topasone = TRUE, halfmelt = TRUE,
-  halforiginal = FALSE, writetofile = TRUE, keepfittedvalue = FALSE)
+ms_fitting(data, nread = 10, topasone = TRUE, halforiginal = TRUE,
+  halfmelt = FALSE, writetofile = TRUE, keepfittedvalue = FALSE)
 }
 \arguments{
 \item{data}{dataset to be fitted}
@@ -15,12 +15,12 @@ default value 10}
 
 \item{topasone}{whether the top plateau has to be fixed, i.e., 1.0}
 
-\item{halfmelt}{whether calculate Tm based on the half way between
-top and bottom plateaus, default is TRUE, note that this is essentially
-the inflection point}
-
 \item{halforiginal}{whether calculate Tm based on the point with absolute
-reading of 0.5, default is FALSE}
+reading of 0.5, default is TRUE}
+
+\item{halfmelt}{whether calculate Tm based on the half way between
+top and bottom plateaus, default is FALSE, note that this is essentially
+the inflection point}
 
 \item{writetofile}{whether to keep a local file copy of the original data
 with fitting parameters, default set to TRUE}
