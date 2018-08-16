@@ -6,9 +6,11 @@
 #' @param data dataset to be scaled
 #' @param refcondition condition names to specify the reference dataset
 #' @param nread number of reading channels or sample treatements
-#' @param reorder whether to check and re-arrange the treatment temperature
+#' @param reordertemp whether to check and re-arrange the treatment temperatures
 #' in ascending order, using the readings from lowest temperature
-#' group as the reference to derive ratios
+#' group as the reference to derive ratios, default set to FALSE since we
+#' typically label the CETSA melt curve samples from low to high temperatures
+#' in the TMT10
 #' @param writefactortofile whether to save a copy of scaling factors
 #' @param bottomlabel textual label at the bottom of the plot
 #' @param filename name for the file
@@ -27,7 +29,7 @@
 #' }
 #'
 #'
-ms_forcescaling <- function(data, refcondition=NULL, nread=10, reorder=FALSE,
+ms_forcescaling <- function(data, refcondition=NULL, nread=10, reordertemp=FALSE,
                             writefactortofile=TRUE, bottomlabel="Temperature",
                             filename="CETSA_normalization_factors.txt") {
 
@@ -35,7 +37,7 @@ ms_forcescaling <- function(data, refcondition=NULL, nread=10, reorder=FALSE,
   outdir <- ms_directory(data, dataname)$outdir
   data <- ms_directory(data, dataname)$data
 
-  if (reorder) {
+  if (reordertemp) {
     # make sure the temperature is in ascending trend
     int_data <- data[ ,c(4:(nread+3))]
     int_data <- int_data[ ,order(as.numeric(names(int_data)), decreasing=FALSE)]
@@ -79,30 +81,30 @@ ms_forcescaling <- function(data, refcondition=NULL, nread=10, reorder=FALSE,
     stop("You need to specify the selected reference conditions or ALL by specifying refcondition argument")
   }
 
-  for (j in 1:nread) {
+  for (j in seq_len(nread)) {
     force_fitted_y[j] <- as.numeric(median(refdata[[j+3]], na.rm=TRUE))
   }
   #print(force_fitted_y)
   fit.dat <-try(drm(formula = force_fitted_y ~ numtempvector, fct = LL.4()))
 
   if(class(fit.dat) != "try-error") { force_fitted_y <- fitted.values(fit.dat) }
+  else { stop("The function failed to fit data into a typical melt curve...") }
   #print(force_fitted_y)
 
   force_fitted_y <- force_fitted_y*(1/force_fitted_y[1]) # y-shift to top =1
   force_fitted <- matrix(nrow = mrow, ncol = nread)
-  for (i in 1:mrow) { force_fitted[i, ] <- force_fitted_y }
+  for (i in seq_len(mrow)) { force_fitted[i, ] <- force_fitted_y }
 
   # Calculation of Normalization factor (Fitted median / Raw median at each temperature point).
   Normfactor <- (force_fitted / mdata[ ,c(4:(nread+3))])
 
   # Apply Normalization factor to every value of each individual dataset
   uniqueCondition <- unique(data$condition)
-  niter <- length(uniqueCondition)
   outdata <- data
-  for (i in 1:niter) {
+  for (i in seq_along(uniqueCondition)) {
     pattern <- grep(pattern=paste0("^",uniqueCondition[i],"$"), data$condition, value=FALSE)
     tmpdata <- data[pattern, ]
-    for (j in 1:nread) {
+    for (j in seq_len(nread)) {
       tmpdata[ ,j+3] <- tmpdata[ ,j+3] * Normfactor[i,j]
       outdata[pattern, ] <- tmpdata
     }
@@ -121,7 +123,7 @@ ms_forcescaling <- function(data, refcondition=NULL, nread=10, reorder=FALSE,
   if (writefactortofile) {
     filename <- paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),dataname,"_",filename)
     write("Normalization factors: \n", filename)
-    for (i in 1:mrow) {
+    for (i in seq_len(mrow)) {
       write(unlist(Normfactor[i, ]), filename, sep=" ", append=TRUE)
       write("\n",filename, append=TRUE)
     }

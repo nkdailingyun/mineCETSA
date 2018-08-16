@@ -457,10 +457,10 @@ ms_ITTR_fitting <- function(data, nread=10, fc=0.3, calMTT=FALSE,
     }
   }
 
-  if (length(attr(data,"outdir"))==0  & length(outdir)>0) {
+  if (length(attr(data,"outdir"))==0 & length(outdir)>0) {
     attr(data,"outdir") <- outdir
   }
-  if (length(attr(Fitted,"outdir"))==0  & length(outdir)>0) {
+  if (length(attr(Fitted,"outdir"))==0 & length(outdir)>0) {
     attr(Fitted,"outdir") <- outdir
   }
   if (keepfittedvalue) {

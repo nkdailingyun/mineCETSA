@@ -12,7 +12,7 @@
 
 <meta name="author" content="Dai Lingyun" />
 
-<meta name="date" content="2018-04-10" />
+<meta name="date" content="2018-07-21" />
 
 <title>Analyze 2-dimensional (2D) MS-CETSA datasets</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Analyze 2-dimensional (2D) MS-CETSA datasets</h1>
 <h4 class="author"><em>Dai Lingyun</em></h4>
-<h4 class="date"><em>2018-04-10</em></h4>
+<h4 class="date"><em>2018-07-21</em></h4>
 
 
 
@@ -192,6 +192,20 @@ The arguments and its default value include:
 </ol>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Chem2D_category &lt;-<span class="st"> </span><span class="kw">ms_2D_globalview</span>(Chem2D_s1, <span class="dt">treatment=</span><span class="st">&quot;PM&quot;</span>, <span class="dt">labelnodes=</span><span class="ot">TRUE</span>, <span class="dt">labelcategory=</span><span class="st">&quot;CC&quot;</span>)</code></pre></div>
 <ol start="11" style="list-style-type: decimal">
+<li>Similarly to the previous step, carry out data segregation based on the relative protein expression level change and thermal shift using <code>ms_2D_score()</code>, adapting the formula from Becher et al 2018. Note that instead of MAD scheme, this one use FDR scheme, the final categorization result are not necessarily the same, users are encouraged to tried out both and adjust the threshold accordingly.<br />
+The arguments and its default value include:
+<ul>
+<li><code>allzscore</code> whether to use all the readings from all the different treatment groups when calculating the z score, default set to TRUE<br />
+</li>
+<li><code>fdrthreshold</code> the significance level of global fdr, default value is 0.01<br />
+</li>
+<li><code>labelnodes</code> whether to text label the selected nodes in the graph, default set to FALSE<br />
+</li>
+<li><code>labelcategory</code> the categories of nodes to label in the graph, default is c(“CC”,“NC”,“CN”)</li>
+</ul></li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Chem2D_score &lt;-<span class="st"> </span><span class="kw">ms_2D_score</span>(Chem2D_s1, <span class="dt">labelnodes=</span><span class="ot">TRUE</span>, <span class="dt">labelcategory=</span><span class="st">&quot;CC&quot;</span>)</code></pre></div>
+<ol start="12" style="list-style-type: decimal">
 <li>Plot out the bar graph plot for each protein using <code>ms_2D_barplotting()</code>.<br />
 The arguments and its default value includes:
 <ul>

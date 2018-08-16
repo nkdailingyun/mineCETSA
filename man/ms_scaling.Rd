@@ -4,17 +4,20 @@
 \alias{ms_scaling}
 \title{ms_scaling}
 \usage{
-ms_scaling(data, nread = 10, reorder = FALSE, writefactortofile = TRUE,
-  bottomlabel = "Temperature", filename = "CETSA_normalization_factors.txt")
+ms_scaling(data, nread = 10, reordertemp = FALSE,
+  writefactortofile = TRUE, bottomlabel = "Temperature",
+  filename = "CETSA_normalization_factors.txt")
 }
 \arguments{
 \item{data}{dataset to be scaled}
 
-\item{nread}{number of reading channels or sample treatements}
+\item{nread}{number of reading channels or sample treatments}
 
-\item{reorder}{whether to check and re-arrange the treatment temperature
+\item{reordertemp}{whether to check and re-arrange the treatment temperatures
 in ascending order, using the readings from lowest temperature
-group as the reference to derive ratios}
+group as the reference to derive ratios, default set to FALSE since we
+typically label the CETSA melt curve samples from low to high temperatures
+in the TMT10}
 
 \item{writefactortofile}{whether to save a copy of scaling factors}
 

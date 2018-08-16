@@ -31,6 +31,9 @@ library("mineCETSA")
 #  Chem2D_category <- ms_2D_globalview(Chem2D_s1, treatment="PM", labelnodes=TRUE, labelcategory="CC")
 
 ## ---- eval=FALSE---------------------------------------------------------
+#  Chem2D_score <- ms_2D_score(Chem2D_s1, labelnodes=TRUE, labelcategory="CC")
+
+## ---- eval=FALSE---------------------------------------------------------
 #  ms_2D_barplotting(Chem2D_s1[grep("cyclin",Chem2D_s1$description),], treatmentlevel=c("G1S","S","PM"))
 #  
 #  Chem2D_CC <- subset(Chem2D_s1, id %in% subset(Chem2D_category, category=="CC")$id)

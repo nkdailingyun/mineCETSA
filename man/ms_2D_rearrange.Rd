@@ -31,7 +31,7 @@ Function to rearrange 2D-CETSA data into a wide one-unique-protein-per-row forma
 }
 \examples{
 \dontrun{
- MOLM <- ms_rearrange(MOLM, nread=9, countthreshold = 3)
+ MOLM <- ms_rearrange(MOLM, nread=9, countthreshold=3)
 }
 
 

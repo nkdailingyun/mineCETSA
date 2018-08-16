@@ -16,7 +16,7 @@
 #' @export
 #' @return a dataframe
 #' @examples \dontrun{
-#'  MOLM <- ms_rearrange(MOLM, nread=9, countthreshold = 3)
+#'  MOLM <- ms_rearrange(MOLM, nread=9, countthreshold=3)
 #' }
 #'
 #'

@@ -117,7 +117,20 @@ The arguments and its default value include:
 Chem2D_category <- ms_2D_globalview(Chem2D_s1, treatment="PM", labelnodes=TRUE, labelcategory="CC")
 ```
 
-11. Plot out the bar graph plot for each protein using `ms_2D_barplotting()`.  
+
+11. Similarly to the previous step, carry out data segregation based on the relative protein expression level change and thermal shift using `ms_2D_score()`, adapting the formula from Becher et al 2018. Note that instead of MAD scheme, this one use FDR scheme,
+the final categorization result are not necessarily the same, users are encouraged to tried out both and adjust the threshold accordingly.  
+The arguments and its default value include:  
+    * `allzscore` whether to use all the readings from all the different treatment groups when calculating the z score, default set to TRUE  
+    * `fdrthreshold` the significance level of global fdr, default value is 0.01  
+    * `labelnodes` whether to text label the selected nodes in the graph, default set to FALSE  
+    * `labelcategory` the categories of nodes to label in the graph, default is c("CC","NC","CN")  
+```{r, eval=FALSE}
+Chem2D_score <- ms_2D_score(Chem2D_s1, labelnodes=TRUE, labelcategory="CC")
+```
+
+
+12. Plot out the bar graph plot for each protein using `ms_2D_barplotting()`.  
 The arguments and its default value includes:  
     * `treatmentlevel`, a vector to specify the treatment keyword information, the order determines the color arrangement as set in colorpanel  
     * `setlevel`, a vector to specify the set key word infomation if any  

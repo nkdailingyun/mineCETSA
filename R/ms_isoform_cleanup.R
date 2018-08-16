@@ -59,7 +59,7 @@ ms_isoform_resolve <- function(data) {
               sep="\t", row.names=FALSE, quote=FALSE)
 
   #return(resolvetable)
-  for (i in 1:nrow(resolvetable)) {
+  for (i in seq_len(nrow(resolvetable))) {
     names <- resolvetable[i,c(1,3,5)]
     id <- names[2]
     data[grep(paste0("^", id), data$id), c(1,2)] <- names[c(1,3)]

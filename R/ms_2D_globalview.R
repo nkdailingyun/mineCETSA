@@ -6,22 +6,20 @@
 #' @param data dataset after ms_2D_caldiff() function
 #' @param set a single character to indicate the sample name
 #' @param treatment a single character to indicate the sample name
+#' @param basetemp the character indicating the baseline temperature for
+#' expression levels, default value is 37C
 #' @param qc whether to apply the reproducibility quality control on input data,
 #' default set to TRUE
 #' @param cvthreshold the CV threshold value for subsetting reproducible
 #' measurements, default value is 0.1
 #' @param corrthreshold the Correlation threshold value for subsetting
 #' reproducible measurements, default value is 0.5
-#' @param basetemp the character indicating the baseline temperature for
-#' expression levels, default value is 37C
 #' @param expressionchange_nMAD the number of MADs to set the significance
 #' cutoff on protein expression level change, default value is 2.5
 #' @param stabilitychange_nMAD the number of MADs to set the significance cutoff
 #' on protein thermal stability shift, default value is 2.5
 #' @param labelnodes whether to text-label the selected nodes, default set to FALSE
 #' @param labelcategory the categories of nodes to label, default value is c("CC","NC","CN")
-#' @param getplot whether to return the plot object, default set to FALSE
-
 #'
 #' @import dplyr Biobase
 #' @import ggpubr
@@ -32,11 +30,12 @@
 #'   MOLM <- ms_2D_globalview(MOLM, set="M13", treatment="AT26533")
 #' }
 #'
-ms_2D_globalview <- function(data, set=NULL, treatment=NULL, qc=TRUE, cvthreshold=0.1, corrthreshold=0.5,
-                             basetemp="37C", expressionchange_cutoff=NULL, stabilitychange_cutoff=NULL,
+ms_2D_globalview <- function(data, set=NULL, treatment=NULL, basetemp="37C",
+                             qc=TRUE, cvthreshold=0.1, corrthreshold=0.5,
+                             expressionchange_cutoff=NULL, stabilitychange_cutoff=NULL,
                              expressionchange_nMAD=2.5, stabilitychange_nMAD=2.5,
                              labelnodes=FALSE, labelcategory=c("CC","NC","CN"),
-                             xrange=NULL, yrange=NULL, getplot=FALSE) {
+                             xrange=NULL, yrange=NULL) {
 
   dataname <- deparse(substitute(data))
   outdir <- ms_directory(data, dataname)$outdir
@@ -138,9 +137,6 @@ ms_2D_globalview <- function(data, set=NULL, treatment=NULL, qc=TRUE, cvthreshol
     geom_vline(xintercept=expressioncutoff, linetype="dashed", color="black") +
     theme(text = element_text(size=12), plot.title = element_text(hjust=0.5, size=rel(1.2)), aspect.ratio=1)
   q <- q + coord_cartesian(xlim=xrange, ylim=yrange)
-  if (getplot) {
-    return(q)
-  }
   ggsave(file=paste0(format(Sys.time(), "%y%m%d_%H%M"), "_Changes_in_", treatment, ".pdf"), q, width=11.69, height=8.27)
   ms_filewrite(datal_change, paste0("Changes_in_", treatment, ".txt"), outdir=outdir)
   return(datal_change)

@@ -4,12 +4,12 @@
 \alias{ms_2D_globalview}
 \title{ms_2D_globalview}
 \usage{
-ms_2D_globalview(data, set = NULL, treatment = NULL, qc = TRUE,
-  cvthreshold = 0.1, corrthreshold = 0.5, basetemp = "37C",
+ms_2D_globalview(data, set = NULL, treatment = NULL, basetemp = "37C",
+  qc = TRUE, cvthreshold = 0.1, corrthreshold = 0.5,
   expressionchange_cutoff = NULL, stabilitychange_cutoff = NULL,
   expressionchange_nMAD = 2.5, stabilitychange_nMAD = 2.5,
   labelnodes = FALSE, labelcategory = c("CC", "NC", "CN"), xrange = NULL,
-  yrange = NULL, getplot = FALSE)
+  yrange = NULL)
 }
 \arguments{
 \item{data}{dataset after ms_2D_caldiff() function}
@@ -17,6 +17,9 @@ ms_2D_globalview(data, set = NULL, treatment = NULL, qc = TRUE,
 \item{set}{a single character to indicate the sample name}
 
 \item{treatment}{a single character to indicate the sample name}
+
+\item{basetemp}{the character indicating the baseline temperature for
+expression levels, default value is 37C}
 
 \item{qc}{whether to apply the reproducibility quality control on input data,
 default set to TRUE}
@@ -27,9 +30,6 @@ measurements, default value is 0.1}
 \item{corrthreshold}{the Correlation threshold value for subsetting
 reproducible measurements, default value is 0.5}
 
-\item{basetemp}{the character indicating the baseline temperature for
-expression levels, default value is 37C}
-
 \item{expressionchange_nMAD}{the number of MADs to set the significance
 cutoff on protein expression level change, default value is 2.5}
 
@@ -39,8 +39,6 @@ on protein thermal stability shift, default value is 2.5}
 \item{labelnodes}{whether to text-label the selected nodes, default set to FALSE}
 
 \item{labelcategory}{the categories of nodes to label, default value is c("CC","NC","CN")}
-
-\item{getplot}{whether to return the plot object, default set to FALSE}
 }
 \value{
 a dataframe

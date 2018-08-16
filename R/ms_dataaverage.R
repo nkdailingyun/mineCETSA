@@ -28,7 +28,7 @@
 #'
 #'
 ms_goodctrlcurve_selection <- function(data, nread=10, ctrlcond=NULL,
-                                   topCVcutoff=0.1,bottomCVcutoff=0.1,
+                                   topCVcutoff=0.1, bottomCVcutoff=0.1,
                                    topcutoff=NULL, bottomcutoff=NULL, nMAD=2.5) {
 
   dataname <- deparse(substitute(data))
@@ -133,14 +133,14 @@ ms_find_replicate <- function(data, nread=10, keepfullrep=FALSE) {
   #print(head(data_freq, n=20))
   if (keepfullrep) {
     id_keep1 <- unique(data_freq$id)
-    for (i in 1: nrow(conditionrep)) {
+    for (i in seq_len(nrow(conditionrep))) {
       id_keep1 <- intersect(id_keep1, subset(data_freq, condition==conditionrep$condition[i] & n==conditionrep$n[i])$id)
     }
     data_complete <- subset(data, id %in% id_keep1)
     print(paste(nrow(data_complete), "measurements were measured with fully complete replicates in all conditions.", sep=" "))
   } else {
     id_keep <- data_freq[0, ]
-    for (i in 1: nrow(conditionrep)) {
+    for (i in seq_len(nrow(conditionrep))) {
       id_keep <- rbind(id_keep, subset(data_freq, condition==conditionrep$condition[i] & n==conditionrep$n[i]))
     }
     data_complete <- merge(data1, id_keep, by=c("id","condition"), all=FALSE)

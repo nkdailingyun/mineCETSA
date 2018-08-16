@@ -98,8 +98,8 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, refchan
 
   # Move reading values and rename them to correct position
   j = 1
-  for (i in 1:nread) {
-    if(PD21) {
+  for (i in seq_len(nread)) {
+    if (PD21) {
       tmppos <- grep(pattern=paste0("^Abundance Ratio ",channels[i],", ",conditions," / ",refchannel,", ",conditions), names(data), value=FALSE)
     } else {
       tmppos <- grep(pattern=paste0(channels[i],", ",conditions," / ",refchannel,", ",conditions), names(data), value=FALSE)
@@ -108,7 +108,7 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, refchan
       collength <- length(names(data))
       data <- data[ ,c(1:(j+2),tmppos,(j+3):collength)]
       j = j + 1
-    }else if(channels[i] == refchannel) {
+    } else if (channels[i] == refchannel) {
       # Set up start reference channel
       data$Reference <- rep(1.0, nrowdata)
       collength <- length(names(data))
@@ -119,7 +119,7 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, refchan
 
   # to read in protein abundance raw data
   if (PD21 & abdread) {
-    for (i in 1:nread) {
+    for (i in seq_len(nread)) {
       #get column for each channel and move it to correct position:
       tmppos <- grep(pattern=paste0("^Abundance F[0-9]+ ",channels[i],"[A-z0-9,. -]+$"), names(data), value=FALSE)
       collength <- length(names(data))

@@ -85,7 +85,7 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
     fkeep <- which(data$id %in% counttable$id)
     data <- data[fkeep, ]
   }
-  if ( nrow(data)==0 ) {
+  if (nrow(data)==0) {
     print("Make sure there are more than one experimental condition in dataset.")
     stop("Otherwise specify remsinglecondprot==FALSE !")
   }
@@ -113,7 +113,7 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   nrowdata <- nrow(data)
   if (length(extraidtocomplete)) {
     fkeep <- NULL
-    for (i in 1:length(extraidtocomplete)){
+    for (i in seq_along(extraidtocomplete)) {
       hits <- grep(paste0("^", extraidtocomplete[i], "$"), data$id, value=FALSE)
       fkeep <- c(fkeep, hits)
     }

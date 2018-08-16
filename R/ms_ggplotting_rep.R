@@ -445,7 +445,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                             toplabel, leftlabel, bottomlabel, withset, layout)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(outliers$id)),
-                       "_Messy_proteins_", pdfname), pl, height=12, width=12)
+                       "_Messy_proteins_", pdfname), pl, height=pdfheight, width=pdfwidth)
     print("Messy plot file generated successfully.")
   }
 

@@ -3,10 +3,12 @@
 #' Function to apply systematic scaling to CETSA melt curve dataset
 #'
 #' @param data dataset to be scaled
-#' @param nread number of reading channels or sample treatements
-#' @param reorder whether to check and re-arrange the treatment temperature
+#' @param nread number of reading channels or sample treatments
+#' @param reordertemp whether to check and re-arrange the treatment temperatures
 #' in ascending order, using the readings from lowest temperature
-#' group as the reference to derive ratios
+#' group as the reference to derive ratios, default set to FALSE since we
+#' typically label the CETSA melt curve samples from low to high temperatures
+#' in the TMT10
 #' @param writefactortofile whether to save a copy of scaling factors
 #' @param bottomlabel textual label at the bottom of the plot
 #' @param filename name for the file
@@ -25,7 +27,7 @@
 #' }
 #'
 #'
-ms_scaling <- function(data, nread=10, reorder=FALSE, writefactortofile=TRUE,
+ms_scaling <- function(data, nread=10, reordertemp=FALSE, writefactortofile=TRUE,
                        bottomlabel="Temperature",
                        filename="CETSA_normalization_factors.txt") {
 
@@ -65,24 +67,25 @@ ms_scaling <- function(data, nread=10, reorder=FALSE, writefactortofile=TRUE,
 
   # capture fitted values
   fitted_y <- matrix(nrow = mrow, ncol = nread)
-  for(i in 1:mrow){
+  for(i in seq_len(mrow)) {
     y <- as.numeric(mdata[i,c(4:(nread+3))])
     x <- numtempvector
-    fit.dat <-try(drm(formula = y ~ x, fct = LL.4()))
+    fit.dat <- try(drm(formula = y ~ x, fct = LL.4()))
 
     if(class(fit.dat) != "try-error")
     {
-      coeffs= data.frame(coefficients(fit.dat))
+      coeffs = data.frame(coefficients(fit.dat))
       slope = coeffs[1,1]
       Tm = coeffs[4,1]
       fitted_y[i,] = fitted.values(fit.dat)
       R2 = 1-sum((residuals(fit.dat)^2))/sum((y-mean(y))^2)
-    }else{
+    } else {
       Tm=NA; R2=NA; slope=NA;
+      stop("The function failed to fit data into a typical melt curve...")
     }
-    Tmresult[i]= Tm
-    R2result[i]= R2
-    Sloperesult[i]= slope
+    Tmresult[i] = Tm
+    R2result[i] = R2
+    Sloperesult[i] = slope
   }
 
   # Calculation of Fitting factor (Fitted median / Raw median at each temperature point).
@@ -93,12 +96,11 @@ ms_scaling <- function(data, nread=10, reorder=FALSE, writefactortofile=TRUE,
 
   # Apply correction factors (1/ overall median) to every value of each individual dataset
   uniqueCondition <- unique(data$condition)
-  niter <- length(uniqueCondition)
   outdata <- data
-  for (i in 1:niter) {
+  for (i in seq_along(uniqueCondition)) {
     pattern <- grep(pattern=paste0("^",uniqueCondition[i],"$"), data$condition, value=FALSE)
     tmpdata <- data[pattern, ]
-    for (j in 1:nread) {
+    for (j in seq_len(nread)) {
       tmpdata[ ,(j+3)] <- tmpdata[ ,(j+3)] * Scalingfactor[i] * Fittingfactor[i,j]
       outdata[pattern, ] <- tmpdata
     }
@@ -130,7 +132,7 @@ ms_scaling <- function(data, nread=10, reorder=FALSE, writefactortofile=TRUE,
   if (writefactortofile) {
     filename <- paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),dataname,"_",filename)
     write("Fittingfactors: \n", filename)
-    for (i in 1:mrow) {
+    for (i in seq_len(mrow)) {
       write(unlist(Fittingfactor[i, ]), filename, sep=" ", append=TRUE)
       write("\n",filename, append=TRUE)
     }
@@ -138,12 +140,12 @@ ms_scaling <- function(data, nread=10, reorder=FALSE, writefactortofile=TRUE,
     write(Scalingfactor, filename, sep=" ", append=TRUE)
     write("\n", filename, append=TRUE)
     write("Pre-Normalization medians: \n", filename,append=TRUE)
-    for (i in 1:mrow) {
+    for (i in seq_len(mrow)) {
       write(unlist(mdata[i,c(3,4:(nread+3))]), filename, sep=" ", append=TRUE)
       write("\n",filename, append=TRUE)
     }
     write("Post-Normalization medians: \n", filename, append=TRUE)
-    for (i in 1:mrow) {
+    for (i in seq_len(mrow)) {
       write(unlist(scalemdata[i,c(3,4:(nread+3))]), filename, sep=" ", append=TRUE)
       write("\n",filename, append=TRUE)
     }
@@ -156,7 +158,7 @@ ms_scaling <- function(data, nread=10, reorder=FALSE, writefactortofile=TRUE,
   message("\nScalingfactors: \n")
   cat(Scalingfactor, "\n")
 
-  if (length(attr(outdata,"outdir"))==0  & length(outdir)>0) {
+  if (length(attr(outdata,"outdir"))==0 & length(outdir)>0) {
     attr(outdata,"outdir") <- outdir
   }
   ms_filewrite(outdata, paste0(dataname,"_","Scaled_data.txt"), outdir=outdir)

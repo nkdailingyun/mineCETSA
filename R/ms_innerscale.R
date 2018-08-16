@@ -20,19 +20,18 @@ ms_innerscale <- function(data, nread, sumf=FALSE) {
 
   # create vector of unique ids and prepare to iterate
   uniqueCondition <- unique(data$condition)
-  niter <- length(uniqueCondition)
   uniques <- which(!duplicated(data$condition))
   # create outdataset
   outdata <- data[uniques, c(1:(nread+3))]
   # calculate median
-  for (i in 1:niter) {
+  for (i in seq_along(uniqueCondition)) {
     pattern <- grep(paste0("^",uniqueCondition[i],"$"), data$condition, value=FALSE)
     tmpdata <- data[pattern, ]
-    for (j in 4:(nread+3)) {
+    for (j in seq_len(nread)) {
       if (sumf) {
-        outdata[i,j] <- sum(tmpdata[[j]], na.rm=TRUE)
+        outdata[i,j+3] <- sum(tmpdata[[j+3]], na.rm=TRUE)
       } else {
-        outdata[i,j] <- median(tmpdata[[j]], na.rm=TRUE)
+        outdata[i,j+3] <- median(tmpdata[[j+3]], na.rm=TRUE)
       }
     }
   }

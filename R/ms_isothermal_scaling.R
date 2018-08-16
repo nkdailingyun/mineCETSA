@@ -40,7 +40,7 @@ ms_isothermal_scaling <- function(data, dataname, nread, abdnorm,
   data <- ms_directory(data, dataname)$data
 
   abdcol <- grep("Abundance", names(data), value=FALSE)
-  if(length(abdcol) > 0 & abdnorm) {
+  if (length(abdcol) > 0 & abdnorm) {
     #if(!length(abdcol)){stop("Make sure there is abundance values, or add argument: abdnorm=FALSE")}
     abddata <- data[ ,c(1:3,abdcol)]
     ms_innerplotbox(abddata[ ,-2],
@@ -53,14 +53,14 @@ ms_isothermal_scaling <- function(data, dataname, nread, abdnorm,
     abdmean <- mean(unlist(mabddata[ ,c(4:(nread+3))]), na.rm=TRUE) # mean abundance
     abdNormfactor <- abdmean/mabddata[ ,c(4:(nread+3))]
     #return(abdNormfactor)
+
     # Apply correction factors to adjust the protein abundance in each channel
     uniqueCondition <- unique(abddata$condition)
-    niter <- length(uniqueCondition)
     outdata <- abddata
-    for (i in 1:niter) {
+    for (i in seq_along(uniqueCondition)) {
       pattern <- grep(pattern=paste0("^",uniqueCondition[i],"$"), abddata$condition, value=FALSE)
       tmpdata <- abddata[pattern, ]
-      for (j in 1:nread) {
+      for (j in seq_len(nread)) {
         tmpdata[ ,j+3] <- tmpdata[ ,j+3] * abdNormfactor[i,j]
         outdata[pattern, ] <- tmpdata
       }
@@ -79,10 +79,10 @@ ms_isothermal_scaling <- function(data, dataname, nread, abdnorm,
     mdata1$set <- "Pre-Abundance adjustment"
     # Apply correction factors to adjust the raw protein ratio in each channel
     outdata <- rdata
-    for (i in 1:niter) {
+    for (i in seq_along(uniqueCondition)) {
       pattern <- grep(pattern=paste0("^",uniqueCondition[i],"$"), rdata$condition, value=FALSE)
       tmpdata <- rdata[pattern, ]
-      for (j in 1:nread) {
+      for (j in seq_len(nread)) {
         tmpdata[ ,j+3] <- tmpdata[ ,j+3] * abdNormfactor[i,j]
         outdata[pattern, ] <- tmpdata
       }
@@ -136,12 +136,11 @@ ms_isothermal_scaling <- function(data, dataname, nread, abdnorm,
 
   # Apply correction factors (1/ overall median) to every value of each individual dataset
   uniqueCondition <- unique(rdata$condition)
-  niter <- length(uniqueCondition)
   outdata <- rdata
-  for (i in 1:niter) {
+  for (i in seq_along(uniqueCondition)) {
     pattern <- grep(pattern=paste0("^",uniqueCondition[i],"$"), rdata$condition, value=FALSE)
     tmpdata <- rdata[pattern, ]
-    for (j in 1:nread) {
+    for (j in seq_len(nread)) {
       tmpdata[ ,j+3] <- tmpdata[ ,j+3] * Normfactor[i,j]
       outdata[pattern, ] <- tmpdata
     }
@@ -158,7 +157,7 @@ ms_isothermal_scaling <- function(data, dataname, nread, abdnorm,
   if (writefactortofile) {
     filename <- paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),dataname,"_",filename)
     write("Normalization factors: \n", filename)
-    for (i in 1:mrow) {
+    for (i in seq_len(mrow)) {
       write(unlist(Normfactor[i, ]), filename, sep=" ", append=TRUE)
       write("\n",filename, append=TRUE)
     }
@@ -199,7 +198,7 @@ ms_isothermal_scaling <- function(data, dataname, nread, abdnorm,
     outdata <- cbind(outdata[ ,c(1:3)], int_data, outdata[,c((nread+4):(ncol(outdata)))])
   }
 
-  if (length(attr(outdata,"outdir"))==0  & length(outdir)>0) {
+  if (length(attr(outdata,"outdir"))==0 & length(outdir)>0) {
     attr(outdata,"outdir") <- outdir
   }
   ms_filewrite(outdata, paste0(dataname,"_","Scaled_data.txt"), outdir=outdir)
