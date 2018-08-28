@@ -35,7 +35,7 @@ ms_scaling <- function(data, nread=10, reordertemp=FALSE, writefactortofile=TRUE
   outdir <- ms_directory(data, dataname)$outdir
   data <- ms_directory(data, dataname)$data
 
-  if (reorder) {
+  if (reordertemp) {
     # make sure the temperature is in ascending trend
     int_data <- data[ ,c(4:(nread+3))]
     int_data <- int_data[ ,order(as.numeric(names(int_data)), decreasing=FALSE)]
