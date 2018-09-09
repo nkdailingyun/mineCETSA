@@ -66,9 +66,9 @@ ms_ITTR_fitting <- function(data, nread=10, fc=0.3, calMTT=FALSE,
     y <- as.numeric(data[i,c(4:(nread+3))])
     x <- numtempvector
     valueindex = which(!is.na(y))
-    if (forcestart & mean(y) > 1.0) {
+    if (forcestart & mean(y,na.rm=T) > 1.0) {
       fit.dat <- try(drm(formula = y ~ x, fct = LL.4(fixed=c(NA,1,NA,NA)), na.action=na.omit))
-    } else if (forcestart & mean(y) <= 1.0){
+    } else if (forcestart & mean(y,na.rm=T) <= 1.0){
       fit.dat <- try(drm(formula = y ~ x, fct = LL.4(fixed=c(NA,NA,1,NA)), na.action=na.omit))
     } else {
       fit.dat <- try(drm(formula = y ~ x, fct = LL.4()))
@@ -78,7 +78,7 @@ ms_ITTR_fitting <- function(data, nread=10, fc=0.3, calMTT=FALSE,
       coeffs <- data.frame(coefficients(fit.dat))
       slope <- coeffs[1,1]
       fitted_y[i, valueindex] <- fitted.values(fit.dat)
-      if (mean(fitted.values(fit.dat)) > 1.0) {
+      if (mean(fitted.values(fit.dat),na.rm=T) > 1.0) {
         if (calMTT) {
           ET <- ED(fit.dat, respLev=(1+nMAD*baselineMAD), interval="delta", reference="control",
                    type="absolute", lref=1.0, display=FALSE)#coeffs[4,1]
