@@ -83,7 +83,7 @@ ms_fitting <- function(data, nread=10, topasone=TRUE,
   # Merge & Export fitting parameters file
   colnames(fitted_y) <- nametempvector
   Fitted <- tibble::as_tibble(fitted_y)
-  Fitted <- cbind(data[, c(1:3)], Fitted)
+  Fitted <- cbind(data[ ,c(1:3)], Fitted)
   if (ncol(data) > (nread+3)) {
     #extra columns other than id, description, condition plus reading
     Fitted <- cbind(Fitted, data[ ,c((nread+4):(ncol(data)))])
