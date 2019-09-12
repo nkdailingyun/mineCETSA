@@ -23,7 +23,7 @@ ms_filewrite <- function(data, filename, outdir=NULL, withdescription=TRUE) {
 
   # add variable name to output
   dataname <- deparse(substitute(data))
-  if (!length(outdir)) {
+  if (!length(outdir)) { #| is.na(outdir)
     if (length(grep("outdir",names(data)))) {
       outdir <- data$outdir[1]
       data$outdir <- NULL
@@ -79,7 +79,7 @@ ms_fileread <- function(filename) {
   # The first . indicated the current working directory
   outdir <- strsplit(filename,"/")[[1]][2]
   data <- readr::read_tsv(file=filename)
-  if (length(attr(data,"outdir"))==0 & length(outdir)>0) {
+  if (length(attr(data,"outdir"))==0 & length(outdir)>0 & !is.na(outdir)) {
     attr(data,"outdir") <- outdir
   }
   return(data)

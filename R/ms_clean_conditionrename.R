@@ -4,8 +4,14 @@
 #'
 #' @param data dataset to be cleaned up
 #' @param nread number of reading channels or sample treatements, default value 10
-#' @param remkeratin whether to remove Keratin protein, which is generally considered as a common contaminant, default set to TRUE
-#' @param remsinglecondprot whether the orphan proteins that appear only in one of the datasets should be removed, default set to FALSE
+#' @param remkeratin whether to remove Keratin protein, which is generally
+#' considered as a common contaminant, default set to TRUE
+#' @param remserum whether to remove Serum albumin protein, which is
+#' generally considered to be from culture medium, default set to TRUE
+#' @param remtrypsin whether to remove trypsin protein, which is
+#' generally considered to be from digestion reaction, default set to TRUE
+#' @param remsinglecondprot whether the orphan proteins that appear only in
+#' one of the datasets should be removed, default set to FALSE
 #'
 #' @import dplyr
 #'
@@ -17,7 +23,7 @@
 #'
 #'
 
-ms_clean <- function(data, nread=10, remkeratin=TRUE, remsinglecondprot=FALSE) {
+ms_clean <- function(data, nread=10, remkeratin=TRUE, remserum=TRUE, remtrypsin=TRUE, remsinglecondprot=FALSE) {
 
   # add variable name to output
   dataname <- deparse(substitute(data))
@@ -52,6 +58,28 @@ ms_clean <- function(data, nread=10, remkeratin=TRUE, remsinglecondprot=FALSE) {
     }
     if (nrow(data) == 0) {
       stop("After removing Keratin the dataset is empty.")
+    }
+  }
+  # to remove contaminating keratin proteins
+  if (remserum) {
+    pattern <- grep("Serum albumin", data$description)
+    # print(length(pattern))
+    if (length(pattern) > 0) {
+      data <- data[-pattern, ]
+    }
+    if (nrow(data) == 0) {
+      stop("After removing Serum albumin the dataset is empty.")
+    }
+  }
+  # to remove Trypsin proteins even from Human species
+  if (remtrypsin) {
+    pattern <- grep("Trypsin", data$description)
+    # print(length(pattern))
+    if (length(pattern) > 0) {
+      data <- data[-pattern, ]
+    }
+    if (nrow(data) == 0) {
+      stop("After removing Trypsin the dataset is empty.")
     }
   }
   print(paste("The data composition under each experimental condition (after cleanup) is:"))
@@ -94,7 +122,7 @@ ms_conditionrename <- function(data, incondition=NULL, outcondition=NULL) {
       data$condition <- gsub(paste0("^",incondition[i],"$"), as.character(outcondition[i]), data$condition)
     }
   }
-  print("The data composition under each experimental condition (after renaming) is:")
+  cat("The data composition under each experimental condition (after renaming) is:\n")
   print(table(data$condition))
   return(data)
 }
