@@ -14,8 +14,8 @@
 #' default set to TRUE
 #' @param refchannel names of reference channel used in Proteome Discoverer
 #' search, default value 126
-#' @param channels names of the read-in channels, default value
-#' c("126","127N","127C","128N","128C","129N","129C","130N","130C","131")
+#' @param channels names of the read-in channels, default value NULL, it would
+#' automatically match the provided channel number when it is 10 or 11
 #'
 #' @seealso \code{\link{ms_ITTR_rawread}} for time response data
 #' @seealso \code{\link{ms_ITDR_rawread}} for dose response data
@@ -33,18 +33,25 @@
 #'
 #'
 ms_rawread <- function(filevector, fchoose=FALSE, temp=c(37,40,43,46,49,52,55,58,61,64),
-                       nread=10, abdread=FALSE, PD21=TRUE, refchannel="126",
-                       channels=c("126","127N","127C","128N","128C","129N","129C","130N","130C","131")) {
+                       nread=10, abdread=FALSE, PD21=TRUE, PD22=FALSE, refchannel="126",
+                       channels=NULL) {
 
+  if (nread==10 & length(channels)==0) {
+    channels=c("126","127N","127C","128N","128C","129N","129C","130N","130C","131")
+  } else if (nread==11 & length(channels)==0) {
+    channels=c("126","127N","127C","128N","128C","129N","129C","130N","130C","131N","131C")
+  } else if (nread!=length(channels) | nread!=length(temp)) {
+    stop("Please provide a vector of used TMT channels")
+  }
   flength <- length(filevector)
   if (flength < 2) {
     dirname <- deparse(substitute(filevector))
     # to resolve the problem when building up vignettes, not used in normal cases
     dirname_l <- unlist(strsplit(dirname, split="/"))
     dirname <- dirname_l[length(dirname_l)]
-    data <- ms_innerread(filevector, fchoose, treatment=temp, nread, abdread, PD21, refchannel, channels)
+    data <- ms_innerread(filevector, fchoose, treatment=temp, nread, abdread, PD21, PD22, refchannel, channels)
     data <- ms_dircreate(dirname, data)
-    print("The data composition under each experimental condition (read in) is:")
+    cat("The data composition under each experimental condition (read in) is:\n")
     print(table(data$condition))
     return(data)
   } else {
@@ -53,16 +60,16 @@ ms_rawread <- function(filevector, fchoose=FALSE, temp=c(37,40,43,46,49,52,55,58
     # to resolve the problem when building up vignettes, not used in normal cases
     dirname_l <- unlist(strsplit(dirname, split="/"))
     dirname <- dirname_l[length(dirname_l)]
-    indata <- ms_innerread(filevector[1], fchoose, treatment=temp, nread, abdread, PD21, refchannel, channels)
+    indata <- ms_innerread(filevector[1], fchoose, treatment=temp, nread, abdread, PD21, PD22, refchannel, channels)
     indata <- mutate(indata, condition = paste0(condition,".1"))
     outdata <- indata
     for (i in 2:flength) {
-      indata <- ms_innerread(filevector[i], fchoose, treatment=temp, nread, abdread, PD21, refchannel, channels)
+      indata <- ms_innerread(filevector[i], fchoose, treatment=temp, nread, abdread, PD21, PD22, refchannel, channels)
       indata <- mutate(indata, condition = paste0(condition, ".", i))
       outdata <- rbind(x=outdata, y=indata, by=NULL)
     }
     outdata <- ms_dircreate(paste0("merged_",dirname), outdata)
-    print("The data composition under each experimental condition (read in) is:")
+    cat("The data composition under each experimental condition (read in) is:\n")
     print(table(outdata$condition))
     return(outdata)
   }

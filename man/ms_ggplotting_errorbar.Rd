@@ -8,11 +8,12 @@ ms_ggplotting_errorbar(data, legenddata = NULL, levelvector = NULL,
   nread = 10, rep = "r", minireplicate = NULL, fitremout = FALSE,
   bottomcutoff = 0.4, topcutoff = 0.8, topasone = TRUE,
   pfdatabase = FALSE, printBothName = TRUE, printGeneName = FALSE,
-  printTm = TRUE, annotypos = 0.5, annotyinterval = 0.08, layout = c(5,
-  5), external = TRUE, presetcolor = TRUE, colorpanel = NULL,
-  toplabel = "CETSA data plotting_barplot",
-  leftlabel = "Non-denatured protein fraction", bottomlabel = "Temperature",
-  pdfname = "ggplotting.pdf", pdfheight = 12, pdfwidth = 12)
+  printTm = TRUE, annotypos = 0.5, annotyinterval = 0.08,
+  layout = c(5, 5), external = TRUE, presetcolor = TRUE,
+  colorpanel = NULL, toplabel = "CETSA data plotting_barplot",
+  leftlabel = "Non-denatured protein fraction",
+  bottomlabel = "Temperature", pdfname = "ggplotting.pdf",
+  pdfheight = 12, pdfwidth = 12)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}

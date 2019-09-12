@@ -17,6 +17,7 @@
 #' specified bottom cutoff value, which is 0.8 by default
 #' @param orderAUCdiff whether to order plots by AUC difference among different
 #' treatment for same protein, default set to TRUE
+#' @param simpleAUC whether to perform a simple calculation of AUC, default set to TRUE
 #' @param nreplicate number of replicates, default value is 1
 #' @param topasone whether the top plateau has to be fixed, i.e., 1.0
 #' @param normTop whether to normalize the AUC based on Top three readings
@@ -37,6 +38,7 @@
 #' @param pdfwidth a number indicate the width of pdf file, default value 12
 #'
 #'
+#' @importFrom MESS auc
 #' @import tidyr
 #' @import RColorBrewer
 #' @import scales
@@ -56,7 +58,7 @@
 
 ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRUE,
                           fitremout=FALSE, ctrlcond=NULL, bottomcutoff=0.4, topcutoff=0.8,
-                          orderAUCdiff=TRUE, nreplicate=1, topasone=TRUE, normTop=TRUE,
+                          orderAUCdiff=TRUE, simpleAUC=TRUE, nreplicate=1, topasone=TRUE, normTop=TRUE,
                           dotconnect=FALSE, pfdatabase=FALSE, printBothName=TRUE, printGeneName=FALSE,
                           printcount=TRUE, annotypos=0.5, annotyinterval=0.08,
                           presetcolor=TRUE, colorpanel=NULL,
@@ -64,18 +66,17 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
                           commonlegend=TRUE, layout=c(5,5), external=TRUE,
                           toplabel="CETSA data plotting_curve fitting",
                           leftlabel="Non-denatured protein fraction",
-                          bottomlabel="Temperature",
+                          bottomlabel="Temperature", returnplots=FALSE,
                           pdfname="ggplotting.pdf", pdfheight=12, pdfwidth=12) {
 
   dataname <- deparse(substitute(data))
   outdir <- ms_directory(data, dataname)$outdir
   data <- ms_directory(data, dataname)$data
 
-  if (any(duplicated(data[, c(1,3)]))) {
-    print("Warning for duplicated protein name entries")
-    print("Double check the following proteins for duplicated entries:")
-    print(paste0(data[duplicated(data[, c(1,3)]), ]$id," in ",
-                 data[duplicated(data[, c(1,3)]), ]$condition))
+  if (any(duplicated(data[ ,c(1,3)]))) {
+    cat("Warning for duplicated protein name entries\n")
+    cat("Double check the following proteins for duplicated entries:\n")
+    cat(data[duplicated(data[ ,c(1,3)]), ]$id,"in",data[duplicated(data[ ,c(1,3)]), ]$condition,"\n")
     stop("1.Remove the duplicated entires from original dataset then start again!")
   }
 
@@ -86,11 +87,12 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
     data <- data[fkeep, ]
   }
   if (nrow(data)==0) {
-    print("Make sure there are more than one experimental condition in dataset.")
+    cat("Make sure there are more than one experimental condition in dataset.\n")
     stop("Otherwise specify remsinglecondprot==FALSE !")
   }
 
-  nametempvector <- names(data[4:(nread+3)])
+  nametempvector <- names(data)[4:(nread+3)]
+  numtempvector <- as.numeric(nametempvector)
   ncond <- length(unique(data$condition))
   # if (ncond>8 & ncond<=12) { colorpanel <- brewer.pal(ncond, "Paired") }
   # if (ncond>12) { stop("12 colors are the current limit for plotting in single plot") }
@@ -120,13 +122,13 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
     data_extra <- data[fkeep, ]
   }
 
-  if (printBothName) {
+  if (printBothName & !pfdatabase) {
     data <- data %>% rowwise() %>% mutate(description1 = getProteinName(description, pfdatabase)) %>%
       mutate(description2 = getGeneName(description)) %>%
       mutate(id = paste(id, description1, description2, sep="\n"))
     data$description1<-NULL
     data$description2<-NULL
-  } else if (printGeneName) {
+  } else if (printGeneName & !pfdatabase) {
     data <- data %>% rowwise() %>%
       mutate(description = getGeneName(description)) %>%
       mutate(id = paste(id, description, sep="\n"))
@@ -150,11 +152,10 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
     data_extra$description<-NULL
   }
 
-  if(any(duplicated(data[, c(1,2)]))){
-    print("Warning for duplicated protein name entries")
-    print("Double check the following proteins for duplicated entries:")
-    print(paste0(data[duplicated(data[, c(1,2)]), ]$id," in ",
-                 data[duplicated(data[, c(1,2)]), ]$condition))
+  if(any(duplicated(data[ ,c(1,2)]))){
+    cat("Warning for duplicated protein name entries\n")
+    cat("Double check the following proteins for duplicated entries:\n")
+    cat(data[duplicated(data[ ,c(1,2)]), ]$id,"in",data[duplicated(data[ ,c(1,2)]), ]$condition,"\n")
     stop("2.Remove the duplicated entires from original dataset then start again!")
   }
 
@@ -174,7 +175,7 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   # look for outlier proteins based on melting behavior in controls
   outliers <- NULL
   if (fitremout) {
-    print("Make sure you provide fitted data with Tm and R2 values for this option!")
+    cat("Make sure you provide fitted data with Tm and R2 values for this option!\n")
     ctrllist1 <- unique(grep("[Cc][Tt][Rr][Ll]", data$condition, value=TRUE))
     ctrllist2 <- unique(grep("[Cc][Oo][Nn][Tt][Rr][Oo][Ll]", data$condition, value=TRUE))
     ctrllist3 <- unique(grep("[Dd][Mm][Ss][Oo]", data$condition, value=TRUE))
@@ -200,7 +201,7 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
     data$Top <- NULL
     data$Bottom <- NULL
     if (length(tmp)>0) {
-      print(paste0(length(tmp), " measurements were messy in melting behavior and removed."))
+      cat(length(tmp), "measurements were messy in melting behavior and removed.\n")
       outlierid <- data[tmp, ]$id
       outlierid1 <- which(data$id %in% outlierid)
       outliers <- data[outlierid1, ]
@@ -213,7 +214,12 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   if (orderAUCdiff) {
     # Ranking based by Area under the curve(AUC) difference
     if (!("^AUC" %in% colnames(data))) {
-      data$AUC <- rowSums(data[ ,c(3:(nread+2))])
+      if (simpleAUC==TRUE) {
+        data$AUC <- rowMeans(data[ ,c(3:(nread+2))],na.rm=T)
+        # data <- dplyr::mutate(data, AUC=AUC/nread)
+      } else {
+        data$AUC <- apply(data, 1, function(x) auc(numtempvector, x[c(3:(nread+2))], type="linear"))
+      }
     }
     if (normTop) {
       data$Top <- rowMeans(data[ ,c(3:5)])
@@ -249,13 +255,18 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   if (!length(legenddata)) { legenddata <- data }
   plotlegend <- ms_melt_legend(legenddata, nread, colorpanel)
 
-  if (external) { external_graphs(T) }
+  if (external & !returnplots) { external_graphs(T) }
 
   pl <- ms_melt_innerplot(data, nread, topasone, dotconnect,
                           printcount, PSM_annod, Pep_annod,
                           annotypos, annotyinterval,
                           colorpanel, plotlegend, commonlegend,
-                          toplabel, leftlabel, bottomlabel, withset, layout)
+                          toplabel, leftlabel, bottomlabel,
+                          withset, layout, returnplots)
+  if (returnplots) {
+    if (external) { external_graphs(F) } # switch off the external graphs
+    return(pl)
+  }
 
   if (dotconnect) { pdfname=paste("simple",pdfname,sep="_") }
   else { pdfname=paste("fitted",pdfname,sep="_") }
@@ -269,5 +280,5 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   }
 
   if (external) { external_graphs(F) } # switch off the external graphs
-  print("ggplotting plot file generated successfully.")
+  cat("ggplotting plot file generated successfully.\n")
 }

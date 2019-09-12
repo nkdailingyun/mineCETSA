@@ -4,19 +4,21 @@
 \alias{ms_ggplotting_rep}
 \title{ms_ggplotting_rep}
 \usage{
-ms_ggplotting_rep(data, legenddata = NULL, levelvector = NULL, nread = 10,
-  remsinglecondprot = TRUE, PSMcutoff = FALSE, PSMthreshold = 3,
-  fitremout = FALSE, ctrlcond = NULL, bottomcutoff = 0.4,
-  topcutoff = 0.8, variancecutoff = FALSE, nMAD_var = 2.5,
-  nreplicate = 2, topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
-  pfdatabase = FALSE, printBothName = TRUE, printGeneName = FALSE,
-  printcount = TRUE, annotypos = 0.5, annotyinterval = 0.08,
-  presetcolor = TRUE, extraidtocomplete = NULL, plotfitremout = TRUE,
+ms_ggplotting_rep(data, legenddata = NULL, levelvector = NULL,
+  nread = 10, remsinglecondprot = TRUE, PSMcutoff = FALSE,
+  PSMthreshold = 3, fitremout = FALSE, ctrlcond = NULL,
+  bottomcutoff = 0.4, topcutoff = 0.8, variancecutoff = FALSE,
+  nMAD_var = 2.5, nreplicate = 2, topasone = TRUE, normTop = TRUE,
+  dotconnect = FALSE, pfdatabase = FALSE, printBothName = TRUE,
+  printGeneName = FALSE, printcount = TRUE, annotypos = 0.5,
+  annotyinterval = 0.08, presetcolor = TRUE,
+  extraidtocomplete = NULL, plotfitremout = TRUE,
   plotvarremout = TRUE, colorpanel = NULL, withset = FALSE,
   commonlegend = TRUE, layout = c(5, 5), external = TRUE,
   toplabel = "CETSA data plotting_curve fitting",
-  leftlabel = "Non-denatured protein fraction", bottomlabel = "Temperature",
-  pdfname = "ggplotting.pdf", pdfheight = 12, pdfwidth = 12)
+  leftlabel = "Non-denatured protein fraction",
+  bottomlabel = "Temperature", pdfname = "ggplotting.pdf",
+  pdfheight = 12, pdfwidth = 12)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}

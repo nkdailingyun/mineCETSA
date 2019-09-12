@@ -1,15 +1,18 @@
-#' ms_goodctrlcurve_selection
+#' ms_select_goodmeltcurve
 #'
 #' Function to perform good quality melting curve selection on dataframe
 #' The main criteria including averaged R2>0.8, with steady plateau
-#' at the top and bottom part of the melting curves
+#' at the top and bottom parts of the melting curves.
 #' It could be better to use the fitted reading instead of raw readings (TBA)
 #'
 #' @param data dataset to look for complete set
-#' @param nread number of reading channels or sample treatements, default value
-#' is 10
-#' @param ctrlcond by default the function only apply on the data containing condition
-#' keyword "Ctrl"/"DMSO", the user could add customized condition keyword using this argument
+#' @param nread number of reading channels or sample treatements, default value is 10
+#' @param ctrlcondition by default the function only apply on the Control treatment data
+#' with specified condition keyword "Ctrl"/"DMSO", the user could add additional customized
+#' condition keyword using this argument
+#' @param checkTm whether check Tm is valid ie, not NA value
+#' @param stableplateau whether to select the protein with properly stable plateau in the melt curve,
+#' default set to TRUE
 #' @param topCVcutoff the threshold CV value used to define the top plateau cutoff, default value is 0.1
 #' @param bottomCVcutoff the threshold CV value used to define the bottom plateau cutoff, default value is 0.1
 #' @param topcutoff the threshold value to control the minimal top plateau, when provided
@@ -17,31 +20,32 @@
 #' @param nMAD when top or bottom CV cutoff were not provided, the cutoff value
 #' would be determined using MAD scheme, nMAD indicates the significance level
 #' of MAD cutoff, default value is 2.5
+#' @param reverse whether to return the to-be-removed bad melt curves, default set to FALSE
 
 #' @importFrom plyr ddply
 #' @import tidyr
 #' @export
 #' @return dataframe containing the subset of melting curves with good melting profile
 #' @examples \dontrun{
-#' data_good <- ms_goodcurve_selection(data_scaled, bottomcutoff=0.3)
+#' data_good <- ms_select_goodmeltcurve(data_scaled, bottomcutoff=0.3)
 #' }
 #'
 #'
-ms_goodctrlcurve_selection <- function(data, nread=10, ctrlcond=NULL,
-                                   topCVcutoff=0.1, bottomCVcutoff=0.1,
-                                   topcutoff=NULL, bottomcutoff=NULL, nMAD=2.5) {
+ms_select_goodmeltcurve <- function(data, nread=10, ctrlcondition=NULL, checkTm=TRUE,
+                                   stableplateau=TRUE, topCVcutoff=0.1, bottomCVcutoff=0.1,
+                                   topcutoff=NULL, bottomcutoff=NULL, nMAD=2.5, reverse=FALSE) {
 
   dataname <- deparse(substitute(data))
   outdir <- ms_directory(data, dataname)$outdir
   data <- ms_directory(data, dataname)$data
 
   # look for outlier proteins based on melting behavior in controls
-  outliers <- NULL
+  tmp <- NULL
   print("Make sure you provide fitted data with Tm and R2 values for this option!")
   ctrllist1 <- unique(grep("[Cc][Tt][Rr][Ll]", data$condition, value=TRUE))
   ctrllist2 <- unique(grep("[Cc][Oo][Nn][Tt][Rr][Oo][Ll]", data$condition, value=TRUE))
   ctrllist3 <- unique(grep("[Dd][Mm][Ss][Oo]", data$condition, value=TRUE))
-  ctrllist <- c(ctrllist1, ctrllist2, ctrllist3, ctrlcond)
+  ctrllist <- c(ctrllist1, ctrllist2, ctrllist3, ctrlcondition)
   if (length(ctrllist)==0) {
     stop("Name your control conditions with prefix [Ctrl] or [Control] or [DMSO], or specify in ctrlcond argument")
   }
@@ -49,21 +53,23 @@ ms_goodctrlcurve_selection <- function(data, nread=10, ctrlcond=NULL,
   print(ctrllist)
   data$Top <- rowMeans(data[, c(4:6)],na.rm =T)
   data$Bottom <- rowMeans(data[ ,c((nread+1):(nread+3))],na.rm =T)
-  data$TopCV <- apply(data[, c(4:6)],1,sd,na.rm =T)/rowMeans(data[, c(4:6)],na.rm =T)
-  data$BottomCV <- apply(data[ ,c((nread+1):(nread+3))],1,sd,na.rm =T)/rowMeans(data[ ,c((nread+1):(nread+3))])
-  if (length(topCVcutoff)==0) {
-    topCVcutoff <- median(data$TopCV,na.rm =T)+nMAD*mad(data$TopCV,na.rm =T)
-    print(paste0("The top plateau CV cutoff value based on mad scheme is ", topCVcutoff))
-  }
-  if (length(bottomCVcutoff)==0) {
-    bottomCVcutoff <- median(data$BottomCV,na.rm =T)+nMAD*mad(data$BottomCV,na.rm =T)
-    print(paste0("The bottom plateau CV cutoff value based on mad scheme is ", bottomCVcutoff))
+  if (stableplateau) {
+    data$TopCV <- apply(data[, c(4:6)],1,sd,na.rm =T)/rowMeans(data[, c(4:6)],na.rm =T)
+    data$BottomCV <- apply(data[ ,c((nread+1):(nread+3))],1,sd,na.rm =T)/rowMeans(data[ ,c((nread+1):(nread+3))])
+    if (length(topCVcutoff)==0) {
+      topCVcutoff <- round(median(data$TopCV,na.rm =T)+nMAD*mad(data$TopCV,na.rm =T), 3)
+      print(paste0("The top plateau CV cutoff value based on mad scheme is ", topCVcutoff))
+    }
+    if (length(bottomCVcutoff)==0) {
+      bottomCVcutoff <- round(median(data$BottomCV,na.rm =T)+nMAD*mad(data$BottomCV,na.rm =T), 3)
+      print(paste0("The bottom plateau CV cutoff value based on mad scheme is ", bottomCVcutoff))
+    }
   }
 
-  tmp <- which(is.na(data$Tm))
+  if (checkTm) { tmp <- which(is.na(data$Tm)) }
   tmp <- c(tmp,which(data$Slope<=0))
   tmp <- c(tmp,which(data$R2<=0))
-  R2table <- plyr::ddply(data, .(id), summarize, meanR2=median(R2, na.rm=TRUE))
+  R2table <- plyr::ddply(data, .(id), summarize, meanR2=median(R2,na.rm=TRUE))
   R2table <- subset(R2table, meanR2<0.8)
   tmp <- c(tmp,which(data$id %in% R2table$id))
   #tmp4 <- which(data$condition %in% ctrllist & data$Tm>=100);
@@ -74,19 +80,28 @@ ms_goodctrlcurve_selection <- function(data, nread=10, ctrlcond=NULL,
   if (length(bottomcutoff)) {
     tmp <- c(tmp,which(data$condition %in% ctrllist & data$Bottom>bottomcutoff))
   }
-  tmp <- c(tmp,which(data$condition %in% ctrllist & data$TopCV>topCVcutoff))
-  tmp <- c(tmp,which(data$condition %in% ctrllist & data$BottomCV>bottomCVcutoff))
+  if (stableplateau) {
+    tmp <- c(tmp,which(data$condition %in% ctrllist & data$TopCV>topCVcutoff))
+    tmp <- c(tmp,which(data$condition %in% ctrllist & data$BottomCV>bottomCVcutoff))
+  }
   tmp <- unique(tmp)
   data$Top <- NULL
   data$Bottom <- NULL
-  data$TopCV <- NULL
-  data$BottomCV <- NULL
+  if (stableplateau) {
+    data$TopCV <- NULL
+    data$BottomCV <- NULL
+  }
   if (length(tmp)>0) {
     print(paste0(length(tmp), " curves were messy in melting behavior and removed."))
-    data <- data[-tmp, ]
+    if (reverse) {
+      data <- data[tmp, ]
+    } else {
+      data <- data[-tmp, ]
+    }
   }
   return(data)
 }
+
 
 #' ms_find_replicate
 #'
@@ -156,6 +171,121 @@ ms_find_replicate <- function(data, nread=10, keepfullrep=FALSE) {
   return(data_complete)
 }
 
+
+#' ms_remove_outlier_replicate
+#'
+#' Function to find and remove the outlier measurements from replicated dataset
+#' (with single experimental condition). This function is similar to
+#' function ms_reproducible_replicate(), however the latter one segregates away
+#' all the measurements associated to that protein.
+#'
+#' @param data dataset to clean up from extreme outlier measurement
+#' @param nread number of reading channels or sample treatements, default value 10
+#' @param minrep number of minimal replicates required
+#' @param nsignificance the significance level of assigning extreme outliers, default
+#' value 2, meaning threshold at the level of mean+2*SD of the whole population
+#' @param mode either SD (Standard Deviation) or MAD (Median Absolute Deviation)
+#' @param abscutoff the absolute cutoff level of assigning extreme outliers, default
+#' value NULL
+#' @param remoutlier whether to remove outlier measurements from replicated dataset,
+#' default set to TRUE
+#'
+#' @importFrom plyr ddply dlply .
+#' @importFrom reshape2 melt
+#' @import tidyr
+#' @import tibble
+#'
+#' @export
+#' @return dataframe containing the subset of dataset after removing the outlier measurements
+#' @examples \dontrun{
+#' data_good_set <- ms_remove_outlier_replicate(data_scaled)
+#' }
+#'
+#'
+
+ms_remove_outlier_replicate <- function(data, nread=10, minrep=NULL, nsignificance=2,
+                                        mode=c("SD","MAD"), abscutoff=NULL, remoutlier=TRUE) {
+
+  dataname <- deparse(substitute(data))
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
+
+  if (length(minrep)==0) { stop("Need to specify a numeric criteria of the required mininal replicates...") }
+  print(paste0("The number of unique proteins from input dataset is: ",length(unique(data$id))))
+  data1 <- tidyr::separate(data, condition, into=c("condition", "replicate"), sep="\\.")
+  data_freq <- dplyr::count(data1, id, condition)
+  data_freq <- subset(data_freq, n>=minrep)
+  if (nrow(data_freq)==0) { stop("Make sure the right mininal replicates criteria is specified...") }
+  print(paste0("The number of unique proteins with at least ", minrep, " replicates, is: ",length(unique(data_freq$id))))
+  data2 <- subset(data1, id %in% unique(data_freq$id))
+
+  if (remoutlier) {
+    # the current version only remove the most one outlier measurement from the proteins
+    dism1 <- plyr::ddply(data2, plyr::.(id,condition), function(data) {
+      data<-data[order(data$replicate), ]
+      dm<-as.matrix(dist(data[ ,c(5:(nread+4))]))
+      rownames(dm) <- sort(data$replicate)
+      colnames(dm) <- sort(data$replicate)
+      dm[upper.tri(dm,diag=T)]<-NA
+      na.omit(reshape2::melt(dm))
+    })
+    names(dism1) <- c("id", "condition", "rep1", "rep2", "distance")
+    print("The distribution of inter-replicates distances is as follows:")
+    print(summary(dism1$distance))
+    # hist(dism1$distance)
+    dism1 <- dism1[order(dism1$distance,decreasing=T),]
+    # print(head(dism1))
+    if (length(abscutoff)==0) {
+      mode <- mode[1]
+      if (toupper(mode)=="SD") {
+        abscutoff <- round(mean(dism1$distance,na.rm=T)+nsignificance*sd(dism1$distance,na.rm=T), 3)
+      } else if (toupper(mode)=="MAD") {
+        abscutoff <- round(median(dism1$distance,na.rm=T)+nsignificance*mad(dism1$distance,na.rm=T), 3)
+      } else {
+        stop ("Mode should only be either SD or MAD")
+      }
+    }
+    print(paste0("The cutoff of outlier distance is: ",abscutoff))
+    dism2 <- subset(dism1, distance>abscutoff)
+    dism3 <- plyr::dlply(dism2, plyr::.(id), function(data) {
+      re<-c(data$rep1, data$rep2)
+      rem1<-names(which(table(re)==max(table(re))))
+      rem1
+    })
+    dism4 <- matrix(nrow=length(dism3), ncol=max(sapply(dism3, length)))
+    rownames(dism4) <- names(dism3)
+    colnames(dism4) <- paste0("rep",seq(ncol(dism4)))
+    for (i in seq_along(dism3)) { dism4[i,c(1:length(dism3[[i]]))] <- dism3[[i]] }
+    dism4 <- as.data.frame(dism4)
+    dism4 <- tibble::rownames_to_column(dism4,var="id")
+    dism4 <- tidyr::gather(dism4,col,replicate,-id)
+    dism4$col <- NULL
+    dism4 <- na.omit(dism4)
+    data2 <- dplyr::anti_join(data2, dism4)
+    data_freq <- dplyr::count(data2, id, condition)
+    data_freq <- subset(data_freq, n>=minrep)
+    data2 <- subset(data2, id %in% unique(data_freq$id))
+    data3 <- dplyr::anti_join(data1, data2[,c(1,3:4)])
+    print(paste0("The number of unique proteins pass the selection is: ",length(unique(data2$id))))
+    print(paste0("The number of unique proteins removed is: ",length(unique(data3$id))))
+    data2 <- tidyr::unite(data2, condition, condition, replicate, sep=".")
+    data3 <- tidyr::unite(data3, condition, condition, replicate, sep=".")
+    if (length(attr(data2,"outdir"))==0 & length(outdir)>0) {
+      attr(data2,"outdir") <- outdir
+    }
+    if (length(attr(data3,"outdir"))==0 & length(outdir)>0) {
+      attr(data3,"outdir") <- outdir
+    }
+    return(list(selected=data2,outlier=data3))
+  } else {
+    if (length(attr(data2,"outdir"))==0 & length(outdir)>0) {
+      attr(data2,"outdir") <- outdir
+    }
+    return(data2)
+  }
+}
+
+
 #' ms_reproducible_replicate
 #'
 #' Function to perform subset the reproducible replicated measurements on dataframe
@@ -208,7 +338,6 @@ ms_reproducible_replicate <- function(data, nread=10, variancecutoff=TRUE,
       eucl<-dm
       eucl
     })
-
     dism <- data.frame(id=names(dism), distance=dism, row.names=NULL)
     #return(dism)
     print("The distances of inter-replicates readings distribution is as follows:")
@@ -224,11 +353,8 @@ ms_reproducible_replicate <- function(data, nread=10, variancecutoff=TRUE,
       eucl<-c(n, nmean, nsd, ncv)
       eucl
     })
-
     dism <- data.frame(id=rownames(dism), dism, row.names=NULL)
-    #nlength <- nreplicate*(nreplicate-1)/2
-    #colnames(dism) <- c("id", paste0("distance_", 1:nlength), "mean", "sd", "cv")
-    colnames(dism) <- c("id", "num", "mean", "sd", "cv")
+    names(dism) <- c("id", "num", "mean", "sd", "cv")
     #return(dism)
     print("The CVs of inter-replicates readings distribution is as follows:")
     print(summary(dism$cv))
@@ -253,11 +379,17 @@ ms_reproducible_replicate <- function(data, nread=10, variancecutoff=TRUE,
     data_reproducible <- data[fkeep1, ]
     print(paste0("The number of reproducible proteins with complete replicates is: ",
                  length(unique(data_reproducible$id))))
-    data_reproducible$outdir <- outdir
-    data_largevar$outdir <- outdir
+    if (length(attr(data_reproducible,"outdir"))==0 & length(outdir)>0) {
+      attr(data_reproducible,"outdir") <- outdir
+    }
+    if (length(attr(data_largevar,"outdir"))==0 & length(outdir)>0) {
+      attr(data_largevar,"outdir") <- outdir
+    }
     return(list(data_reproducible=data_reproducible, data_largevar=data_largevar, dism=dism))
   } else {
-    data$outdir <- outdir
+    if (length(attr(data,"outdir"))==0 & length(outdir)>0) {
+      attr(data,"outdir") <- outdir
+    }
     return(list(data=data, dism=dism))
   }
 }

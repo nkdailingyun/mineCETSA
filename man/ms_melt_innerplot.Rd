@@ -5,8 +5,8 @@
 \title{ms_melt_innerplot}
 \usage{
 ms_melt_innerplot(data, nread, topasone, dotconnect, printcount, PSM_annod,
-  Pep_annod, annotypos, annotyinterval, colorpanel, plotlegend, commonlegend,
-  toplabel, leftlabel, bottomlabel, withset, layout)
+  Pep_annod, annotypos, annotyinterval, colorpanel, plotlegend,
+  commonlegend, toplabel, leftlabel, bottomlabel, withset, layout)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}

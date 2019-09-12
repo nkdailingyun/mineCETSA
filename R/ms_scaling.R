@@ -67,21 +67,22 @@ ms_scaling <- function(data, nread=10, reordertemp=FALSE, writefactortofile=TRUE
 
   # capture fitted values
   fitted_y <- matrix(nrow = mrow, ncol = nread)
-  for(i in seq_len(mrow)) {
+  for (i in seq_len(mrow)) {
     y <- as.numeric(mdata[i,c(4:(nread+3))])
     x <- numtempvector
-    fit.dat <- try(drm(formula = y ~ x, fct = LL.4()))
+    valueindex = which(!is.na(y))
+    fit.dat <- try(drm(formula=y ~ x, fct=LL.4(), na.action=na.omit))
 
-    if(class(fit.dat) != "try-error")
-    {
-      coeffs = data.frame(coefficients(fit.dat))
-      slope = coeffs[1,1]
-      Tm = coeffs[4,1]
-      fitted_y[i,] = fitted.values(fit.dat)
-      R2 = 1-sum((residuals(fit.dat)^2))/sum((y-mean(y))^2)
+    if (class(fit.dat) != "try-error") {
+      coeffs <- data.frame(coefficients(fit.dat))
+      slope <- coeffs[1,1]
+      Tm <- coeffs[4,1]
+      fitted_y[i,valueindex] <- fitted.values(fit.dat)
+      y1 <- na.omit(y)
+      R2 <- 1-sum((residuals(fit.dat)^2))/sum((y1-mean(y1))^2)
     } else {
       Tm=NA; R2=NA; slope=NA;
-      stop("The function failed to fit data into a typical melt curve...")
+      stop("The median of data cannot be fitted into a typical melt curve...")
     }
     Tmresult[i] = Tm
     R2result[i] = R2
@@ -156,7 +157,7 @@ ms_scaling <- function(data, nread=10, reordertemp=FALSE, writefactortofile=TRUE
   print(Fittingfactor, row.names = FALSE)
 
   message("\nScalingfactors: \n")
-  cat(Scalingfactor, "\n")
+  print(Scalingfactor, row.names = FALSE)
 
   if (length(attr(outdata,"outdir"))==0 & length(outdir)>0) {
     attr(outdata,"outdir") <- outdir

@@ -32,7 +32,7 @@ ms_isoform_resolve <- function(data) {
     subdata <- data[grep(uniid, data$id), ]$condition
     if (anyDuplicated(subdata)) {
       questionid <- c(questionid, uniid)
-    } else{
+    } else {
       next
     }
   }
@@ -53,8 +53,8 @@ ms_isoform_resolve <- function(data) {
   ambitable <- counttable2[ ,c(1:2)]
   ambitable <- merge(ambitable, unique(data[ ,c(1,2)]), all.x=TRUE)
   names(ambitable)[c(1:2)] <- c("isoforms", "frequency")
-  print(paste0(nrow(ambitable), " Isoforms were identified from dataset ", dataname, "."))
-  print("Check out the details in the current working directory.")
+  cat(nrow(ambitable), "Isoforms were identified from dataset", dataname, ".\n")
+  cat("Check out the details in the current working directory.\n")
   write.table(ambitable, paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"), dataname, "_solved_isoforms.txt"),
               sep="\t", row.names=FALSE, quote=FALSE)
 
@@ -65,12 +65,8 @@ ms_isoform_resolve <- function(data) {
     data[grep(paste0("^", id), data$id), c(1,2)] <- names[c(1,3)]
   }
 
-  print(paste0(nrow(ambitable), " Isoforms were solved."))
-
-  # print(paste0("Still, Pay attention to these ", length(questionid), " base IDs for possible protein grouping ambuiguity: "))
-  # print(questionid)
-
-  print("To further solve isoform ambiguity issue, proceed to use ms_isoform_consolidate() function.")
+  cat(nrow(ambitable), "Isoforms were solved.\n")
+  message("To further solve isoform ambiguity, proceed to use ms_isoform_consolidate() function.")
 
   questionid_pos <- NULL
   for (id in questionid) {
@@ -89,8 +85,8 @@ ms_isoform_resolve <- function(data) {
   questionid_table4 <- merge(questionid_table2, questionid_table3, by.x="uniid", by.y="groupid")
   questionid_table4$uniid <- NULL
 
-  print(paste0(nrow(questionid_table3), " base IDs were found with possible protein grouping ambuiguity."))
-  print("Carefully check and modify the suggested to_be_consoidated matching table in the current working directory.")
+  cat(nrow(questionid_table3), "base IDs were found with possible protein grouping ambuiguity.\n")
+  cat("Carefully check and modify the suggested to_be_consoidated matching table in the working directory.\n")
 
   write.table(questionid_table4, paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"), dataname, "_tobe_consolidated.txt"),
               sep="\t", row.names=FALSE, quote=FALSE)
@@ -194,4 +190,69 @@ ms_isoform_consolidate <- function(data, matchtable, nread=10, withabd=FALSE, we
   ms_filewrite(data, paste0(dataname,"_isoform_consolidated.txt"))
   return(data)
 
+}
+
+
+#' ms_isoform_match
+#'
+#' Function to perform an matching of isoform ambiguity between two datasets, ie when
+#' only another isoform of the protein in one dataset is found in the reference dataset,
+#' this isoform is changed to be same as the one present in reference dataset
+#'
+#' @param data dataset to be matched to reference dataset to relieve the problem of isoform ambiguity
+#' @param refdata dataset used as the check reference, typically the IMPRINTS dataset
+#'
+#' @import dplyr
+#' @export
+#' @return a dataframe
+#' @examples \dontrun{
+#' data_meltcurve1 <- ms_isoform_match(data_meltcurve, data_IMPRINTS)
+#' }
+#'
+#'
+ms_isoform_match <- function(data, refdata) {
+
+  # add variable name to output
+  dataname <- deparse(substitute(data))
+  outdir <- ms_directory(data, dataname)$outdir
+  data <- ms_directory(data, dataname)$data
+
+  # To look for the ids found in same conditions
+  commonid <- intersect(data$id,refdata$id)
+  commonidunique <- gsub("-[0-9]+", "",commonid)
+  commonuniqueid <- intersect(unique(gsub("-[0-9]+", "", data$id)),
+                              unique(gsub("-[0-9]+", "", refdata$id)))
+  ambiid <- setdiff(refdata$id,data$id) # ids only present in reference data
+  ambiuniqueid <- gsub("-[0-9]+", "",ambiid) # unique ids only present in reference data
+  #print(intersect(ambiuniqueid, commonidunique))
+  ambiuniqueid1 <- setdiff(ambiuniqueid, commonidunique) # to remove the already matched isoform
+  ambiuniqueid2 <- intersect(ambiuniqueid1, commonuniqueid) # to keep the ones with possible isoform
+  cat(length(ambiuniqueid2), "isoforms were found with possible matches.\n")
+
+  refdata$uniid <- gsub("-[0-9]+", "", refdata$id)
+  refdata1 <- subset(refdata, uniid%in%ambiuniqueid2)
+  #print(nrow(refdata1))
+  data$uniid <- gsub("-[0-9]+", "", data$id)
+  data1 <- subset(data, uniid%in%ambiuniqueid2)
+  # when there is multiple matches, keep the one with maximal countNum
+  data1 <- data1 %>% group_by(uniid) %>% top_n(1, countNum) %>% ungroup()
+  #print(nrow(data1))
+
+  matchtable <- merge(data1[,c("id","description","uniid")],refdata1[,c("id","description","uniid")],by="uniid")
+  if (length(attr(matchtable,"outdir"))==0 & length(outdir)>0) {
+    attr(matchtable,"outdir") <- outdir
+  }
+  ms_filewrite(matchtable, paste0(dataname,"_isoform_matched.txt"))
+
+  # to update the data file with the match table information
+  for (i in seq_len(nrow(matchtable))) {
+    names <- matchtable[i,c(1:5)]
+    id <- names[2]
+    data[grep(paste0("^", id), data$id), c(1,2)] <- names[c(4,5)]
+  }
+  data$uniid <- NULL
+  if (length(attr(data,"outdir"))==0 & length(outdir)>0) {
+    attr(data,"outdir") <- outdir
+  }
+  return(data)
 }

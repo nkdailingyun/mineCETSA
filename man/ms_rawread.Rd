@@ -4,10 +4,10 @@
 \alias{ms_rawread}
 \title{ms_rawread}
 \usage{
-ms_rawread(filevector, fchoose = FALSE, temp = c(37, 40, 43, 46, 49, 52, 55,
-  58, 61, 64), nread = 10, abdread = FALSE, PD21 = TRUE,
-  refchannel = "126", channels = c("126", "127N", "127C", "128N", "128C",
-  "129N", "129C", "130N", "130C", "131"))
+ms_rawread(filevector, fchoose = FALSE, temp = c(37, 40, 43, 46, 49,
+  52, 55, 58, 61, 64), nread = 10, abdread = FALSE, PD21 = TRUE,
+  refchannel = "126", channels = c("126", "127N", "127C", "128N",
+  "128C", "129N", "129C", "130N", "130C", "131"))
 }
 \arguments{
 \item{filevector}{a file name or a vector of filenems to import}

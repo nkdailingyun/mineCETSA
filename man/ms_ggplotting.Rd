@@ -7,15 +7,16 @@
 ms_ggplotting(data, legenddata = NULL, nread = 10,
   remsinglecondprot = TRUE, fitremout = FALSE, ctrlcond = NULL,
   bottomcutoff = 0.4, topcutoff = 0.8, orderAUCdiff = TRUE,
-  nreplicate = 1, topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
-  pfdatabase = FALSE, printBothName = TRUE, printGeneName = FALSE,
-  printcount = TRUE, annotypos = 0.5, annotyinterval = 0.08,
-  presetcolor = TRUE, colorpanel = NULL, extraidtocomplete = NULL,
-  plotfitremout = TRUE, withset = FALSE, commonlegend = TRUE,
-  layout = c(5, 5), external = TRUE,
+  nreplicate = 1, topasone = TRUE, normTop = TRUE,
+  dotconnect = FALSE, pfdatabase = FALSE, printBothName = TRUE,
+  printGeneName = FALSE, printcount = TRUE, annotypos = 0.5,
+  annotyinterval = 0.08, presetcolor = TRUE, colorpanel = NULL,
+  extraidtocomplete = NULL, plotfitremout = TRUE, withset = FALSE,
+  commonlegend = TRUE, layout = c(5, 5), external = TRUE,
   toplabel = "CETSA data plotting_curve fitting",
-  leftlabel = "Non-denatured protein fraction", bottomlabel = "Temperature",
-  pdfname = "ggplotting.pdf", pdfheight = 12, pdfwidth = 12)
+  leftlabel = "Non-denatured protein fraction",
+  bottomlabel = "Temperature", pdfname = "ggplotting.pdf",
+  pdfheight = 12, pdfwidth = 12)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}

@@ -129,9 +129,19 @@ ms_innerplotmedian <- function(mediandata, filename, xlabel, ylabel, isothermals
   #                                levels=sort(as.numeric(unique(mediandata$treatment)), decreasing=FALSE))
   q <- ggplot(mediandata, aes(x = treatment, y = reading))
   if (isothermalstyle) {
-    q <- q + coord_cartesian(ylim=c(0,2)) + scale_y_continuous(breaks=seq(0,2,0.5))
+    if (max(mediandata$reading)>2.0) {
+      ylim = max(mediandata$reading,na.rm=T)
+      q <- q + coord_cartesian(ylim=c(0,ylim)) + scale_y_continuous(breaks=seq(0,ylim,0.5))
+    } else {
+      q <- q + coord_cartesian(ylim=c(0,2)) + scale_y_continuous(breaks=seq(0,2,0.5))
+    }
   } else {
-    q <- q + coord_cartesian(ylim=c(0,1.2)) + scale_y_continuous(breaks=seq(0,1,0.5))
+    if (max(mediandata$reading)>1.2) {
+      ylim = max(mediandata$reading,na.rm=T)
+      q <- q + coord_cartesian(ylim=c(0,ylim)) + scale_y_continuous(breaks=seq(0,ylim,0.5))
+    } else {
+      q <- q + coord_cartesian(ylim=c(0,1.2)) + scale_y_continuous(breaks=seq(0,1,0.5))
+    }
   }
   q <- q + labs(x=xlabel, y=ylabel) + geom_point(aes(group = condition, colour = condition)) +
     geom_line(aes(group = condition, colour = condition)) + facet_grid( .~set) +

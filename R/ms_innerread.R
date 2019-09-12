@@ -23,7 +23,7 @@
 #'
 #'
 #'
-ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, refchannel, channels) {
+ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, PD22, refchannel, channels) {
 
   # Treatment and channel check
   if (length(treatment) != nread | length(channels) != nread) {
@@ -75,7 +75,7 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, refchan
     conditions <- gsub(pattern=paste0("^[A-z0-9,. -]+ / ", refchannel,", "), "", conditions)
   }
   conditions <- unique(conditions)
-  #print(conditions)
+  # print(conditions)
 
   # Move Accession
   tmppos <- grep(pattern="^Accession$", names(data), value=FALSE)
@@ -121,7 +121,11 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, refchan
   if (PD21 & abdread) {
     for (i in seq_len(nread)) {
       #get column for each channel and move it to correct position:
-      tmppos <- grep(pattern=paste0("^Abundance F[0-9]+ ",channels[i],"[A-z0-9,. -]+$"), names(data), value=FALSE)
+      if (PD22) {
+        tmppos <- grep(pattern=paste0("^Abundances Grouped ",channels[i],"[A-z0-9,. -]+$"), names(data), value=FALSE)
+      } else {
+        tmppos <- grep(pattern=paste0("^Abundance F[0-9]+ ",channels[i],"[A-z0-9,. -]+$"), names(data), value=FALSE)
+      }
       collength <- length(names(data))
       data <- data[ ,c(1:(nread+2+i),tmppos,(nread+3+i):collength)]
     }
@@ -179,6 +183,7 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, refchan
   names(data) <- gsub(pattern="^# PSMs$","sumPSMs", names(data))
   names(data) <- gsub(pattern=paste0("^Abundances Count [A-z0-9,. -]+",refchannel,"[A-z0-9,. -]+$"),"countNum", names(data))
   names(data) <- gsub(pattern="^Accession$","id", names(data))
+  if (PD22) { data$countNum <- 2 }
 
   # data$id <- as.character(data$id)
   # data$description <- as.character(data$description)
