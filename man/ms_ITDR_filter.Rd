@@ -5,9 +5,9 @@
 \title{ms_ITDR_filter}
 \usage{
 ms_ITDR_filter(data, nread = 10, checkpointposition = NULL,
-  fcthreshold = 0.3, R2threshold = 0.8, baselineMAD = 0, nbaseline = 3,
-  nMAD = 2.5, checkreplicate = TRUE, treatcondition = NULL,
-  PSMcutoff = TRUE, PSMthreshold = 3)
+  fcthreshold = 0.3, R2threshold = 0.8, baselineMAD = 0,
+  nbaseline = 3, nMAD = 2.5, checkreplicate = TRUE,
+  treatcondition = NULL, PSMcutoff = TRUE, PSMthreshold = 3)
 }
 \arguments{
 \item{data}{dataset to be filtered}

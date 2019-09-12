@@ -5,10 +5,10 @@
 \title{ms_isothermal_line_innerplot}
 \usage{
 ms_isothermal_line_innerplot(data, legenddata, levelvector, nread,
-  robustfitting, nreplicate, minireplicate, witherrorbar, loess, dotconnect,
-  printcount, PSM_annod, Pep_annod, xlinear, xlog10, xsqrt, xcubert, xinterval,
-  fixedy, presetcolor, colorpanel, layout, toplabel, leftlabel, bottomlabel,
-  shadearea, shadeoutlinecolor, shadefillcolor)
+  robustfitting, nreplicate, minireplicate, witherrorbar, loess,
+  dotconnect, printcount, PSM_annod, Pep_annod, xlinear, xlog10, xsqrt,
+  xcubert, xinterval, fixedy, presetcolor, colorpanel, layout, toplabel,
+  leftlabel, bottomlabel, shadearea, shadeoutlinecolor, shadefillcolor)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}

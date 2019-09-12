@@ -4,10 +4,11 @@
 \alias{ms_ITDR_rawread}
 \title{ms_ITDR_rawread}
 \usage{
-ms_ITDR_rawread(filevector, fchoose = FALSE, dose = c(4, 1, 0.25, 0.0625,
-  0.015625, 0.00391, 0.00098, 0.000245, 6e-05, 0), nread = 10,
-  abdread = TRUE, PD21 = TRUE, refchannel = "126", channels = c("126",
-  "127N", "127C", "128N", "128C", "129N", "129C", "130N", "130C", "131"))
+ms_ITDR_rawread(filevector, fchoose = FALSE, dose = c(4, 1, 0.25,
+  0.0625, 0.015625, 0.00391, 0.00098, 0.000245, 6e-05, 0), nread = 10,
+  abdread = TRUE, PD21 = TRUE, refchannel = "126",
+  channels = c("126", "127N", "127C", "128N", "128C", "129N", "129C",
+  "130N", "130C", "131"))
 }
 \arguments{
 \item{filevector}{a file name or a vector of filenems to import}

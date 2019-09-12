@@ -4,9 +4,9 @@
 \alias{ms_isothermal_bar_innerplot}
 \title{ms_isothermal_bar_innerplot}
 \usage{
-ms_isothermal_bar_innerplot(data, legenddata, levelvector, nread, minireplicate,
-  witherrorbar, usegradient, fixedy, presetcolor, colorpanel, layout, toplabel,
-  leftlabel, bottomlabel)
+ms_isothermal_bar_innerplot(data, legenddata, levelvector, nread,
+  minireplicate, witherrorbar, usegradient, fixedy, presetcolor,
+  colorpanel, layout, toplabel, leftlabel, bottomlabel)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}

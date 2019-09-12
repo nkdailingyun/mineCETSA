@@ -6,6 +6,9 @@
 #' @param foldername name for the QC result folder
 #' @param reportname name for the QC report
 #' @param nread number of reading channels or sample treatements, default value 10
+#' @param simpleAUC whether to perform a simple calculation of AUC, default set to TRUE;
+#' note it is a bit "tricky" to interpret the AUC value in logarithmic space for
+#' most of ITDR data, suggest to just use simpleAUC by default
 #' @param isdatafitted whether the provided data is associated with
 #' fitting parameters, i.e., after ms_ITDR_fitting or ms_ITTR_fitting
 #' @param PSMcutoff whether to apply PSM threshold cutoff on hit selection,
@@ -33,7 +36,7 @@
 #'
 
 
-ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
+ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10, simpleAUC=TRUE,
                        PSMcutoff=TRUE, PSMthreshold=3, isdatafitted=TRUE) {
   # provide the fitted data
   cat("Make sure you provide the scaled data with fitting parameters as input ")
@@ -51,7 +54,6 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
   }
   dir.create( paste0(outdir,"/",foldername), showWarnings=FALSE )
 
-
   #to separate condition into condition and replicates
   nset <- length(unique(data$condition))
   data <- tidyr::separate(data, condition, into=c("condition", "replicate"), sep="\\.")
@@ -62,7 +64,7 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
   ncondition <- length(unique(data$condition))
   nreplicate <- length(unique(data$replicate))
   #nset <- ncondition * nreplicate
-  if (nset > 5) {print("To plot venn diagram, maximum five unique data sets.")}
+  if (nset > 5) {cat("To plot venn diagram, maximum five unique data sets.\n")}
 
   data_N1 <- plyr::ddply(data, .(condition, replicate), summarise, Number_run=length(unique(id)))
   data_N2 <- plyr::ddply(data, .(condition), summarise, Number_sample=length(unique(id)))
@@ -122,7 +124,15 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10,
     theme(text = element_text(size=12), aspect.ratio=1)
   ggsave(filename = paste0(outdir,"/",foldername,"/","CV_distribution.png"), m, height=8, width=8)
 
-  data$AUC <- rowSums(data[ ,c(5:(4+nread))])
+  numdosevector <- as.numeric(names(data)[c(5:(nread+4))])
+
+  if (simpleAUC==TRUE) {
+    data$AUC <- rowMeans(data[ ,c(5:(nread+4))],na.rm=T)
+    # data <- dplyr::mutate(data, AUC=rowSums(data[, c(5:(nread+4))],na.rm=T))
+    # data <- dplyr::mutate(data, AUC=AUC/nread)
+  } else {
+    data$AUC <- apply(data, 1, function(x) auc(numdosevector, x[c(5:(nread+4))], type="linear"))
+  }
   limit <- quantile(data$AUC, 0.999)
   m <- ggplot(data, aes(x=AUC, fill=condition)) + coord_cartesian(xlim = c(0,limit))
   m <- m + geom_histogram(binwidth = limit/100, alpha=0.5, position="identity") +

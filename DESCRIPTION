@@ -6,31 +6,31 @@ Author: Lingyun Dai
 Maintainer: Lingyun Dai <nkdailingyun@gmail.com>
 Description: This package is designed to process MS-CETSA result from TMT10 labelling and quantification scheme.
 License: GPL 3.0
-Encoding: UTF-8 
+Encoding: UTF-8
 LazyData: true
 Imports: 
-  plyr (>= 1.8.0), 
-  drc (>= 3.0), 
-  RColorBrewer, 
-  gtools, 
-  grid, 
-  gridExtra, 
-  scales, 
-  VennDiagram, 
-  Nozzle.R1,
-  ggrepel (>= 0.7.0),
-  Biobase,
-  limma,
   arrayQualityMetrics,
+  Biobase,
+  drc (>= 3.0),
+  fdrtool,
   ggpubr,
-  fdrtool
+  ggrepel (>= 0.7.0),
+  grid,
+  gridExtra,
+  gtools,
+  limma,
+  Nozzle.R1,
+  plyr (>= 1.8.0),
+  RColorBrewer,
+  scales, 
+  VennDiagram
 Depends: 
-  R (>= 3.2), 
-  readr (>= 1.1.0), 
-  tidyr (>= 0.6.1), 
-  dplyr (>= 0.5.0), 
-  ggplot2 (>= 2.2.0)
-RoxygenNote: 6.0.1
+  R (>= 3.3),
+  dplyr (>= 0.7.0),
+  ggplot2 (>= 3.0.0),
+  readr (>= 1.2.0),
+  tidyr (>= 0.8.1)
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Suggests: knitr,
     rmarkdown

@@ -129,9 +129,9 @@ ms_ITDR_filter <- function(data, nread=10, checkpointposition=NULL,
     highest <- max(as.numeric(data_good_tem[i,checkpointposition]), na.rm=T)
     lowest <- min(as.numeric(data_good_tem[i,checkpointposition]), na.rm=T)
 
-    if (highest >= cutoff_high & data_good_tem[i,"Slope"] <0) {
+    if (highest >= cutoff_high & data_good_tem[i,"Slope"] >0) {
       fkeep <- c(fkeep, i)
-    } else if (lowest <= cutoff_low & data_good_tem[i,"Slope"] >0) {
+    } else if (lowest <= cutoff_low & data_good_tem[i,"Slope"] <0) {
       fkeep <- c(fkeep, i)
     }
   }

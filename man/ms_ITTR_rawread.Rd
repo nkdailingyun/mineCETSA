@@ -4,10 +4,10 @@
 \alias{ms_ITTR_rawread}
 \title{ms_ITTR_rawread}
 \usage{
-ms_ITTR_rawread(filevector, fchoose = FALSE, time = c(0, 10, 20, 30, 45, 60,
-  90, 120, 150, 180), nread = 10, abdread = TRUE, PD21 = TRUE,
-  refchannel = "126", channels = c("126", "127N", "127C", "128N", "128C",
-  "129N", "129C", "130N", "130C", "131"))
+ms_ITTR_rawread(filevector, fchoose = FALSE, time = c(0, 10, 20, 30,
+  45, 60, 90, 120, 150, 180), nread = 10, abdread = TRUE,
+  PD21 = TRUE, refchannel = "126", channels = c("126", "127N",
+  "127C", "128N", "128C", "129N", "129C", "130N", "130C", "131"))
 }
 \arguments{
 \item{filevector}{a file name or a vector of filenems to import}
