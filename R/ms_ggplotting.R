@@ -110,6 +110,7 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   }
   #colorpanel <- c("blue1", "blue4", "red1", "red4", "green1", "green4", "yellow", "yellow4", "gray30", "black")
   #colorpanel <- brewer_pal("qual")(length(levels(data_l$condition)))
+  names(colorpanel) <- sort(unique(data$condition))
 
   # to concatenate id and description
   nrowdata <- nrow(data)
@@ -262,7 +263,7 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
                           annotypos, annotyinterval,
                           colorpanel, plotlegend, commonlegend,
                           toplabel, leftlabel, bottomlabel,
-                          withset, layout, returnplots)
+                          withset, layout, returnplots, outdir)
   if (returnplots) {
     if (external) { external_graphs(F) } # switch off the external graphs
     return(pl)

@@ -5,7 +5,8 @@
 \title{ms_IDIT_QC}
 \usage{
 ms_IDIT_QC(data, foldername = NULL, reportname = NULL, nread = 10,
-  PSMcutoff = TRUE, PSMthreshold = 3, isdatafitted = TRUE)
+  simpleAUC = TRUE, PSMcutoff = TRUE, PSMthreshold = 3,
+  isdatafitted = TRUE)
 }
 \arguments{
 \item{data}{ITDR or ITTR dataset to perform QC analysis}
@@ -15,6 +16,10 @@ ms_IDIT_QC(data, foldername = NULL, reportname = NULL, nread = 10,
 \item{reportname}{name for the QC report}
 
 \item{nread}{number of reading channels or sample treatements, default value 10}
+
+\item{simpleAUC}{whether to perform a simple calculation of AUC, default set to TRUE;
+note it is a bit "tricky" to interpret the AUC value in logarithmic space for
+most of ITDR data, suggest to just use simpleAUC by default}
 
 \item{PSMcutoff}{whether to apply PSM threshold cutoff on hit selection,
 default set to TRUE}

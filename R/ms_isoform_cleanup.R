@@ -202,6 +202,8 @@ ms_isoform_consolidate <- function(data, matchtable, nread=10, withabd=FALSE, we
 #' @param data dataset to be matched to reference dataset to relieve the problem of isoform ambiguity
 #' @param refdata dataset used as the check reference, typically the IMPRINTS dataset
 #'
+#' @keywords internal
+#'
 #' @import dplyr
 #' @export
 #' @return a dataframe

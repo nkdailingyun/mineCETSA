@@ -5,7 +5,7 @@
 \title{ms_fitting}
 \usage{
 ms_fitting(data, nread = 10, topasone = TRUE, halforiginal = TRUE,
-  halfmelt = FALSE, writetofile = TRUE, keepfittedvalue = FALSE)
+  writetofile = TRUE, keepfittedvalue = FALSE)
 }
 \arguments{
 \item{data}{dataset to be fitted}
@@ -16,10 +16,8 @@ default value 10}
 \item{topasone}{whether the top plateau has to be fixed, i.e., 1.0}
 
 \item{halforiginal}{whether calculate Tm based on the point with absolute
-reading of 0.5, default is TRUE}
-
-\item{halfmelt}{whether calculate Tm based on the half way between
-top and bottom plateaus, default is FALSE, note that this is essentially
+reading of 0.5, default is TRUE; otherwise, calculate Tm based on the
+half way between top and bottom plateaus, which is essentially
 the inflection point}
 
 \item{writetofile}{whether to keep a local file copy of the original data

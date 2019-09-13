@@ -46,7 +46,7 @@
 #' @importFrom gridExtra grid.arrange arrangeGrob
 #' @import ggplot2
 #'
-#' @export
+#' @keywords internal
 #'
 #' @return a list of ggplot2 object
 #' @examples \dontrun{

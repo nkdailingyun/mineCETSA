@@ -24,7 +24,9 @@
 
 #' @importFrom plyr ddply
 #' @import tidyr
-#' @export
+#'
+#' @keywords internal
+#'
 #' @return dataframe containing the subset of melting curves with good melting profile
 #' @examples \dontrun{
 #' data_good <- ms_select_goodmeltcurve(data_scaled, bottomcutoff=0.3)
@@ -195,7 +197,7 @@ ms_find_replicate <- function(data, nread=10, keepfullrep=FALSE) {
 #' @import tidyr
 #' @import tibble
 #'
-#' @export
+#' @keywords internal
 #' @return dataframe containing the subset of dataset after removing the outlier measurements
 #' @examples \dontrun{
 #' data_good_set <- ms_remove_outlier_replicate(data_scaled)
@@ -300,7 +302,9 @@ ms_remove_outlier_replicate <- function(data, nread=10, minrep=NULL, nsignifican
 #'
 #' @importFrom plyr daply
 #' @import tidyr
-#' @export
+#'
+#' @keywords internal
+#'
 #' @return dataframe containing the reproducible replicates subset
 #' @examples \dontrun{
 #' data_reproducible_set <- ms_reproducible_replicate(data_complete_set)

@@ -6,20 +6,20 @@
 \usage{
 ms_ITTR_ggplotting(data, legenddata = NULL, levelvector = NULL,
   nread = 10, remsinglecondprot = TRUE, robustfitting = FALSE,
-  PSMcutoff = FALSE, PSMthreshold = 3, nreplicate = 2,
-  minireplicate = NULL, orderET = FALSE, orderAUC = FALSE,
-  orderRep = FALSE, plotseq = NULL, barplotformat = FALSE,
-  witherrorbar = FALSE, usegradient = TRUE, loess = FALSE,
-  dotconnect = FALSE, pfdatabase = FALSE, printBothName = TRUE,
-  printGeneName = FALSE, printcount = FALSE, unit = "min",
-  xlinear = FALSE, xlog10 = FALSE, xsqrt = TRUE, xcubert = FALSE,
-  xinterval = NULL, fixedy = FALSE, layout = c(5, 5),
-  presetcolor = TRUE, colorpanel = NULL,
-  toplabel = "ITTR CETSA data plotting", bottomlabel = NULL,
-  leftlabel = "Non-denatured protein fraction", shadearea = NULL,
-  shadeoutlinecolor = "black", shadefillcolor = "gray90",
-  pdfname = "ITTR_ggplotting.pdf", external = TRUE, pdfheight = 12,
-  pdfwidth = 12)
+  PSMcutoff = FALSE, PSMthreshold = 3, minireplicate = NULL,
+  withset = FALSE, orderET = FALSE, orderAUC = FALSE,
+  simpleAUC = TRUE, orderRep = FALSE, plotseq = NULL,
+  barplotformat = FALSE, witherrorbar = FALSE, usegradient = TRUE,
+  loess = FALSE, dotconnect = FALSE, pfdatabase = FALSE,
+  printBothName = TRUE, printGeneName = FALSE, unit = "min",
+  xtransform = c("xsqrt", "xcubert", "xlog10", "xlog2", "xlinear"),
+  xinterval = NULL, layout = c(5, 5), presetcolor = TRUE,
+  colorpanel = NULL, toplabel = "ITTR CETSA data plotting",
+  bottomlabel = NULL, leftlabel = "Non-denatured protein fraction",
+  shadearea = NULL, shadeoutlinecolor = "black",
+  shadefillcolor = "gray90", pdfname = "ITTR_ggplotting.pdf",
+  external = TRUE, pdfheight = 12, pdfwidth = 12,
+  returnplots = FALSE)
 }
 \arguments{
 \item{data}{ITTR dataset to plot}
@@ -43,15 +43,18 @@ default set to FALSE}
 \item{PSMthreshold}{the threshold of averaged PSM numbers to consider protein
 quantification as reliable, default value is 3}
 
-\item{nreplicate}{number of replicates, default value is 2}
-
 \item{minireplicate}{number of replicates to keep in final data, default set
 to NULL, this is an added-on feature to subset enough replicated samples
 especially for the format with error bar option as discussed below}
 
+\item{withset}{whether there is set column to perform facet_grid, note that in current version,
+this argument does not work for the line plot}
+
 \item{orderET}{whether to order the plots based on ET (Effective concentration)}
 
 \item{orderAUC}{whether to order the plots based on AUC (Area Under the Curve)}
+
+\item{simpleAUC}{whether to perform a simple calculation of AUC, default set to TRUE}
 
 \item{orderRep}{whether to order the plots based on the measurement replicate numbers}
 
@@ -61,9 +64,9 @@ especially for the format with error bar option as discussed below}
 
 \item{witherrorbar}{whether to plot in a mean +/- errorbar(se) graph format, default to FALSE}
 
-\item{loess}{whether to perform curve fitting using loess model}
+\item{loess}{whether to perform curve fitting using loess model, default to FALSE}
 
-\item{dotconnect}{whether to simply dot connect the readings for each curv}
+\item{dotconnect}{whether to simply dot connect the readings for each curve, default to FALSE}
 
 \item{pfdatabase}{whether it is Plasmodium falciparum dataset, default to FALSE}
 
@@ -72,21 +75,13 @@ especially for the format with error bar option as discussed below}
 \item{printGeneName}{whether to print only Gene names, default to FALSE, when
 both printBothName and printBothName are FALSE, the protein name will be print out}
 
-\item{printcount}{whether to annotate the plots with PSM and uniPeptide number}
-
 \item{unit}{textual annotation for the dose unit, default is "min"}
 
-\item{xlinear}{whether the x-axis should be in linear scale}
+\item{xtransform, }{how should the xscale be transform, including the following ways:
+c("xsqrt","xcubert","xlog10","xlog2","xlinear"), corresponding to square-root, cube-root,
+log10, log2, and linear transformation}
 
-\item{xlog10}{whether the x-axis should be in log10 scale}
-
-\item{xsqrt}{whether the x-axis should be in square-root transformed scale}
-
-\item{xcubert}{whether the x-axis should be in cube-root transformed scale}
-
-\item{xinterval}{a number indicating the numerical interval for linear x-axis}
-
-\item{fixedy}{whether the y-axis should use a fixed range scale}
+\item{xinterval}{a number indicating the numerical interval necessary for linear x-axis}
 
 \item{layout}{a vector indicating the panel layout for multi-panel plots
 per page, default value is c(5,5)}

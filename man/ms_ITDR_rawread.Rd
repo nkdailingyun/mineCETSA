@@ -6,9 +6,8 @@
 \usage{
 ms_ITDR_rawread(filevector, fchoose = FALSE, dose = c(4, 1, 0.25,
   0.0625, 0.015625, 0.00391, 0.00098, 0.000245, 6e-05, 0), nread = 10,
-  abdread = TRUE, PD21 = TRUE, refchannel = "126",
-  channels = c("126", "127N", "127C", "128N", "128C", "129N", "129C",
-  "130N", "130C", "131"))
+  abdread = TRUE, PD21 = TRUE, PD22 = FALSE, refchannel = "126",
+  channels = NULL)
 }
 \arguments{
 \item{filevector}{a file name or a vector of filenems to import}
@@ -25,7 +24,8 @@ ms_ITDR_rawread(filevector, fchoose = FALSE, dose = c(4, 1, 0.25,
 
 \item{refchannel}{names of reference channel used in Proteome Discoverer search, default value 126}
 
-\item{channels}{names of the read-in channels, default value c("126","127N","127C","128N","128C","129N","129C","130N","130C","131")}
+\item{channels}{names of the read-in channels, default value NULL, it would automatically
+match the provided channel number when it is 10 or 11}
 }
 \value{
 a dataframe

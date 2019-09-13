@@ -20,6 +20,12 @@ function used to back-calculate the corresponding effective concentration}
 \item{calMTT}{whether to calculate the Mininal Time Threshold(MTT), this is
 useful when do follow-up analysis such as R2-AUC plot}
 
+\item{baselineMAD}{MAD of baseline variation, default value is 0; if not
+provided, it will be calculated based on the readings from the lowest few
+dose points, specified by an integer `nbaseline``}
+
+\item{nMAD}{level of significance, default set at 2.5}
+
 \item{writetofile}{whether to keep a local file copy of the original data
 with fitting parameters, default set to TRUE}
 
@@ -35,7 +41,7 @@ parameters for each entry/curve
 }
 \examples{
 \dontrun{
-ITTRdata_fitted <- ms_ITTR_fitting(ITDRdata_scaled)
+ITTRdata_fitted <- ms_ITTR_fitting(ITTRdata_scaled)
 }
 
 

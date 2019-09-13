@@ -4,35 +4,39 @@
 \alias{ms_ggplotting_errorbar}
 \title{ms_ggplotting_errorbar}
 \usage{
-ms_ggplotting_errorbar(data, legenddata = NULL, levelvector = NULL,
-  nread = 10, rep = "r", minireplicate = NULL, fitremout = FALSE,
-  bottomcutoff = 0.4, topcutoff = 0.8, topasone = TRUE,
-  pfdatabase = FALSE, printBothName = TRUE, printGeneName = FALSE,
-  printTm = TRUE, annotypos = 0.5, annotyinterval = 0.08,
-  layout = c(5, 5), external = TRUE, presetcolor = TRUE,
-  colorpanel = NULL, toplabel = "CETSA data plotting_barplot",
+ms_ggplotting_errorbar(data, extradata = NULL, legenddata = NULL,
+  levelvector = NULL, nread = 10, minireplicate = NULL,
+  witherrorbar = TRUE, fitremout = FALSE, bottomcutoff = 0.4,
+  topcutoff = 0.8, topasone = TRUE, pfdatabase = FALSE,
+  keepcommonprotein = TRUE, printBothName = TRUE,
+  printGeneName = FALSE, printcount = TRUE, printTm = TRUE,
+  annotypos = 0.5, annotyinterval = 0.08, layout = c(5, 5),
+  external = TRUE, withpoints = TRUE, presetcolor = TRUE,
+  colorpanel = NULL, nshape = 5, nsize = 2,
+  toplabel = "CETSA data plotting_error bar",
   leftlabel = "Non-denatured protein fraction",
-  bottomlabel = "Temperature", pdfname = "ggplotting.pdf",
-  pdfheight = 12, pdfwidth = 12)
+  bottomlabel = "Temperature", returnplots = FALSE,
+  pdfname = "ggplotting.pdf", pdfheight = 12, pdfwidth = 12)
 }
 \arguments{
-\item{data}{isothermal dataset to plot}
+\item{data}{dataset to plot, ideally with the fitting information but not complusory}
+
+\item{extradata}{dataset with extrapolated readings, default to NULL}
 
 \item{legenddata}{dataset used for condition extraction, at least one protein
 inside this dataset should contains the full set of experiment conditions,
 most of the time there is no need to supply, just use the data instead}
 
-\item{levelvector}{a vector of experimental conditions, not complusory for isothermal functions}
+\item{levelvector}{a vector of experimental conditions}
 
 \item{nread}{number of reading channels or sample treatements}
-
-\item{rep}{the replicate indicator used in the naming of experimental conditions,
-such as "r", or "rep" or ""}
 
 \item{minireplicate}{ideally at least three replicates of measurments for the
 same proteins are required to plot in a box plot format}
 
-\item{fitremout}{whether to segregate the proteins with messy melt curves}
+\item{witherrorbar}{whether to plot in a mean +/- error bar(se) graph format, default to TRUE}
+
+\item{fitremout}{whether to segregate the proteins with messy melt curves, default set to FALSE}
 
 \item{bottomcutoff}{the average of the last three points should be lower than
 specified bottom cutoff value, which is 0.4 by default}
@@ -42,14 +46,19 @@ specified bottom cutoff value, which is 0.8 by default}
 
 \item{topasone}{whether the top plateau has to be fixed, i.e., 1.0}
 
+\item{keepcommonprotein}{whether to only keep the proteins also present in the
+provided extradata set, default set to TRUE}
+
 \item{printTm}{whether to annotate the plots with Tm values, however in this version,
-when there are one samples, the Tm annotation would be switched off}
+when there is more than one sample or no replicates, the Tm annotation would be switched off}
 
 \item{annotypos}{the starting y-axis position of textual annotation, default value 0.5}
 
 \item{annotyinterval}{the interval on y-axis for textual annotation, default valule 0.08}
 
 \item{layout}{a vector indicating the panel layout for multi-panel plots per page}
+
+\item{withpoints}{whether to fit curve with the reading points, default set to TRUE}
 
 \item{presetcolor}{whether to use the pre-defined color scheme}
 
@@ -81,3 +90,4 @@ ms_ggplotting_errorbar(LY_fitted)
 
 
 }
+\keyword{internal}

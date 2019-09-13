@@ -5,10 +5,10 @@
 \title{ms_isothermal_line_innerplot}
 \usage{
 ms_isothermal_line_innerplot(data, legenddata, levelvector, nread,
-  robustfitting, nreplicate, minireplicate, witherrorbar, loess,
-  dotconnect, printcount, PSM_annod, Pep_annod, xlinear, xlog10, xsqrt,
-  xcubert, xinterval, fixedy, presetcolor, colorpanel, layout, toplabel,
-  leftlabel, bottomlabel, shadearea, shadeoutlinecolor, shadefillcolor)
+  robustfitting, minireplicate, withset, witherrorbar, loess, dotconnect,
+  xtransform, xinterval, presetcolor, colorpanel, layout, toplabel,
+  leftlabel, bottomlabel, shadearea, shadeoutlinecolor, shadefillcolor,
+  returnplots, outdir)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}
@@ -22,29 +22,18 @@ inside this dataset should contains the full set of experiment conditions}
 
 \item{robustfitting}{whether to apply robust fitting, which is new since v.0.3.7}
 
-\item{nreplicate}{number of replicates}
-
 \item{minireplicate}{number of replicates to keep in final data}
+
+\item{withset}{whether there is set column to perform facet_grid}
 
 \item{loess}{whether to perform curve fitting using loess model}
 
 \item{dotconnect}{whether to simply dot connect the readings for each curve}
 
-\item{printcount}{whether to annotate the plots with PSM and uniPeptide number}
-
-\item{PSM_annod}{dataframe containing the PSM number information}
-
-\item{Pep_annod}{dataframe containing the uniPeptide number information}
-
-\item{xlog10}{whether the x-axis should be in log10 scale}
-
-\item{xsqrt}{whether the x-axis should be in square-root transformed scale}
-
-\item{xcubert}{whether the x-axis should be in cube-root transformed scale}
+\item{xtransform, }{how should the x scale be transform, one value among
+c("xsqrt","xcubert","xlog10","xlog2","xlinear")}
 
 \item{xinterval}{a number indicating the numerical interval for linear x-axis}
-
-\item{fixedy}{whether the y-axis should use a fixed range scale}
 
 \item{presetcolor}{whether to use the pre-defined color scheme}
 
@@ -64,7 +53,7 @@ inside this dataset should contains the full set of experiment conditions}
 
 \item{shadefillcolor}{color used to shade the area, default value is gray90}
 
-\item{xliner}{whether the x-axis should be in linear scale}
+\item{returnplots}{whether to return the plot objects}
 }
 \value{
 a list of ggplot2 object

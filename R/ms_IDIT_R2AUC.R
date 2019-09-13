@@ -389,7 +389,7 @@ ms_IDIT_R2AUC <-  function(data, nread=10, printBothName=FALSE, printGeneName=TR
   #return(data_changed)
 
   data_changed1 <- data_changed # save a copy
-  if (printGeneName) {
+  if (printGeneName & !pfdatabase) {
     data_remaining <- data_remaining %>% rowwise() %>%
       mutate(id = strsplit(id,"\n")[[1]][2])
     data_changed <- data_changed %>% rowwise() %>%

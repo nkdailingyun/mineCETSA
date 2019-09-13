@@ -4,17 +4,25 @@
 \alias{ms_clean}
 \title{ms_clean}
 \usage{
-ms_clean(data, nread = 10, remkeratin = TRUE,
-  remsinglecondprot = FALSE)
+ms_clean(data, nread = 10, remkeratin = TRUE, remserum = TRUE,
+  remtrypsin = TRUE, remsinglecondprot = FALSE)
 }
 \arguments{
 \item{data}{dataset to be cleaned up}
 
 \item{nread}{number of reading channels or sample treatements, default value 10}
 
-\item{remkeratin}{whether to remove Keratin protein, which is generally considered as a common contaminant, default set to TRUE}
+\item{remkeratin}{whether to remove Keratin protein, which is generally
+considered as a common contaminant, default set to TRUE}
 
-\item{remsinglecondprot}{whether the orphan proteins that appear only in one of the datasets should be removed, default set to FALSE}
+\item{remserum}{whether to remove Serum albumin protein, which is
+generally considered to be from culture medium, default set to TRUE}
+
+\item{remtrypsin}{whether to remove trypsin protein, which is
+generally considered to be from digestion reaction, default set to TRUE}
+
+\item{remsinglecondprot}{whether the orphan proteins that appear only in
+one of the datasets should be removed, default set to FALSE}
 }
 \value{
 a dataframe after clean-up

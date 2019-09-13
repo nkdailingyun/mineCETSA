@@ -5,8 +5,8 @@
 \title{ms_isothermal_bar_innerplot}
 \usage{
 ms_isothermal_bar_innerplot(data, legenddata, levelvector, nread,
-  minireplicate, witherrorbar, usegradient, fixedy, presetcolor,
-  colorpanel, layout, toplabel, leftlabel, bottomlabel)
+  minireplicate, withset, witherrorbar, usegradient, presetcolor,
+  colorpanel, layout, toplabel, leftlabel, bottomlabel, returnplots)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}
@@ -20,7 +20,9 @@ inside this dataset should contains the full set of experiment conditions}
 
 \item{minireplicate}{number of replicates to keep in final data, default to NULL}
 
-\item{fixedy}{whether the y-axis should use a fixed range scale}
+\item{withset}{whether there is set column to perform facet_grid}
+
+\item{witherrorbar}{whether to plot in a mean +/- error bar(se) graph format, default to FALSE}
 
 \item{presetcolor}{whether to use the pre-defined color scheme}
 

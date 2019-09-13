@@ -40,7 +40,8 @@
 ms_melt_innerplot <- function(data, nread, topasone, dotconnect, printcount,
                               PSM_annod, Pep_annod, annotypos, annotyinterval,
                               colorpanel, plotlegend, commonlegend,
-                              toplabel, leftlabel, bottomlabel, withset, layout, returnplots) {
+                              toplabel, leftlabel, bottomlabel, withset,
+                              layout, returnplots, outdir) {
 
   if (withset) {
     setpos <- grep("^set", names(data))
@@ -65,33 +66,54 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, printcount,
 
   if (topasone==TRUE) { top <- 1.0 } else { top <- NA }
 
+  zz <- file(paste0(outdir,"/","curve_fitting_record.txt"), open="wt")
+  sink(zz, type = "message")
+  on.exit(sink(type="message"))
+
   plotting <- function(d1) {
+
+    q <- ggplot()
 
     if (printcount) {
       PSM_label <- PSM_annod[PSM_annod$id==unique(d1$id), ][ ,c(2:ncol(PSM_annod))]
       Pep_label <- Pep_annod[Pep_annod$id==unique(d1$id), ][ ,c(2:ncol(Pep_annod))]
     }
 
-    q <- ggplot(d1, aes(x=temperature,y=reading,group=condition,colour=condition)) +
-      geom_point(aes(colour=condition), shape=20, size=2) +
-      scale_x_continuous(breaks=sort(unique(d1$temperature), decreasing=FALSE)) +
-      coord_cartesian(xlim=c(xmin,xmax), ylim = c(0,1.2)) + theme_classic() +
-      scale_y_continuous(breaks=seq(0,1,0.2)) + labs(x=" ", y=" ") +
-      scale_colour_manual(drop=FALSE, values=colorpanel) +
-      ggtitle(as.character(unique(d1$id)))
-
-    if (withset) { q <- q + facet_grid(set~., drop=FALSE) }
-
     if (dotconnect==FALSE) {
       # q <- q + geom_smooth(method = "drm", formula = t1,
       #                      fct = LL.4(fixed=c(NA,NA,top,NA)),
       #                      aes(colour=condition), se=FALSE, size=0.5)
-      q <- q + geom_smooth(method=drc::"drm", formula=t1,
-                           method.args=list(fct=LL.4(fixed=c(NA,NA,top,NA))),
-                           aes(colour=condition), se=FALSE, size=0.5)
+      # q <- q + geom_smooth(method=drc::"drm", formula=t1,
+      #                      method.args=list(fct=LL.4(fixed=c(NA,NA,top,NA))),
+      #                      aes(colour=condition), se=FALSE, size=0.5)
+      d1 <- droplevels(d1)
+      d1_list <- split(d1, d1$condition)
+      for (j in names(d1_list)) {
+        q <- q + geom_point(data=d1_list[[j]], aes(x=temperature, y=reading), colour=colorpanel[j], shape=20, size=2)
+        d1_list[[j]] <- na.omit(d1_list[[j]])
+        model.drm <- try(drc::drm(reading~temperature, data=d1_list[[j]], fct=LL.4(fixed=c(NA,NA,top,NA)),
+                          na.action=na.omit, control=drmc(noMessage=TRUE)), silent=TRUE)#, outFile=zz)
+        if (class(model.drm) != "try-error") {
+          mda <- data.frame(temperature1=seq(xmin,xmax,length.out=100))
+          mda$reading <- predict(model.drm, mda)
+          q <- q + geom_line(data=mda, aes(x=temperature1, y=reading), colour=colorpanel[j], size=0.5)
+        } else {
+          q <- q + geom_smooth(data=d1_list[[j]], method="lm", formula=y~poly(x,1), aes(x=temperature, y=reading),
+                               colour=colorpanel[j], se=FALSE, size=0.5)
+        }
+      }
     } else {
-      q <- q + geom_line(aes(colour=condition), size=0.5)
+      q <- ggplot(d1, aes(x=temperature,y=reading,group=condition,colour=condition)) +
+        geom_point(aes(colour=condition), shape=20, size=2) + geom_line(aes(colour=condition), size=0.5) +
+        scale_colour_manual(drop=FALSE, values=colorpanel)
     }
+
+    q <- q + scale_x_continuous(breaks=sort(unique(d1$temperature), decreasing=FALSE)) +
+      coord_cartesian(xlim=c(xmin,xmax), ylim = c(0,1.2)) + theme_classic() +
+      scale_y_continuous(breaks=seq(0,1,0.2)) + labs(x=" ", y=" ") +
+      ggtitle(as.character(unique(d1$id)))
+
+    if (withset) { q <- q + facet_grid(set~., drop=FALSE) }
 
     if (printcount) {
       q <- q + annotate("text", x=xpos, y=annotypos, label="  #PSM  #Peptides", size=1.5)
@@ -142,6 +164,8 @@ ms_melt_innerplot <- function(data, nread, topasone, dotconnect, printcount,
 
   plots <- plyr::dlply(d1, .(id), .fun=plotting)
   #plots[[1]]
+  zz <- paste0(outdir,"/","curve_fitting_record.txt")
+  if (file.exists(zz)) { file.remove(zz) }
   if (returnplots) { return(plots) }
   legend <- plotlegend$legend
   lheight <- plotlegend$lheight

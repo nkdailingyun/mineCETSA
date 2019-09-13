@@ -274,6 +274,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
   } else if (length(colorpanel) < ncond){
     stop("The number of conditions in dataset exceeds the provided number of colors, pls provide enough colors in colorpanel")
   }
+  names(colorpanel) <- levelvector
 
   if (withset) {
     if (external & !returnplots) { external_graphs(T) }
@@ -299,7 +300,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                             annotypos, annotyinterval,
                             colorpanel, plotlegend, commonlegend,
                             toplabel, leftlabel, bottomlabel,
-                            withset, layout, returnplots)
+                            withset, layout, returnplots, outdir)
     if (returnplots) {
       if (external) { external_graphs(F) } # switch off the external graphs
       return(pl)
@@ -368,7 +369,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                               annotypos, annotyinterval,
                               colorpanel, plotlegend, commonlegend,
                               toplabel, leftlabel, bottomlabel,
-                              withset, layout, returnplots)
+                              withset, layout, returnplots, outdir)
       ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                          length(unique(data_PSMsmall$id)),
                          "_PSMsmall proteins_", pdfname), pl, height=pdfheight, width=pdfwidth)
@@ -382,7 +383,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                               annotypos, annotyinterval,
                               colorpanel, plotlegend, commonlegend,
                               toplabel, leftlabel, bottomlabel,
-                              withset, layout, returnplots)
+                              withset, layout, returnplots, outdir)
       ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                          length(unique(outliers$id)),
                          "_Messy_proteins_", pdfname), pl, height=pdfheight, width=pdfwidth)
@@ -396,7 +397,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                               annotypos, annotyinterval,
                               colorpanel, plotlegend, commonlegend,
                               toplabel, leftlabel, bottomlabel,
-                              withset, layout, returnplots)
+                              withset, layout, returnplots, outdir)
       ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                          length(unique(data_largevar$id)),
                          "_Non_reproducible_proteins_", pdfname), pl, height=pdfheight, width=pdfwidth)
@@ -418,7 +419,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                             annotypos, annotyinterval,
                             colorpanel, plotlegend, commonlegend,
                             toplabel, leftlabel, bottomlabel,
-                            withset, layout, returnplots)
+                            withset, layout, returnplots, outdir)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data_complete$id)),
                        "_Complete replicates_", pdfname), pl, height=pdfheight, width=pdfwidth)
@@ -466,7 +467,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                             annotypos, annotyinterval,
                             colorpanel, plotlegend, commonlegend,
                             toplabel, leftlabel, bottomlabel,
-                            withset, layout, returnplots)
+                            withset, layout, returnplots, outdir)
     ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data_incomp$id)),
                        "_Non_replicates_", pdfname), pl, height=pdfheight, width=pdfwidth)

@@ -5,30 +5,32 @@
 \title{ms_ggplotting_rep}
 \usage{
 ms_ggplotting_rep(data, legenddata = NULL, levelvector = NULL,
-  nread = 10, remsinglecondprot = TRUE, PSMcutoff = FALSE,
-  PSMthreshold = 3, fitremout = FALSE, ctrlcond = NULL,
-  bottomcutoff = 0.4, topcutoff = 0.8, variancecutoff = FALSE,
-  nMAD_var = 2.5, nreplicate = 2, topasone = TRUE, normTop = TRUE,
-  dotconnect = FALSE, pfdatabase = FALSE, printBothName = TRUE,
-  printGeneName = FALSE, printcount = TRUE, annotypos = 0.5,
-  annotyinterval = 0.08, presetcolor = TRUE,
-  extraidtocomplete = NULL, plotfitremout = TRUE,
-  plotvarremout = TRUE, colorpanel = NULL, withset = FALSE,
-  commonlegend = TRUE, layout = c(5, 5), external = TRUE,
+  nread = 10, withset = FALSE, remsinglecondprot = TRUE,
+  PSMcutoff = FALSE, PSMthreshold = 3, fitremout = FALSE,
+  ctrlcond = NULL, bottomcutoff = 0.4, topcutoff = 0.8,
+  variancecutoff = FALSE, nMAD_var = 2.5, simpleAUC = TRUE,
+  topasone = TRUE, normTop = TRUE, dotconnect = FALSE,
+  pfdatabase = FALSE, printBothName = TRUE, printGeneName = FALSE,
+  printcount = TRUE, annotypos = 0.5, annotyinterval = 0.08,
+  presetcolor = TRUE, extraidtocomplete = NULL, plotfitremout = TRUE,
+  plotvarremout = TRUE, colorpanel = NULL, commonlegend = TRUE,
+  layout = c(5, 5), external = TRUE,
   toplabel = "CETSA data plotting_curve fitting",
   leftlabel = "Non-denatured protein fraction",
   bottomlabel = "Temperature", pdfname = "ggplotting.pdf",
-  pdfheight = 12, pdfwidth = 12)
+  pdfheight = 12, pdfwidth = 12, returnplots = FALSE)
 }
 \arguments{
-\item{data}{isothermal dataset to plot}
+\item{data}{CETSA melt curve dataset to plot}
 
 \item{legenddata}{dataset used for condition extraction, at least one protein
 inside this dataset should contains the full set of experiment conditions}
 
-\item{levelvector}{a vector of conditions, preferably starting with Ctrl sets}
+\item{levelvector}{a vector of conditions, preferably starting with Ctrl conditions}
 
 \item{nread}{number of reading channels or sample treatements}
+
+\item{withset}{whether there is set column to perform facet_grid, default set to FALSE}
 
 \item{remsinglecondprot}{whether orphan proteins to be plotted,
 default value is TRUE, so to exclude them from plotting}
@@ -39,10 +41,11 @@ default set to FALSE}
 \item{PSMthreshold}{the threshold of averaged PSM numbers to consider protein
 quantification as reliable, default value is 3}
 
-\item{fitremout}{whether to segregate the proteins with messy melt curves}
+\item{fitremout}{whether to segregate the proteins with messy melt curves, default set to FALSE}
 
 \item{ctrlcond}{if necessary, could used to specify what conditions to be
-referred as control conditions}
+referred as control conditions, for example "Vech"; by default "DMSO","Ctrl" and "Control"
+have been automatically included as the keyword for control condition}
 
 \item{bottomcutoff}{the average of the last three points should be lower than
 specified bottom cutoff value, which is 0.4 by default}
@@ -55,9 +58,7 @@ specified bottom cutoff value, which is 0.8 by default}
 \item{nMAD_var}{the number of MADs to set the significance cutoff about variance distribution,
 default value is 2.5}
 
-\item{nreplicate}{number of replicates, default value is 2, change the value
-accordingly, this is relavent to automatic coloring scheme,
-up to 4 is possible for now}
+\item{simpleAUC}{whether to perform a simple calculation of AUC, default set to TRUE}
 
 \item{topasone}{whether the top plateau has to be fixed, i.e., 1.0}
 
@@ -71,17 +72,15 @@ up to 4 is possible for now}
 
 \item{annotyinterval}{the interval on y-axis for textual annotation, default valule 0.08}
 
-\item{presetcolor}{whether to use the pre-defined color scheme}
+\item{presetcolor}{whether to use the pre-defined color scheme, default set to TRUE}
 
-\item{plotfitremout}{whether to plot out messy melt curves}
+\item{plotfitremout}{whether to plot out messy melt curves, default set to TURE}
 
-\item{plotvarremout}{whether to plot out large inter-replicate variance melt curves}
+\item{plotvarremout}{whether to plot out large inter-replicate variance melt curves, default set to TRUE}
 
 \item{colorpanel}{a vector of customizable color scheme provided by the user}
 
-\item{withset}{whether there is set column to perform facet_grid}
-
-\item{commonlegend}{whether to use one common legend for whole page of plots}
+\item{commonlegend}{whether to use one common legend for whole page of plots, default set to TRUE}
 
 \item{layout}{a vector indicating the panel layout for multi-panel plots per page}
 
@@ -102,7 +101,7 @@ a list of ggplot2 object
 }
 \description{
 Function to generate pdf files with multipanel ggplots for melt curve data,
-particularly for dataset with replicate runs
+particularly for dataset with replicated runs
 }
 \examples{
 \dontrun{

@@ -6,12 +6,13 @@
 \usage{
 ms_melt_innerplot(data, nread, topasone, dotconnect, printcount, PSM_annod,
   Pep_annod, annotypos, annotyinterval, colorpanel, plotlegend,
-  commonlegend, toplabel, leftlabel, bottomlabel, withset, layout)
+  commonlegend, toplabel, leftlabel, bottomlabel, withset, layout,
+  returnplots, outdir)
 }
 \arguments{
-\item{data}{isothermal dataset to plot}
+\item{data}{melt curve dataset to plot}
 
-\item{nread}{number of reading channels or sample treatements}
+\item{nread}{number of reading channels or sample treatments}
 
 \item{topasone}{whether the top plateau has to be fixed, i.e., 1.0}
 

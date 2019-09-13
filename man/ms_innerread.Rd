@@ -4,8 +4,8 @@
 \alias{ms_innerread}
 \title{ms_innerread}
 \usage{
-ms_innerread(file, fchoose, treatment, nread, abdread, PD21, refchannel,
-  channels)
+ms_innerread(file, fchoose, treatment, nread, abdread, PD21, PD22,
+  refchannel, channels)
 }
 \arguments{
 \item{file}{file name to import}

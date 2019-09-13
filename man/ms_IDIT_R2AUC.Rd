@@ -4,19 +4,18 @@
 \alias{ms_IDIT_R2AUC}
 \title{ms_IDIT_R2AUC}
 \usage{
-ms_IDIT_R2AUC(data, nread = 10, printBothName = TRUE,
-  printGeneName = FALSE, pfdatabase = FALSE, rep = "r",
-  onlyshowstabilized = FALSE, byAUC = TRUE, standardizedAUC = TRUE,
-  preaveraged = FALSE, normalizedAUC = FALSE, refkeyword = "37C",
-  AUC_uplimit = NULL, AUC_lowlimit = NULL, log2scale = FALSE,
-  nMAD = 2.5, baselineMAD = 0, fcthreshold = 0,
-  checkpointposition = NULL, keepreplicate = FALSE,
-  keepfullrep = FALSE, stableref = FALSE, stableref_nMAD = 3.5,
-  colorbackground = TRUE, graybackground = FALSE,
-  nodesizebyMDT = TRUE, colornodes = TRUE, labelnodes = TRUE,
-  yscale = NULL, PSMcutoff = TRUE, PSMthreshold = 3,
-  PSMcutoffbycondition = FALSE, idtoshow = NULL, idtoexclude = NULL,
-  plottitle = NULL)
+ms_IDIT_R2AUC(data, nread = 10, printBothName = FALSE,
+  printGeneName = TRUE, pfdatabase = FALSE, rep = "r",
+  onlyshowstabilized = FALSE, simpleAUC = TRUE, preaveraged = FALSE,
+  normalizedAUC = FALSE, refkeyword = "37C", AUC_uplimit = NULL,
+  AUC_lowlimit = NULL, log2scale = FALSE, nMAD = 2.5,
+  baselineMAD = 0, fcthreshold = 0, checkpointposition = NULL,
+  keepreplicate = FALSE, keepfullrep = FALSE, stableref = FALSE,
+  stableref_nMAD = 3.5, colorbackground = TRUE,
+  graybackground = FALSE, nodesizebyMDT = TRUE, colornodes = TRUE,
+  labelnodes = TRUE, yscale = NULL, PSMcutoff = TRUE,
+  PSMthreshold = 3, PSMcutoffbycondition = FALSE, idtoshow = NULL,
+  idtoexclude = NULL, plottitle = NULL, returnplot = FALSE)
 }
 \arguments{
 \item{data}{ITDR or ITTR dataset to generate R2 vs AUC plot, the provided
@@ -25,9 +24,9 @@ or ms_ITTR_fitting}
 
 \item{nread}{number of reading channels or sample treatements, default value 10}
 
-\item{printBothName}{whether to print both gene name and protein name, default set to TRUE}
+\item{printBothName}{whether to print both gene name and protein name, default set to FALSE}
 
-\item{printGeneName}{whether to print only gene name, default set to FALSE, when
+\item{printGeneName}{whether to print only gene name, default set to TRUE, when
 both printBothName and printGeneName are FALSE, only the protein name is shown}
 
 \item{pfdatabase}{whether the data is a malaria dataset, default set to FALSE}
@@ -38,8 +37,9 @@ such as "r", or "rep" or ""}
 \item{onlyshowstabilized}{whether to show only stablized hits, ie,
 direct targets, default set to FALSE}
 
-\item{standardizedAUC}{whether to use the standardized AUC values, ie, 1.0,
-default set to TRUE}
+\item{simpleAUC}{whether to perform a simple calculation of AUC, default set to TRUE;
+note it is a bit "tricky" to interpret the AUC value in logarithmic space for
+most of ITDR data, suggest to just use simpleAUC by default}
 
 \item{preaveraged}{whether the data has already been averaged from replicates,
 default set to FALSE}
@@ -50,13 +50,11 @@ such as 37C readings, default set to FALSE}
 \item{refkeyword}{a keyword used for the indication of reference control, as
 most of the time the reference is 37C expression level, default value is 37C}
 
-\item{log2scale}{whether to transform the readings into log2 scale}
+\item{log2scale}{whether to transform the readings into log2 scale, default set to FALSE}
 
-\item{nMAD}{level of significance, default set at 2.5}
+\item{nMAD}{level of significance of AUC values, default set at 2.5}
 
-\item{baselineMAD}{MAD of baseline variation, default value is 0; if not
-provided, it will be calculated based on the readings from the lowest two
-dose groups}
+\item{baselineMAD}{MAD of baseline variation, default value is 0}
 
 \item{fcthreshold}{short for fold change threshold, similar parameter as in
 ms_ITD/TR_filter() function, however this is an added-on selection feature
@@ -88,8 +86,8 @@ according to the condition, default set to TRUE}
 \item{graybackground}{whether to use gray color for the background but
 different shapes according to the condition, default set to FALSE}
 
-\item{nodesizebyMDT}{whether to set node size according to MDT value,
-default set to TRUE}
+\item{nodesizebyMDT}{whether to set node size according to MDT/MTT value,
+ie the EC or ET column, default set to TRUE}
 
 \item{colornodes}{whether to fill the nodes in different colors if possible,
 default set to TRUE}
@@ -102,8 +100,8 @@ if provided}
 \item{PSMcutoff}{whether to apply PSM threshold cutoff on hit selection,
 default set to TRUE}
 
-\item{PSMthreshold}{the threshold of averaged PSM numbers to consider protein
-quantification as reliable, default value is 3}
+\item{PSMthreshold}{the minimal threshold of averaged PSM numbers to consider
+protein quantification as reliable, default value is 3}
 
 \item{PSMcutoffbycondition}{whether to apply PSM threshold cutoff on each
 experimental condition, otherwise on all the measured conditions, default set to FALSE}
@@ -114,6 +112,8 @@ regardless they are hits or not}
 \item{idtoexclude}{a vector containing the uniprot IDs to exclude from plot}
 
 \item{plottitle}{a character used to label the title of the plot}
+
+\item{returnplot}{whether to retrieve the plot object, default set to FALSE}
 }
 \description{
 Function to generate a R2 vs AUC plot for the ITDR or ITTR dataset

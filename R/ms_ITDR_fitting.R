@@ -6,10 +6,11 @@
 #' @param data dataset to be fitted
 #' @param nread number of reading channels or sample treatements,
 #' default value 10
-#' @param fc short for fold change, indicate the response level the fitting
-#' function used to back-calculate the corresponding effective concentration
 #' @param calMDT whether to calculate the Mininal Dose Threshold(MDT), this is
 #' useful when do follow-up analysis such as R2-AUC plot
+#' @param fc short for fold change, indicate the response level the fitting
+#' function used to back-calculate the corresponding effective concentration,
+#' the set fc value is used only when calMDT=FALSE
 #' @param baselineMAD MAD of baseline variation, default value is 0; if not
 #' provided, it will be calculated based on the readings from the lowest few
 #' dose points, specified by an integer `nbaseline``
@@ -29,7 +30,7 @@
 #'
 #'
 
-ms_ITDR_fitting <- function(data, nread=10, fc=0.3, calMDT=FALSE,
+ms_ITDR_fitting <- function(data, nread=10, calMDT=TRUE, fc=0,
                             nbaseline=3, baselineMAD=NULL, nMAD=2.5,
                             writetofile=TRUE, keepfittedvalue=FALSE) {
 
