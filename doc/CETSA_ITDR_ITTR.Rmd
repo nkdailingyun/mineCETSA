@@ -1,0 +1,222 @@
+---
+title: "Analyze MS-CETSA ITDR ITTR datasets"
+author: "Dai Lingyun"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{analysis of isothermal CETSA}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Introduction  
+This script is designed to process isothermal dose (or very similarly, time) response MS-CETSA result
+from TMT labelling and quantification scheme.  
+The main tasks include:  
+1. Read in the quantitative data (Search result txt.file from Proteome Discoverer, PD) into R/Rstudio  
+2. Clean up data, mainly to remove the entries without quantitative information  
+3. Normalize data based on the principle that each channel should contain same amount of input material  
+4. Try to fit each entry of data into a dose/time-response relationship and capture the fitting parameters  
+5. Generate a QC report to have an overview about the data quality, such as quantified protein number etc  
+6. Segregate data using R2-AUC plot or fold change based filter function  
+7. Visualize the data using customizable plot layout, for either all the data or a subset  
+
+--------------------------------------------------------------------------------------------
+
+## Prerequisites
+* R version > 3.3.0 
+* Rstudio version > 1.0
+* Dependent packages:  
+"readr", "drc", "plyr", "tibble", "tidyr", "grid", "gtools", "gridExtra", "scales", "RColorBrewer", "dplyr", 
+"ggplot2", "VennDiagram", "Nozzle.R1", "ggrepel", "Biobase", "limma", "arrayQualityMetrics"  
+Note: during the package installation, when the dependent packages are not available, complains would rise; 
+the user can use `install.packges()` command to manually install the required packages (as specified in the 
+warning message), till there is no more complain.  
+
+--------------------------------------------------------------------------------------------
+
+
+## Proceessing
+1. For better organization of data analysisk, it is __highly recommended__ to use the [Project management feature](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) in Rstudio.   
+For each project, you are suggested to create a brand new working folder as your local working directory.  
+Save the PD derived data files to this working directory folder.  
+At the right upper corner of Rstudio, click Project -> New Project -> Existing Directory -> browse and choose
+the designated working directory folder.  
+By establishing a specfic project for each experiment, all the data content and execution history will be saved
+in the project for future re-analysis even when R session is terminated.  
+
+2. Activate `mineCETSA` package by library it.  
+```{r, message=TRUE}
+library("mineCETSA")
+```
+
+3. Read in data from result files, `ms_ITDR_rawread()` is designed for read in one or many files in a vector of file names.  
+By default, `PD21=TRUE` assume the data is searched using PD2.1; otherwise, specify `PD21=FALSE` if data originated from PD2.0  
+Refer to Slides "Data searching using PD2.1" for how-to.  
+Note that for simplicity, always use channel __126__ as control channel for data search in PD, regardless of the labelling arrangement.  
+You need to specify a `dose` vector of the compound concentration used in the same order (could be descending or ascending) as the sample being labeled from TMT channel 126 up to 131, of which the function default is `dose=c(400,100,25,6.25,1.56,0.391,0.098,0.0245,0.006,0)`.  
+Similarly for ITTR experiment, you need to specify a treatment `time` vector, of which the default is `time=c(0,10,20,30,45,60,90,120,150,180)`.  
+When protein abundance values are present in PD2.1 rawdata, they would be extracted by default and used for systematic normalization in the next step.  
+```{r, eval=FALSE}
+ITDRdata <- ms_ITDR_rawread(c("SN1.txt", "SN2.txt", "ST1.txt", "ST2.txt"), PD21=TRUE, dose=c(20,5,1.25,0.3123,0.078125,0.019531,0.004883,0.001221,0.000305,0))
+
+ITDRdata_1file <- ms_ITDR_rawread("SN1.txt", PD21=TRUE, dose=c(20,5,1.25,0.3123,0.078125,0.019531,0.004883,0.001221,0.000305,0))
+
+ITTRdata <- ms_ITTR_rawread(c("file1.txt", "file2.txt", "file3.txt", "file4.txt"), PD21=TRUE, time=c(0,5,10,15,20,30,45,60,90,120))
+```
+
+4. Customize the condition names in dataset using `ms_conditionrename()`.  
+When read in multiple files, a number suffix is added to the condition of each data file in sequence. This feature seems redundanct but could allow retrieval of file read in sequence and more inportantly make sure the condition names are always unique and distinguishable.  
+This condition remaning is important for group assignment and ITDR/ITTR hits selection in the following filter function. A format of _"Experimental conditon.Replicate number"_ is suggested. More specifically, the following three formats are supported: 1) condition names followed by dot and number (e.g., DMSO.1, 37C.2); 2) condition names followed by dot and rep and number (e.g., DMSO.rep2, 52C.rep1); 3) condition names followed by dot and letter r and number (e.g., Ctrl.r1, dTITTR37C.r2).  
+__It is recommended that you should try to omit using dot in the condition names, you can segregate your long condition name using underline(_) if necessary.__  
+The argument `incondition` corresponses to the vector of current condition naming, whereas `outcondition` correponses to the vector of new condition naming, both order and length should match exactly.  
+```{r, eval=FALSE}
+ITDRdata <- ms_conditionrename(ITDRdata, incondition=c("drugS.3","drugS.4","drugX.1","drugX.2"), outcondition=c("drugS.r1","drugS.r2","drugX.r1","drugX.r2"))
+```
+
+5. Remove proteins without quantitative information by default using `ms_clean()`.  
+By default the Keratin family proteins are also removed.  
+By default the orphan proteins that only appear in one of the datasets are not removed, however you can specify `remsinglecondprot=TRUE`, these orphan proteins will be excluded from downstream analysis. 
+```{r, eval=FALSE}
+ITDRdata_c <- ms_clean(ITDRdata)
+ITTRdata_c <- ms_clean(ITTRdata)
+```
+
+6. Resolve isoform ambiguity from multiple runs of searches using `ms_isoform_resolve()`.  
+When two or more isoforms of the same parental proteins are present in the combined datasets but within each individual condition, only one isoform is identified, according to the principle of parsimony, the minor isoforms will be automatically adjusted to be the corresponding major or more frequent oberserved isoform. At the same time, a match table will be suggested to further consolidate the cases that when two or more isoforms of the same parental proteins are identified within the same individual conditioned dataset, which could then be achieved by using `ms_isoform_consolidate()`.   
+```{r, eval=FALSE}
+ITDRdata_c1 <- ms_isoform_resolve(ITDRdata_c)
+# The next isoform cleaning step is optional. You are encouraged to double check and adjust the match table entries. 
+ITDRdata_c2 <- ms_isoform_consolidate(ITDRdata_c1, matchtable="./subfolder/tobe_consolidated.txt")
+# When the data contains protein abundance information. 
+ITDRdata_c2 <- ms_isoform_consolidate(ITDRdata_c1, matchtable="./subfolder/tobe_consolidated.txt", withabd=TRUE)
+```
+
+7. Apply systematic scaling to the dataset using `ms_ITDR_scaling()` or `ms_ITTR_scaling()`.  
+The function achieve:  
+* For dataset with protein abundance information, the total abundances in each channel are adjusted to be the same (i.e., 
+the average of all channels).  
+* For dataset without protein abundance information but only calculated ratio information, the medians of ratios in each channel are adjusted to be the same (i.e., 1.0).  
+* Automatically check and re-arrange the treatment dose (or time) in ascending order.  
+Output in working directory:  
+* Scaling factors used are written into a local file   
+* Medians of soluble protein ratios pre- and post- data normalization is plotted  
+* The distribution of soluble protein ratio pre- and post- normalization is plotted  
+```{r,eval=FALSE}
+ITDRdata_s <- ms_ITDR_scaling(ITDRdata_c2)
+ITTRdata_s <- ms_ITTR_scaling(ITTRdata_c2)
+```
+
+8. Try the dose/time-response function fitting to generate fitting parameters for each entry/curve using `ms_ITDR_fitting()` or `ms_ITTR_fitting()`.  
+The returned data contains the input scaled data plus fitting parameters (including `EC`/`ET`, `EC50`/`ET50`, `R2`, and `Slope`).  
+By default, the argument `calMDT` or `calMTT` is set to TRUE, the derived `EC`/`ET` can be also referred to as `MDT`/`MTT` value, respectively, which stands for minimal dose threshold or minimal time threshold. This concept was introduced in the paper of [Lim et al 2018 PlosOne](https://doi.org/10.1371/journal.pone.0208273).  
+In `ms_ITDR_fitting()` function, parameter `fc` (short for fold change) indicates the response level the fitting function used to back-calculate the corresponding `EC` (short for Effective concentration). The default value of fc is 0. For `ms_ITTR_fitting()`, similarly the `ET` (short for Effective time) is calculated.  
+Output in working directory:  
+* A copy of the fitted dataset are written into a local file  
+```{r, eval=FALSE}
+ITDRdata_f <- ms_ITDR_fitting(ITDRdata_s)
+ITTRdata_f <- ms_ITTR_fitting(ITTRdata_s, calMTT=FALSE, fc=0.3)
+```
+
+9. Generate a QC report for the dataset using `ms_IDIT_QC()`, ideally the scaled data with fitting parameter should be used as input.  
+The arguments and its default value include:  
+    * `foldername=NULL`, can specify a foldername to keep the QC report if preferred  
+    * `nread=10`, how many readings are there per entry/curve in the dataset, default is 10  
+    * `isdatafitted=TRUE`, whether data with fitting parameters were used as input  
+```{r, eval=FALSE}
+ms_IDIT_QC(ITDRdata_f)
+ms_IDIT_QC(ITDRdata_s, isdatafitted=FALSE, foldername="QC1") #not recommended
+```
+
+10. Generate an R2-AUC plot for the overview of data and potentially hits selection, this is based on R2 (an indicator of goodness of dose-reponse relationship), AUC (an measurement of shift) and MDT (a measurement of how fast is the reponse relative to baseline).  
+The argument and its default value include:  
+    * `nread=10`, how many readings are there per entry/curve in the dataset, default is 10  
+    * `printBothName=TRUE`, whether to print both gene name and protein name, default set to TRUE  
+    * `printGeneName=FALSE`, whether to print only gene name, default set to FALSE, when both `printBothName` and `printGeneName` are FALSE, only the protein name is shown  
+    * `pfdatabase=FALSE`, whether the data is a malaria dataset, default set to FALSE  
+    * `rep="r"`, the rep indicator used in the naming of experimental conditions, such as "r", or "rep" or "" (when only followed by number)  
+    * `onlyshowstabilized=FALSE`, whether to show only stablized hits, ie, direct targets (in lysate setting), default set to FALSE  
+    * `preaveraged=FALSE`, whether the data has already been averaged from replicates, default set to FALSE
+    * `normalizedAUC=FALSE`, whether to use the AUC values against a reference control such as 37C readings (indicated by refkeyword), default set to FALSE  
+    * `refkeyword="37C"`, a keyword used for the indication of reference control, as most of the time the reference is 37C expression level, default value is 37C  
+    * `nMAD=2.5`, level of significance when determining the cutoff (dashed line in graph), default set at 2.5  
+    * `keepreplicate=FALSE` whether to only keep the curves that are measured with all replicates under at least one experimental conditions, default set to FALSE, when there is only one experimental condition in the dataset, this means only keep the full replicates  
+    * `PSMcutoff=TRUE` and `PSMthreshold=3`, whether to apply minimal PSM cutoff on hit selection and the threshold level  
+    * `PSMcutoffbycondition=FALSE`, whether to apply PSM threshold cutoff on each experimental condition, otherwise on the combination of all the measured conditions, default set to FALSE  
+    * `yscale`, a two-element vector to indicate the y-axis scale for plotting if provided  
+    * `plottitile`, can specify the title name of the plot  
+```{r,eval=FALSE}
+ITDRdata_shifted <- ms_IDIT_R2AUC(ITDRdata_f, printBothName=TRUE)
+ITDRdata_stabilized <- ms_IDIT_R2AUC(ITDRdata_f, printBothName=FALSE, printGeneName=TRUE, keepreplicate=TRUE, onlyshowstabilized=TRUE)
+ITDRdata_hits <- subset(ITDRdata_f, id %in% ITDRdata_shifted[[1]]$id)
+ITDRdata_stabilized_hits <- subset(ITDRdata_f, id %in% ITDRdata_stabilized[[1]]$id)
+```
+
+
+11. Although not recommended anymore, it is possible to carry out data segregation and hits selection based on desired `fc` level and the associated fitting parameters using `ms_ITDR_filter()` or `ms_ITDR_filter()`.  
+The arguments and its default value include:  
+    * `fcthreshold=0.3`, readings have to surpass this threshold (by default 30%) of fold change level to be considered as positive  
+    * `R2threshold=0.8`, minimal R-squared (R2) level to consider dose/time-reponse fitting as reliable  
+    * `checkpointposition`, refering to the positions of dose points to check whether their readings surpass fcthreshold, default value is NULL, which would automatically check the highest 3 dose points  
+    * `checkreplicate=TRUE`, whether to check replicated measurements, when set to TRUE, further segregate the proteins that all the replicated measurements from at least one experimental condition surpass fold change threshold, default set to TRUE    
+    * `treatcondition`, can be used to specify the experimental condition names to perform replicate check, no need to specify the replicate part of the full condition names, useful when multiple experimental conditions are contained in the dataset. For example, when there is 37C-heated samples (used to check protein expression level change), you can specify the heat challenging condition keyword (say, 52C) used in the experiment in `treatcondition`.  
+    * `PSMcutoff=TRUE` and `PSMthreshold=3`, whether to apply minimal PSM cutoff on hit selection and the threshold level  
+    
+Returned values:  
+The return data is in list format, when `checkreplicate=TRUE` and `PSMcutoff=TRUE`, there are 4 items: selected proteins, proteins with single replicate passing fold change criteria, proteins with no more than on average 3 PSMs, not selected proteins; when `checkreplicate=TRUE` and `PSMcutoff=FALSE`, there are 3 items: selected proteins, proteins with single replicate passing fold change criteria, not selected proteins; when `checkreplicate=FALSE`, there are only 2 items: selected proteins, and not selected proteins.  
+```{r, eval=FALSE}
+ITDRdata_filtered <- ms_ITDR_filter(ITDRdata_f, fcthreshold=0.3, checkreplicate=TRUE, PSMcutoff=TRUE)
+ITTRdata_filtered <- ms_ITTR_filter(ITTRdata_f, fcthreshold=0.3, checkreplicate=TRUE, PSMcutoff=TRUE)
+```
+
+12. Plot out dose (or time) response curves for each segregated data item in the list returned from the above filter function using `ms_ITDR_ggplotting()` or `ms_ITTR_ggplotting()`.  
+The arguments and its default value includes:  
+    * `nread=10`, how many readings per curve (count from lowest dose/time) were used for plotting, default is 10  
+    * `remsinglecondprot=TRUE`, whether orphan proteins to be plotted, default to exclude them from plotting  
+    * `nreplicate=2`, how many replicates there are for each condition, default is duplicate thus 2, change the value accordingly, this is relavent to automatic coloring scheme, up to 4 is possible for now  
+    * `minireplicate`, number of replicates to keep in final data, default set to NULL, this is an added-on feature to subset enough replicated samples especially for the format with error bar option as discussed below
+    * `barplotformat=FALSE` whether to plot in a bar graph format, default to FALSE
+    * `witherrorbar=FALSE` whether to plot in a mean +/- errorbar(se) graph format, default to FALSE
+    * `orderAUC=FALSE` or `orderEC=FALSE`, whether to order the plots by AUC (Area under the curve) or EC (Effective concentration), set to TRUE if necessary. For ITTR data, the corresponding argument is `orderAUC=FALSE` or `orderET=FALSE`    
+    * `unit="mM"`, the default unit for dose is mM, change to appropriate character accordingly  
+    * `layout=c(5,5)`, the default multiplot layout is 5 times 5 in each page  
+    * `presetcolor=TRUE`, whether automatically apply the preset coloring scheme for each condition, otherwise, provide a vector for example `colorpanel=c("black", "red", "blue", "orange")` to customize the colors. The preset colorpanel associated to each replicate value is as follows:  
+![](./preset_colorpanel2.png)  
+Refer to [Colors in R](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf) or [R Color Cheatsheet](https://www.nceas.ucsb.edu/~frazier/RSpatialGuides/colorPaletteCheatsheet.pdf) for more color selection. 
+    * `xlinear=FALSE`, `xlog10=TRUE`, `xsqrt=FALSE`, by default use log10 transformed scale but not linear scale or square root transformed scale for x-axis. For ITTR data, the default is `xlinear=FALSE`, `xlog10=FALSE`, `xsqrt=TRUE`, so that the x axis is displayed in square root transformed scale.  
+    * `dotconnect=FALSE`, by default to fit the best dose/time response regression curve, however, by specifing `dotconnect=TRUE` you could skip the curve fitting.  
+```{r, eval=FALSE}
+ms_ITDR_ggplotting(ITDRdata_hits, orderAUC=TRUE)
+ms_ITDR_ggplotting(ITDRdata_stabilized_hits, orderAUC=TRUE)
+ms_ITTR_ggplotting(ITTRdata_filtered[[1]], orderAUC=TRUE)
+```
+
+13. Export the dataset using `ms_filewrite()` to a local txt file.  
+```{r, eval=FALSE}
+ms_filewrite(ITDRdata_hits, "ITDRdata_hits.txt")
+ms_filewrite(ITDRdata_stabilized_hits, "ITDRdata_stabilized_hits.txt")
+ms_filewrite(ITDRdata_filtered[[1]], "ITDRdata_good.txt")
+ms_filewrite(ITDRdata_filtered[[2]], "ITDRdata_single.txt")
+ms_filewrite(ITDRdata_filtered[[3]], "ITDRdata_PSMsmall.txt")
+ms_filewrite(ITDRdata_filtered[[4]], "ITDRdata_notselected.txt")
+```
+
+14. Read in the dataset using `ms_fileread()` from a saved txt file.  
+```{r, eval=FALSE}
+ITDRdata_selected_good <- ms_fileread("./subfolder_name/ITDRdata_good.txt")
+# . indicate the current working directory
+# Here the subfolder_name refer to a first level folder name directly under current working directory
+# Remember that typically now you are still working in the main working directory
+# The subfolder should contain the data file to read in
+```
+
+15. Focus on a list of target proteins to study using `ms_subsetting()`.  
+You need to first make an excel file with a list of Uniprot IDs you want to study (for example, P00000, P12345-6) under the header “__id__”, then save as txt file in working directory, say under the name “hit_list.txt”. The alternative for a short Uniprot ID list, you can simply provide a vector of Uniprot IDs.  
+The arguments and its default value include:  
+    * `isfile=TRUE`, whether the provided hitidlist is in a txt. file, default set to TRUE  
+    * `allisoform=TRUE`, whethre to retrive other isoforms of the same parental Uniprot ID, default set to TRUE  
+    * `revsel=FALSE`, short for reverse selection, when set to TRUE, the output is the dataset after removing the targets, default set to FALSE  
+```{r, eval=FALSE}
+ITDRdata_subset <- ms_subsetting(ITDRdata_f, hitidlist="hit_list.txt", isfile=TRUE)
+ITDRdata_subset <- ms_subsetting(ITDRdata_f, hitidlist=c("P00000", "P12345-6"), isfile=FALSE)
+```
