@@ -6,17 +6,18 @@ output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{analysis of CETSA melt curves}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
 ---
 
 ## Introduction  
-This script is designed to process CETSA melt curve result from TMT10 labelling and quantification scheme.  
+This script is designed to process MS-CETSA melt curve result from TMT labelling and quantification scheme.  
 The main tasks include:  
 1. Read in the quantitative CETSA data (Search result txt.file from Proteome Discoverer, PD) into R/Rstudio  
 2. Clean up data, mainly to remove the entries without quantitative information  
-3. Normalize data based on the principle that the overall median of relative protein fold changes across the heating temperature range should follow a sigmoidal trend  
+3. Normalize data based on the principle that the overall median of relative protein fold changes across the
+heating temperature range should follow a sigmoidal trend  
 4. Try to fit each entry of data into a temperature-response relationship and capture the fitting parameters  
-5. Visualize the data using customizable plot layout, for either all the data or the subsets  
+5. Visualize the data using customizable plot layout, for either all the data or a subset  
 
 --------------------------------------------------------------------------------------------
 
@@ -24,8 +25,11 @@ The main tasks include:
 * R version > 3.3.0  
 * Rstudio version > 1.0  
 * Dependent packages:  
-"readr", "drc", "plyr", "tibble", "tidyr", "grid", "gtools", "gridExtra", "scales", "RColorBrewer", "dplyr", "ggplot2", "VennDiagram", "Nozzle.R1", "ggrepel", "Biobase", "limma", "arrayQualityMetrics"  
-Currently, during the package installiation process from local source, when these dependent packages are not available, complains would rise, use `install.packges()` command to manually install the required packages (as specified in the warning message), till there is no more complain.  
+"readr", "drc", "plyr", "tibble", "tidyr", "grid", "gtools", "gridExtra", "scales", "RColorBrewer", "dplyr", 
+"ggplot2", "VennDiagram", "Nozzle.R1", "ggrepel", "Biobase", "limma", "arrayQualityMetrics"  
+Note: during the package installation, when the dependent packages are not available, complains would rise; 
+the user can use `install.packges()` command to manually install the required packages (as specified in the 
+warning message), till there is no more complain.  
 
 --------------------------------------------------------------------------------------------
 
@@ -34,8 +38,10 @@ Currently, during the package installiation process from local source, when thes
 1. For better organization of data analysisk, it is __highly recommended__ to use the [Project management feature](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) in Rstudio.  
 For each project, you are suggested to create a brand new working folder as your local working directory.  
 Save the PD derived data files to this working directory folder.  
-At the right up corner of Rstudio, click Project -> New Project -> Existing Directory -> browse and choose the designated working directory folder.  
-By establishing a specfic project for each experiment, all the data content and execution history will be saved in the project for future analysis even when R session is terminated.  
+At the right upper corner of RStudio, click Project -> New Project -> Existing Directory -> browse and choose
+the designated working directory folder.  
+By establishing a specfic project for each experiment, all the data content and execution history will be saved
+in the project for future re-analysis even when R session is terminated.  
 
 2. Activate `mineCETSA` package by library it.  
 ```{r, message=TRUE}
@@ -62,7 +68,7 @@ LY1 <- ms_conditionrename(LY, incondition=c("Treatmentrep1.3", "Treatmentrep2.4"
 
 5. Remove proteins without quantitative information by default using `ms_clean()`.  
 By default the Keratin family proteins are also removed.  
-By default the orphan proteins that even only appear in one of the datasets are not removed, however you can specify `remsinglecondprot=TRUE`, these orphan proteins will be excluded from downstream analysis.  
+By default the orphan proteins that only appear in one of the datasets are not removed, however you can specify `remsinglecondprot=TRUE`, these orphan proteins will be excluded from downstream analysis.  
 ```{r, eval=FALSE}
 LY_cleaned <- ms_clean(LY1)
 ```
@@ -71,12 +77,12 @@ LY_cleaned <- ms_clean(LY1)
 When two or more isoforms of the same parental proteins are present in the combined datasets but within each individual condition, only one isoform is identified, according to the principle of parsimony, the minor isoforms will be automatically adjusted to be the corresponding major or more frequent oberserved isoform. At the same time, a match table will be suggested to further consolidate the cases that when two or more isoforms of the same parental proteins are identified within the same individual conditioned dataset, which could then be achieved by using `ms_isoform_consolidate()`.   
 ```{r, eval=FALSE}
 LY_cleaned1 <- ms_isoform_resolve(LY_cleaned)
-# The next isoform cleaning is optional. You are encouraged to double check and adjust the match table entries. 
+# The next isoform cleaning step is optional. You are encouraged to double check and adjust the match table entries. 
 LY_cleaned2 <- ms_isoform_consolidate(LY_cleaned1, matchtable="./subfolder/tobe_consolidated.txt")
 ```
 
 7. Apply systematic scaling to the dataset using either `ms_scaling()` or `ms_forcescaling()`.  
-The `ms_scaling()` function achieves: The medians of soluble protein ratios are fitted into a sigmoidal function of the temperature range   
+The `ms_scaling()` function achieves: The medians of soluble protein ratios are fitted into a sigmoidal function of the temperature range  
 Output in working directory:  
 * Scaling factors used are written into a local file   
 * Medians of soluble protein ratios pre- and post- data normalization is plotted  
@@ -91,7 +97,7 @@ LY_fs <- ms_forcescaling(LY_cleaned, refcondition=c("Ctrl.1", "Ctrl.2"))
 ```
 
 8. Try the temperature-response function fitting to generate fitting parameters for each entry/curve using `ms_fitting()`.  
-The returned data contains the input scaled data plus fitting parameters (including `Tm`, `R2`, `Slope`, `RSE`(Residual standard error)).  
+The returned data contains the input scaled data plus fitting parameters (including `Tm`, `R2`, `Slope`, `Plateau`(bottom plateau)).  
 Output in working directory:  
 * A copy of the fitted dataset are written into a local file  
 ```{r, eval=FALSE}
@@ -106,43 +112,45 @@ ms_ggplotting(LY_scaled)
 ```
 
 10. Plot out replicated melt curves using `ms_ggplotting_rep()`.  
-This function mainly cater for the (technical or biological) replicated runs of CETSA melt curves, the ranking system not only considers the apparent shifts between different experimental conditions, but also the internal reproducibility among the replicated runs.  
+This function mainly cater for the (technical or biological) replicated runs of CETSA melt curves, the ranking system 
+not only considers the apparent shifts between different experimental conditions, but also the internal reproducibility 
+among the replicated runs.  
 The arguments and its default value include:  
-    * `nread=10`, how many readings per curve (from lowest dose) were used for plotting, default is 10  
+    * `nread=10`, how many readings per curve (from lowest heating temperature) were used for plotting, default is 10  
     * `levelvector`, a vector of conditions to be specified, preferably starting with Ctrl or Reference sets  
     * `remsinglecondprot=TRUE`, whether orphan proteins to be plotted, default to exclude them from plotting  
     * `nreplicate=2`, how many replicates there are for each condition, default is duplicate thus 2, change the value accordingly, this is relavent to automatic coloring scheme, up to 4 is possible for now  
-    * `layout=c(5,5)`, the default multiplot layout is 5 times 5 in each page  
     * `presetcolor=TRUE`, whether automatically apply the preset coloring scheme for each condition, otherwise, provide a vector for example `colorpanel=c("black", "red", "blue", "orange")` to customize the colors  
-    * `pfdatabase=FALSE`, only set to TRUE when the input dataset is for malaria study  
-    * `dotconnect=FALSE`, by default to fit and draw a smoothed melt curve, otherwise skip the fitting process  
-    * `pdfheight=12` set the height of pdf file  
-    * `pdfwidth=12` set the width of pdf file  
+    * `pfdatabase=FALSE`, only set to TRUE when the input dataset is searched with malaria database  
+    * `layout=c(5,5)`, the default multiplot layout is 5 times 5 in each page  
+    * `pdfheight=12`, set the height of pdf file  
+    * `pdfwidth=12`, set the width of pdf file  
 ```{r, eval=FALSE}
 ms_ggplotting_rep(LY_scaled, levelvector=c("Ctrl.1", "Ctrl.2", "Treatment.1","Treatment.2"))
 ms_ggplotting_rep(LY_fitted, levelvector=c("Ctrl.1", "Ctrl.2", "Treatment.1","Treatment.2"))
 ```
 
-11. Export the dataset (in the current working space) using `ms_filewrite()` to a local txt file.
+11. Export the dataset (in the current working space) using `ms_filewrite()` to a local txt file.  
 ```{r, eval=FALSE}
 ms_filewrite(LY_scaled, "CETSA_data_scaled.txt")
 ms_filewrite(LY_fitted, "CETSA_data_with_fitting_parameters.txt")
 ```
 
-12. Read in the dataset using `ms_fileread()` from a saved txt file.
+12. Read in the dataset using `ms_fileread()` from a saved txt file.  
 ```{r, eval=FALSE}
 MyCETSAdata <- ms_fileread("./subfolder_name/myCETSAdata_to_readin.txt")
 # . indicate the current working directory
-# Here the subfolder_name refer to a first level folder name under current working directory in which the data file locates
+# Here the subfolder_name refer to a first level folder name directly under current working directory
 # Remember that typically now you are still working in the main working directory
+# The subfolder should contain the data file to read in
 ```
 
 13. Focus on a list of target proteins to study using `ms_subsetting()`.  
 You need to first make an excel file with a list of Uniprot IDs you want to study (for example, P00000, P12345-6) under the header “__id__”, then save as txt file in working directory, say under the name “hit_list.txt”. The alternative for a short Uniprot ID list, you can simply provide a vector of Uniprot IDs.  
 The arguments and its default value include:  
-    * `isfile=TRUE`, whether the provided hitidlist is in a txt. file, default set to TRUE
-    * `allisoform=TRUE`, whethre to retrive other isoforms of the same parental Uniprot ID, default set to TRUE
-    * `revsel=FALSE`, short for reverse selection, when set to TRUE, the output is the dataset after removing the targets, default set to FALSE
+    * `isfile=TRUE`, whether the provided hitidlist is in a txt. file, default set to TRUE  
+    * `allisoform=TRUE`, whethre to retrive other isoforms of the same parental Uniprot ID, default set to TRUE  
+    * `revsel=FALSE`, short for reverse selection, when set to TRUE, the output is the dataset after removing the targets, default set to FALSE  
 ```{r, eval=FALSE}
 CETSAdata_subset <- ms_subsetting(LY_fitted, hitidlist="hit_list.txt", isfile=TRUE)
 CETSAdata_subset <- ms_subsetting(LY_fitted, hitidlist=c("P00000", "P12345-6"), isfile=FALSE)
