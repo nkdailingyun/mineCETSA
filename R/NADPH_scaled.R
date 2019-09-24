@@ -13,5 +13,5 @@
 #'   \item{countNum}{Number of Quantifying PSMs}
 #'   ...
 #' }
-#' @source \url{https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0208273/}
+#' @source \url{https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0208273}
 "NADPH_scaled"
