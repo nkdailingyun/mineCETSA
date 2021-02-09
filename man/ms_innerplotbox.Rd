@@ -4,8 +4,15 @@
 \alias{ms_innerplotbox}
 \title{ms_innerplotbox}
 \usage{
-ms_innerplotbox(data, filename, xlabel, ylabel, isratio, isothermalstyle,
-  outdir = NULL)
+ms_innerplotbox(
+  data,
+  filename,
+  xlabel,
+  ylabel,
+  isratio,
+  isothermalstyle,
+  outdir = NULL
+)
 }
 \arguments{
 \item{data}{dataset to be calculated}

@@ -4,10 +4,15 @@
 \alias{ms_forcescaling}
 \title{ms_force_scaling}
 \usage{
-ms_forcescaling(data, refcondition = NULL, nread = 10,
-  reordertemp = FALSE, writefactortofile = TRUE,
+ms_forcescaling(
+  data,
+  refcondition = NULL,
+  nread = 10,
+  reordertemp = FALSE,
+  writefactortofile = TRUE,
   bottomlabel = "Temperature",
-  filename = "CETSA_normalization_factors.txt")
+  filename = "CETSA_normalization_factors.txt"
+)
 }
 \arguments{
 \item{data}{dataset to be scaled}

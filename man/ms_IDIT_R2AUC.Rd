@@ -4,18 +4,43 @@
 \alias{ms_IDIT_R2AUC}
 \title{ms_IDIT_R2AUC}
 \usage{
-ms_IDIT_R2AUC(data, nread = 10, printBothName = FALSE,
-  printGeneName = TRUE, pfdatabase = FALSE, rep = "r",
-  onlyshowstabilized = FALSE, simpleAUC = TRUE, preaveraged = FALSE,
-  normalizedAUC = FALSE, refkeyword = "37C", AUC_uplimit = NULL,
-  AUC_lowlimit = NULL, log2scale = FALSE, nMAD = 2.5,
-  baselineMAD = 0, fcthreshold = 0, checkpointposition = NULL,
-  keepreplicate = FALSE, keepfullrep = FALSE, stableref = FALSE,
-  stableref_nMAD = 3.5, colorbackground = TRUE,
-  graybackground = FALSE, nodesizebyMDT = TRUE, colornodes = TRUE,
-  labelnodes = TRUE, yscale = NULL, PSMcutoff = TRUE,
-  PSMthreshold = 3, PSMcutoffbycondition = FALSE, idtoshow = NULL,
-  idtoexclude = NULL, plottitle = NULL, returnplot = FALSE)
+ms_IDIT_R2AUC(
+  data,
+  nread = 10,
+  printBothName = FALSE,
+  printGeneName = TRUE,
+  pfdatabase = FALSE,
+  rep = "r",
+  onlyshowstabilized = FALSE,
+  simpleAUC = TRUE,
+  preaveraged = FALSE,
+  normalizedAUC = FALSE,
+  refkeyword = "37C",
+  AUC_uplimit = NULL,
+  AUC_lowlimit = NULL,
+  log2scale = FALSE,
+  nMAD = 2.5,
+  baselineMAD = 0,
+  fcthreshold = 0,
+  checkpointposition = NULL,
+  keepreplicate = FALSE,
+  keepfullrep = FALSE,
+  stableref = FALSE,
+  stableref_nMAD = 3.5,
+  colorbackground = TRUE,
+  graybackground = FALSE,
+  nodesizebyMDT = TRUE,
+  colornodes = TRUE,
+  labelnodes = TRUE,
+  yscale = NULL,
+  PSMcutoff = TRUE,
+  PSMthreshold = 3,
+  PSMcutoffbycondition = FALSE,
+  idtoshow = NULL,
+  idtoexclude = NULL,
+  plottitle = NULL,
+  returnplot = FALSE
+)
 }
 \arguments{
 \item{data}{ITDR or ITTR dataset to generate R2 vs AUC plot, the provided

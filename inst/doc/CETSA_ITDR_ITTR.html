@@ -1,60 +1,97 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Dai Lingyun" />
 
-<meta name="date" content="2019-09-24" />
+<meta name="date" content="2021-02-10" />
 
 <title>Analyze MS-CETSA ITDR ITTR datasets</title>
 
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 
 </style>
 <script>
@@ -70,7 +107,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -81,7 +118,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
 
 
 
@@ -95,7 +133,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Analyze MS-CETSA ITDR ITTR datasets</h1>
 <h4 class="author">Dai Lingyun</h4>
-<h4 class="date">2019-09-24</h4>
+<h4 class="date">2021-02-10</h4>
 
 
 
@@ -112,17 +150,6 @@ The main tasks include:<br />
 7. Visualize the data using customizable plot layout, for either all the data or a subset</p>
 <hr />
 </div>
-<div id="prerequisites" class="section level2">
-<h2>Prerequisites</h2>
-<ul>
-<li>R version &gt; 3.3.0</li>
-<li>Rstudio version &gt; 1.0</li>
-<li>Dependent packages:<br />
-“readr”, “drc”, “plyr”, “tibble”, “tidyr”, “grid”, “gtools”, “gridExtra”, “scales”, “RColorBrewer”, “dplyr”, “ggplot2”, “VennDiagram”, “Nozzle.R1”, “ggrepel”, “Biobase”, “limma”, “arrayQualityMetrics”<br />
-Note: during the package installation, when the dependent packages are not available, complains would rise; the user can use <code>install.packges()</code> command to manually install the required packages (as specified in the warning message), till there is no more complain.</li>
-</ul>
-<hr />
-</div>
 <div id="proceessing" class="section level2">
 <h2>Proceessing</h2>
 <ol style="list-style-type: decimal">
@@ -133,40 +160,49 @@ At the right upper corner of Rstudio, click Project -&gt; New Project -&gt; Exis
 By establishing a specfic project for each experiment, all the data content and execution history will be saved in the project for future re-analysis even when R session is terminated.</p></li>
 <li><p>Activate <code>mineCETSA</code> package by library it.</p></li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;mineCETSA&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;mineCETSA&quot;</span>)</span></code></pre></div>
 <pre><code>## Loading required package: dplyr</code></pre>
 <pre><code>## 
-## Attaching package: 'dplyr'</code></pre>
-<pre><code>## The following objects are masked from 'package:stats':
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
 ## 
 ##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>
 <pre><code>## Loading required package: readr</code></pre>
+<pre><code>## Loading required package: reshape2</code></pre>
+<pre><code>## Loading required package: tibble</code></pre>
 <pre><code>## Loading required package: tidyr</code></pre>
+<pre><code>## 
+## Attaching package: &#39;tidyr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:reshape2&#39;:
+## 
+##     smiths</code></pre>
+<pre><code>## Warning: replacing previous import &#39;Biobase::combine&#39; by &#39;dplyr::combine&#39; when
+## loading &#39;mineCETSA&#39;</code></pre>
 <pre><code>## Welcome to mineCETSA!
-## Now it's the time to start mining your CETSA data!
+## Now it&#39;s the time to start mining your CETSA data!
 ## The two vignettes below explain in detail how to use this package
 ## Access the respective vignettes by key in: 
-## vignette('CETSA_melt_curve', package='mineCETSA')
+## vignette(&#39;CETSA_melt_curve&#39;, package=&#39;mineCETSA&#39;)
 ## or
-## vignette('CETSA_ITDR_ITTR', package='mineCETSA')</code></pre>
+## vignette(&#39;CETSA_ITDR_ITTR&#39;, package=&#39;mineCETSA&#39;)</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Read in data from result files, <code>ms_ITDR_rawread()</code> is designed for read in one or many files in a vector of file names.<br />
-By default, <code>PD21=TRUE</code> assume the data is searched using PD2.1; otherwise, specify <code>PD21=FALSE</code> if data originated from PD2.0<br />
+By default, <code>PDversion=21</code> assume the data is searched using PD2.1; otherwise, specify the exact PD version used.<br />
 Refer to Slides “Data searching using PD2.1” for how-to.<br />
 Note that for simplicity, always use channel <strong>126</strong> as control channel for data search in PD, regardless of the labelling arrangement.<br />
 You need to specify a <code>dose</code> vector of the compound concentration used in the same order (could be descending or ascending) as the sample being labeled from TMT channel 126 up to 131, of which the function default is <code>dose=c(400,100,25,6.25,1.56,0.391,0.098,0.0245,0.006,0)</code>.<br />
 Similarly for ITTR experiment, you need to specify a treatment <code>time</code> vector, of which the default is <code>time=c(0,10,20,30,45,60,90,120,150,180)</code>.<br />
 When protein abundance values are present in PD2.1 rawdata, they would be extracted by default and used for systematic normalization in the next step.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ITDRdata &lt;-<span class="st"> </span><span class="kw">ms_ITDR_rawread</span>(<span class="kw">c</span>(<span class="st">&quot;SN1.txt&quot;</span>, <span class="st">&quot;SN2.txt&quot;</span>, <span class="st">&quot;ST1.txt&quot;</span>, <span class="st">&quot;ST2.txt&quot;</span>), <span class="dt">PD21=</span><span class="ot">TRUE</span>, <span class="dt">dose=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">5</span>,<span class="fl">1.25</span>,<span class="fl">0.3123</span>,<span class="fl">0.078125</span>,<span class="fl">0.019531</span>,<span class="fl">0.004883</span>,<span class="fl">0.001221</span>,<span class="fl">0.000305</span>,<span class="dv">0</span>))
-
-ITDRdata_1file &lt;-<span class="st"> </span><span class="kw">ms_ITDR_rawread</span>(<span class="st">&quot;SN1.txt&quot;</span>, <span class="dt">PD21=</span><span class="ot">TRUE</span>, <span class="dt">dose=</span><span class="kw">c</span>(<span class="dv">20</span>,<span class="dv">5</span>,<span class="fl">1.25</span>,<span class="fl">0.3123</span>,<span class="fl">0.078125</span>,<span class="fl">0.019531</span>,<span class="fl">0.004883</span>,<span class="fl">0.001221</span>,<span class="fl">0.000305</span>,<span class="dv">0</span>))
-
-ITTRdata &lt;-<span class="st"> </span><span class="kw">ms_ITTR_rawread</span>(<span class="kw">c</span>(<span class="st">&quot;file1.txt&quot;</span>, <span class="st">&quot;file2.txt&quot;</span>, <span class="st">&quot;file3.txt&quot;</span>, <span class="st">&quot;file4.txt&quot;</span>), <span class="dt">PD21=</span><span class="ot">TRUE</span>, <span class="dt">time=</span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">30</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">90</span>,<span class="dv">120</span>))</code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ITDRdata <span class="ot">&lt;-</span> <span class="fu">ms_ITDR_rawread</span>(<span class="fu">c</span>(<span class="st">&quot;SN1.txt&quot;</span>, <span class="st">&quot;SN2.txt&quot;</span>, <span class="st">&quot;ST1.txt&quot;</span>, <span class="st">&quot;ST2.txt&quot;</span>), <span class="at">PD21=</span><span class="cn">TRUE</span>, <span class="at">dose=</span><span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">5</span>,<span class="fl">1.25</span>,<span class="fl">0.3123</span>,<span class="fl">0.078125</span>,<span class="fl">0.019531</span>,<span class="fl">0.004883</span>,<span class="fl">0.001221</span>,<span class="fl">0.000305</span>,<span class="dv">0</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>ITDRdata_1file <span class="ot">&lt;-</span> <span class="fu">ms_ITDR_rawread</span>(<span class="st">&quot;SN1.txt&quot;</span>, <span class="at">PD21=</span><span class="cn">TRUE</span>, <span class="at">dose=</span><span class="fu">c</span>(<span class="dv">20</span>,<span class="dv">5</span>,<span class="fl">1.25</span>,<span class="fl">0.3123</span>,<span class="fl">0.078125</span>,<span class="fl">0.019531</span>,<span class="fl">0.004883</span>,<span class="fl">0.001221</span>,<span class="fl">0.000305</span>,<span class="dv">0</span>))</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>ITTRdata <span class="ot">&lt;-</span> <span class="fu">ms_ITTR_rawread</span>(<span class="fu">c</span>(<span class="st">&quot;file1.txt&quot;</span>, <span class="st">&quot;file2.txt&quot;</span>, <span class="st">&quot;file3.txt&quot;</span>, <span class="st">&quot;file4.txt&quot;</span>), <span class="at">PD21=</span><span class="cn">TRUE</span>, <span class="at">time=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">20</span>,<span class="dv">30</span>,<span class="dv">45</span>,<span class="dv">60</span>,<span class="dv">90</span>,<span class="dv">120</span>))</span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
 <li>Customize the condition names in dataset using <code>ms_conditionrename()</code>.<br />
 When read in multiple files, a number suffix is added to the condition of each data file in sequence. This feature seems redundanct but could allow retrieval of file read in sequence and more inportantly make sure the condition names are always unique and distinguishable.<br />
@@ -174,23 +210,23 @@ This condition remaning is important for group assignment and ITDR/ITTR hits sel
 __It is recommended that you should try to omit using dot in the condition names, you can segregate your long condition name using underline(_) if necessary.__<br />
 The argument <code>incondition</code> corresponses to the vector of current condition naming, whereas <code>outcondition</code> correponses to the vector of new condition naming, both order and length should match exactly.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ITDRdata &lt;-<span class="st"> </span><span class="kw">ms_conditionrename</span>(ITDRdata, <span class="dt">incondition=</span><span class="kw">c</span>(<span class="st">&quot;drugS.3&quot;</span>,<span class="st">&quot;drugS.4&quot;</span>,<span class="st">&quot;drugX.1&quot;</span>,<span class="st">&quot;drugX.2&quot;</span>), <span class="dt">outcondition=</span><span class="kw">c</span>(<span class="st">&quot;drugS.r1&quot;</span>,<span class="st">&quot;drugS.r2&quot;</span>,<span class="st">&quot;drugX.r1&quot;</span>,<span class="st">&quot;drugX.r2&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ITDRdata <span class="ot">&lt;-</span> <span class="fu">ms_conditionrename</span>(ITDRdata, <span class="at">incondition=</span><span class="fu">c</span>(<span class="st">&quot;drugS.3&quot;</span>,<span class="st">&quot;drugS.4&quot;</span>,<span class="st">&quot;drugX.1&quot;</span>,<span class="st">&quot;drugX.2&quot;</span>), <span class="at">outcondition=</span><span class="fu">c</span>(<span class="st">&quot;drugS.r1&quot;</span>,<span class="st">&quot;drugS.r2&quot;</span>,<span class="st">&quot;drugX.r1&quot;</span>,<span class="st">&quot;drugX.r2&quot;</span>))</span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>Remove proteins without quantitative information by default using <code>ms_clean()</code>.<br />
 By default the Keratin family proteins are also removed.<br />
 By default the orphan proteins that only appear in one of the datasets are not removed, however you can specify <code>remsinglecondprot=TRUE</code>, these orphan proteins will be excluded from downstream analysis.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ITDRdata_c &lt;-<span class="st"> </span><span class="kw">ms_clean</span>(ITDRdata)
-ITTRdata_c &lt;-<span class="st"> </span><span class="kw">ms_clean</span>(ITTRdata)</code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ITDRdata_c <span class="ot">&lt;-</span> <span class="fu">ms_clean</span>(ITDRdata)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ITTRdata_c <span class="ot">&lt;-</span> <span class="fu">ms_clean</span>(ITTRdata)</span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
 <li>Resolve isoform ambiguity from multiple runs of searches using <code>ms_isoform_resolve()</code>.<br />
 When two or more isoforms of the same parental proteins are present in the combined datasets but within each individual condition, only one isoform is identified, according to the principle of parsimony, the minor isoforms will be automatically adjusted to be the corresponding major or more frequent oberserved isoform. At the same time, a match table will be suggested to further consolidate the cases that when two or more isoforms of the same parental proteins are identified within the same individual conditioned dataset, which could then be achieved by using <code>ms_isoform_consolidate()</code>.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ITDRdata_c1 &lt;-<span class="st"> </span><span class="kw">ms_isoform_resolve</span>(ITDRdata_c)
-<span class="co"># The next isoform cleaning step is optional. You are encouraged to double check and adjust the match table entries. </span>
-ITDRdata_c2 &lt;-<span class="st"> </span><span class="kw">ms_isoform_consolidate</span>(ITDRdata_c1, <span class="dt">matchtable=</span><span class="st">&quot;./subfolder/tobe_consolidated.txt&quot;</span>)
-<span class="co"># When the data contains protein abundance information. </span>
-ITDRdata_c2 &lt;-<span class="st"> </span><span class="kw">ms_isoform_consolidate</span>(ITDRdata_c1, <span class="dt">matchtable=</span><span class="st">&quot;./subfolder/tobe_consolidated.txt&quot;</span>, <span class="dt">withabd=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ITDRdata_c1 <span class="ot">&lt;-</span> <span class="fu">ms_isoform_resolve</span>(ITDRdata_c)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The next isoform cleaning step is optional. You are encouraged to double check and adjust the match table entries. </span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>ITDRdata_c2 <span class="ot">&lt;-</span> <span class="fu">ms_isoform_consolidate</span>(ITDRdata_c1, <span class="at">matchtable=</span><span class="st">&quot;./subfolder/tobe_consolidated.txt&quot;</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># When the data contains protein abundance information. </span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>ITDRdata_c2 <span class="ot">&lt;-</span> <span class="fu">ms_isoform_consolidate</span>(ITDRdata_c1, <span class="at">matchtable=</span><span class="st">&quot;./subfolder/tobe_consolidated.txt&quot;</span>, <span class="at">withabd=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <ol start="7" style="list-style-type: decimal">
 <li>Apply systematic scaling to the dataset using <code>ms_ITDR_scaling()</code> or <code>ms_ITTR_scaling()</code>.<br />
 The function achieve:<br />
@@ -210,8 +246,8 @@ Output in working directory:<br />
 </li>
 <li>The distribution of soluble protein ratio pre- and post- normalization is plotted</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ITDRdata_s &lt;-<span class="st"> </span><span class="kw">ms_ITDR_scaling</span>(ITDRdata_c2)
-ITTRdata_s &lt;-<span class="st"> </span><span class="kw">ms_ITTR_scaling</span>(ITTRdata_c2)</code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ITDRdata_s <span class="ot">&lt;-</span> <span class="fu">ms_ITDR_scaling</span>(ITDRdata_c2)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ITTRdata_s <span class="ot">&lt;-</span> <span class="fu">ms_ITTR_scaling</span>(ITTRdata_c2)</span></code></pre></div>
 <ol start="8" style="list-style-type: decimal">
 <li>Try the dose/time-response function fitting to generate fitting parameters for each entry/curve using <code>ms_ITDR_fitting()</code> or <code>ms_ITTR_fitting()</code>.<br />
 The returned data contains the input scaled data plus fitting parameters (including <code>EC</code>/<code>ET</code>, <code>EC50</code>/<code>ET50</code>, <code>R2</code>, and <code>Slope</code>).<br />
@@ -223,8 +259,8 @@ Output in working directory:<br />
 <ul>
 <li>A copy of the fitted dataset are written into a local file</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ITDRdata_f &lt;-<span class="st"> </span><span class="kw">ms_ITDR_fitting</span>(ITDRdata_s)
-ITTRdata_f &lt;-<span class="st"> </span><span class="kw">ms_ITTR_fitting</span>(ITTRdata_s, <span class="dt">calMTT=</span><span class="ot">FALSE</span>, <span class="dt">fc=</span><span class="fl">0.3</span>)</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ITDRdata_f <span class="ot">&lt;-</span> <span class="fu">ms_ITDR_fitting</span>(ITDRdata_s)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ITTRdata_f <span class="ot">&lt;-</span> <span class="fu">ms_ITTR_fitting</span>(ITTRdata_s, <span class="at">calMTT=</span><span class="cn">FALSE</span>, <span class="at">fc=</span><span class="fl">0.3</span>)</span></code></pre></div>
 <ol start="9" style="list-style-type: decimal">
 <li>Generate a QC report for the dataset using <code>ms_IDIT_QC()</code>, ideally the scaled data with fitting parameter should be used as input.<br />
 The arguments and its default value include:
@@ -236,8 +272,8 @@ The arguments and its default value include:
 <li><code>isdatafitted=TRUE</code>, whether data with fitting parameters were used as input</li>
 </ul></li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ms_IDIT_QC</span>(ITDRdata_f)
-<span class="kw">ms_IDIT_QC</span>(ITDRdata_s, <span class="dt">isdatafitted=</span><span class="ot">FALSE</span>, <span class="dt">foldername=</span><span class="st">&quot;QC1&quot;</span>) <span class="co">#not recommended</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_IDIT_QC</span>(ITDRdata_f)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_IDIT_QC</span>(ITDRdata_s, <span class="at">isdatafitted=</span><span class="cn">FALSE</span>, <span class="at">foldername=</span><span class="st">&quot;QC1&quot;</span>) <span class="co">#not recommended</span></span></code></pre></div>
 <ol start="10" style="list-style-type: decimal">
 <li>Generate an R2-AUC plot for the overview of data and potentially hits selection, this is based on R2 (an indicator of goodness of dose-reponse relationship), AUC (an measurement of shift) and MDT (a measurement of how fast is the reponse relative to baseline).<br />
 The argument and its default value include:
@@ -250,7 +286,7 @@ The argument and its default value include:
 </li>
 <li><code>pfdatabase=FALSE</code>, whether the data is a malaria dataset, default set to FALSE<br />
 </li>
-<li><code>rep=&quot;r&quot;</code>, the rep indicator used in the naming of experimental conditions, such as “r”, or “rep” or “” (when only followed by number)<br />
+<li><code>rep=&quot;r&quot;</code>, the rep indicator used in the naming of experimental conditions, such as “r”, or “rep” or &quot;&quot; (when only followed by number)<br />
 </li>
 <li><code>onlyshowstabilized=FALSE</code>, whether to show only stablized hits, ie, direct targets (in lysate setting), default set to FALSE<br />
 </li>
@@ -272,10 +308,10 @@ The argument and its default value include:
 <li><code>plottitile</code>, can specify the title name of the plot</li>
 </ul></li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ITDRdata_shifted &lt;-<span class="st"> </span><span class="kw">ms_IDIT_R2AUC</span>(ITDRdata_f, <span class="dt">printBothName=</span><span class="ot">TRUE</span>)
-ITDRdata_stabilized &lt;-<span class="st"> </span><span class="kw">ms_IDIT_R2AUC</span>(ITDRdata_f, <span class="dt">printBothName=</span><span class="ot">FALSE</span>, <span class="dt">printGeneName=</span><span class="ot">TRUE</span>, <span class="dt">keepreplicate=</span><span class="ot">TRUE</span>, <span class="dt">onlyshowstabilized=</span><span class="ot">TRUE</span>)
-ITDRdata_hits &lt;-<span class="st"> </span><span class="kw">subset</span>(ITDRdata_f, id <span class="op">%in%</span><span class="st"> </span>ITDRdata_shifted[[<span class="dv">1</span>]]<span class="op">$</span>id)
-ITDRdata_stabilized_hits &lt;-<span class="st"> </span><span class="kw">subset</span>(ITDRdata_f, id <span class="op">%in%</span><span class="st"> </span>ITDRdata_stabilized[[<span class="dv">1</span>]]<span class="op">$</span>id)</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>ITDRdata_shifted <span class="ot">&lt;-</span> <span class="fu">ms_IDIT_R2AUC</span>(ITDRdata_f, <span class="at">printBothName=</span><span class="cn">TRUE</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>ITDRdata_stabilized <span class="ot">&lt;-</span> <span class="fu">ms_IDIT_R2AUC</span>(ITDRdata_f, <span class="at">printBothName=</span><span class="cn">FALSE</span>, <span class="at">printGeneName=</span><span class="cn">TRUE</span>, <span class="at">keepreplicate=</span><span class="cn">TRUE</span>, <span class="at">onlyshowstabilized=</span><span class="cn">TRUE</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>ITDRdata_hits <span class="ot">&lt;-</span> <span class="fu">subset</span>(ITDRdata_f, id <span class="sc">%in%</span> ITDRdata_shifted[[<span class="dv">1</span>]]<span class="sc">$</span>id)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>ITDRdata_stabilized_hits <span class="ot">&lt;-</span> <span class="fu">subset</span>(ITDRdata_f, id <span class="sc">%in%</span> ITDRdata_stabilized[[<span class="dv">1</span>]]<span class="sc">$</span>id)</span></code></pre></div>
 <ol start="11" style="list-style-type: decimal">
 <li>Although not recommended anymore, it is possible to carry out data segregation and hits selection based on desired <code>fc</code> level and the associated fitting parameters using <code>ms_ITDR_filter()</code> or <code>ms_ITDR_filter()</code>.<br />
 The arguments and its default value include:
@@ -295,8 +331,8 @@ The arguments and its default value include:
 </ol>
 <p>Returned values:<br />
 The return data is in list format, when <code>checkreplicate=TRUE</code> and <code>PSMcutoff=TRUE</code>, there are 4 items: selected proteins, proteins with single replicate passing fold change criteria, proteins with no more than on average 3 PSMs, not selected proteins; when <code>checkreplicate=TRUE</code> and <code>PSMcutoff=FALSE</code>, there are 3 items: selected proteins, proteins with single replicate passing fold change criteria, not selected proteins; when <code>checkreplicate=FALSE</code>, there are only 2 items: selected proteins, and not selected proteins.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ITDRdata_filtered &lt;-<span class="st"> </span><span class="kw">ms_ITDR_filter</span>(ITDRdata_f, <span class="dt">fcthreshold=</span><span class="fl">0.3</span>, <span class="dt">checkreplicate=</span><span class="ot">TRUE</span>, <span class="dt">PSMcutoff=</span><span class="ot">TRUE</span>)
-ITTRdata_filtered &lt;-<span class="st"> </span><span class="kw">ms_ITTR_filter</span>(ITTRdata_f, <span class="dt">fcthreshold=</span><span class="fl">0.3</span>, <span class="dt">checkreplicate=</span><span class="ot">TRUE</span>, <span class="dt">PSMcutoff=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ITDRdata_filtered <span class="ot">&lt;-</span> <span class="fu">ms_ITDR_filter</span>(ITDRdata_f, <span class="at">fcthreshold=</span><span class="fl">0.3</span>, <span class="at">checkreplicate=</span><span class="cn">TRUE</span>, <span class="at">PSMcutoff=</span><span class="cn">TRUE</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>ITTRdata_filtered <span class="ot">&lt;-</span> <span class="fu">ms_ITTR_filter</span>(ITTRdata_f, <span class="at">fcthreshold=</span><span class="fl">0.3</span>, <span class="at">checkreplicate=</span><span class="cn">TRUE</span>, <span class="at">PSMcutoff=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <ol start="12" style="list-style-type: decimal">
 <li>Plot out dose (or time) response curves for each segregated data item in the list returned from the above filter function using <code>ms_ITDR_ggplotting()</code> or <code>ms_ITTR_ggplotting()</code>.<br />
 The arguments and its default value includes:
@@ -324,26 +360,26 @@ Refer to <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">Colors 
 <li><code>dotconnect=FALSE</code>, by default to fit the best dose/time response regression curve, however, by specifing <code>dotconnect=TRUE</code> you could skip the curve fitting.</li>
 </ul></li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ms_ITDR_ggplotting</span>(ITDRdata_hits, <span class="dt">orderAUC=</span><span class="ot">TRUE</span>)
-<span class="kw">ms_ITDR_ggplotting</span>(ITDRdata_stabilized_hits, <span class="dt">orderAUC=</span><span class="ot">TRUE</span>)
-<span class="kw">ms_ITTR_ggplotting</span>(ITTRdata_filtered[[<span class="dv">1</span>]], <span class="dt">orderAUC=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_ITDR_ggplotting</span>(ITDRdata_hits, <span class="at">orderAUC=</span><span class="cn">TRUE</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_ITDR_ggplotting</span>(ITDRdata_stabilized_hits, <span class="at">orderAUC=</span><span class="cn">TRUE</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_ITTR_ggplotting</span>(ITTRdata_filtered[[<span class="dv">1</span>]], <span class="at">orderAUC=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 <ol start="13" style="list-style-type: decimal">
 <li>Export the dataset using <code>ms_filewrite()</code> to a local txt file.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ms_filewrite</span>(ITDRdata_hits, <span class="st">&quot;ITDRdata_hits.txt&quot;</span>)
-<span class="kw">ms_filewrite</span>(ITDRdata_stabilized_hits, <span class="st">&quot;ITDRdata_stabilized_hits.txt&quot;</span>)
-<span class="kw">ms_filewrite</span>(ITDRdata_filtered[[<span class="dv">1</span>]], <span class="st">&quot;ITDRdata_good.txt&quot;</span>)
-<span class="kw">ms_filewrite</span>(ITDRdata_filtered[[<span class="dv">2</span>]], <span class="st">&quot;ITDRdata_single.txt&quot;</span>)
-<span class="kw">ms_filewrite</span>(ITDRdata_filtered[[<span class="dv">3</span>]], <span class="st">&quot;ITDRdata_PSMsmall.txt&quot;</span>)
-<span class="kw">ms_filewrite</span>(ITDRdata_filtered[[<span class="dv">4</span>]], <span class="st">&quot;ITDRdata_notselected.txt&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_filewrite</span>(ITDRdata_hits, <span class="st">&quot;ITDRdata_hits.txt&quot;</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_filewrite</span>(ITDRdata_stabilized_hits, <span class="st">&quot;ITDRdata_stabilized_hits.txt&quot;</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_filewrite</span>(ITDRdata_filtered[[<span class="dv">1</span>]], <span class="st">&quot;ITDRdata_good.txt&quot;</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_filewrite</span>(ITDRdata_filtered[[<span class="dv">2</span>]], <span class="st">&quot;ITDRdata_single.txt&quot;</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_filewrite</span>(ITDRdata_filtered[[<span class="dv">3</span>]], <span class="st">&quot;ITDRdata_PSMsmall.txt&quot;</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_filewrite</span>(ITDRdata_filtered[[<span class="dv">4</span>]], <span class="st">&quot;ITDRdata_notselected.txt&quot;</span>)</span></code></pre></div>
 <ol start="14" style="list-style-type: decimal">
 <li>Read in the dataset using <code>ms_fileread()</code> from a saved txt file.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ITDRdata_selected_good &lt;-<span class="st"> </span><span class="kw">ms_fileread</span>(<span class="st">&quot;./subfolder_name/ITDRdata_good.txt&quot;</span>)
-<span class="co"># . indicate the current working directory</span>
-<span class="co"># Here the subfolder_name refer to a first level folder name directly under current working directory</span>
-<span class="co"># Remember that typically now you are still working in the main working directory</span>
-<span class="co"># The subfolder should contain the data file to read in</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ITDRdata_selected_good <span class="ot">&lt;-</span> <span class="fu">ms_fileread</span>(<span class="st">&quot;./subfolder_name/ITDRdata_good.txt&quot;</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># . indicate the current working directory</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Here the subfolder_name refer to a first level folder name directly under current working directory</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Remember that typically now you are still working in the main working directory</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The subfolder should contain the data file to read in</span></span></code></pre></div>
 <ol start="15" style="list-style-type: decimal">
 <li>Focus on a list of target proteins to study using <code>ms_subsetting()</code>.<br />
 You need to first make an excel file with a list of Uniprot IDs you want to study (for example, P00000, P12345-6) under the header “<strong>id</strong>”, then save as txt file in working directory, say under the name “hit_list.txt”. The alternative for a short Uniprot ID list, you can simply provide a vector of Uniprot IDs.<br />
@@ -356,10 +392,13 @@ The arguments and its default value include:
 <li><code>revsel=FALSE</code>, short for reverse selection, when set to TRUE, the output is the dataset after removing the targets, default set to FALSE</li>
 </ul></li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ITDRdata_subset &lt;-<span class="st"> </span><span class="kw">ms_subsetting</span>(ITDRdata_f, <span class="dt">hitidlist=</span><span class="st">&quot;hit_list.txt&quot;</span>, <span class="dt">isfile=</span><span class="ot">TRUE</span>)
-ITDRdata_subset &lt;-<span class="st"> </span><span class="kw">ms_subsetting</span>(ITDRdata_f, <span class="dt">hitidlist=</span><span class="kw">c</span>(<span class="st">&quot;P00000&quot;</span>, <span class="st">&quot;P12345-6&quot;</span>), <span class="dt">isfile=</span><span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>ITDRdata_subset <span class="ot">&lt;-</span> <span class="fu">ms_subsetting</span>(ITDRdata_f, <span class="at">hitidlist=</span><span class="st">&quot;hit_list.txt&quot;</span>, <span class="at">isfile=</span><span class="cn">TRUE</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>ITDRdata_subset <span class="ot">&lt;-</span> <span class="fu">ms_subsetting</span>(ITDRdata_f, <span class="at">hitidlist=</span><span class="fu">c</span>(<span class="st">&quot;P00000&quot;</span>, <span class="st">&quot;P12345-6&quot;</span>), <span class="at">isfile=</span><span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

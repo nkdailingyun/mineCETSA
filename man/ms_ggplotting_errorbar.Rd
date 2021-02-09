@@ -4,19 +4,41 @@
 \alias{ms_ggplotting_errorbar}
 \title{ms_ggplotting_errorbar}
 \usage{
-ms_ggplotting_errorbar(data, extradata = NULL, legenddata = NULL,
-  levelvector = NULL, nread = 10, minireplicate = NULL,
-  witherrorbar = TRUE, fitremout = FALSE, bottomcutoff = 0.4,
-  topcutoff = 0.8, topasone = TRUE, pfdatabase = FALSE,
-  keepcommonprotein = TRUE, printBothName = TRUE,
-  printGeneName = FALSE, printcount = TRUE, printTm = TRUE,
-  annotypos = 0.5, annotyinterval = 0.08, layout = c(5, 5),
-  external = TRUE, withpoints = TRUE, presetcolor = TRUE,
-  colorpanel = NULL, nshape = 5, nsize = 2,
+ms_ggplotting_errorbar(
+  data,
+  extradata = NULL,
+  legenddata = NULL,
+  levelvector = NULL,
+  nread = 10,
+  minireplicate = NULL,
+  witherrorbar = TRUE,
+  fitremout = FALSE,
+  bottomcutoff = 0.4,
+  topcutoff = 0.8,
+  topasone = TRUE,
+  pfdatabase = FALSE,
+  keepcommonprotein = TRUE,
+  printBothName = TRUE,
+  printGeneName = FALSE,
+  printcount = TRUE,
+  printTm = TRUE,
+  annotypos = 0.5,
+  annotyinterval = 0.08,
+  layout = c(5, 5),
+  external = TRUE,
+  withpoints = TRUE,
+  presetcolor = TRUE,
+  colorpanel = NULL,
+  nshape = 5,
+  nsize = 2,
   toplabel = "CETSA data plotting_error bar",
   leftlabel = "Non-denatured protein fraction",
-  bottomlabel = "Temperature", returnplots = FALSE,
-  pdfname = "ggplotting.pdf", pdfheight = 12, pdfwidth = 12)
+  bottomlabel = "Temperature",
+  returnplots = FALSE,
+  pdfname = "ggplotting.pdf",
+  pdfheight = 12,
+  pdfwidth = 12
+)
 }
 \arguments{
 \item{data}{dataset to plot, ideally with the fitting information but not complusory}

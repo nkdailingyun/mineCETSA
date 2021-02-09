@@ -305,7 +305,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
       if (external) { external_graphs(F) } # switch off the external graphs
       return(pl)
     }
-    ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
+    ggsave(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data$id)),
                        "_whole_set_", pdfname), pl, height=pdfheight, width=pdfwidth)
     if (external) { external_graphs(F) } # switch off the external graphs
@@ -370,7 +370,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                               colorpanel, plotlegend, commonlegend,
                               toplabel, leftlabel, bottomlabel,
                               withset, layout, returnplots, outdir)
-      ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
+      ggsave(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                          length(unique(data_PSMsmall$id)),
                          "_PSMsmall proteins_", pdfname), pl, height=pdfheight, width=pdfwidth)
       message("PSMsmall plot file generated successfully.")
@@ -384,7 +384,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                               colorpanel, plotlegend, commonlegend,
                               toplabel, leftlabel, bottomlabel,
                               withset, layout, returnplots, outdir)
-      ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
+      ggsave(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                          length(unique(outliers$id)),
                          "_Messy_proteins_", pdfname), pl, height=pdfheight, width=pdfwidth)
       message("Messy plot file generated successfully.")
@@ -398,7 +398,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                               colorpanel, plotlegend, commonlegend,
                               toplabel, leftlabel, bottomlabel,
                               withset, layout, returnplots, outdir)
-      ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
+      ggsave(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                          length(unique(data_largevar$id)),
                          "_Non_reproducible_proteins_", pdfname), pl, height=pdfheight, width=pdfwidth)
       message("Non reproducible plot file generated successfully.")
@@ -420,7 +420,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                             colorpanel, plotlegend, commonlegend,
                             toplabel, leftlabel, bottomlabel,
                             withset, layout, returnplots, outdir)
-    ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
+    ggsave(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data_complete$id)),
                        "_Complete replicates_", pdfname), pl, height=pdfheight, width=pdfwidth)
 
@@ -468,7 +468,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
                             colorpanel, plotlegend, commonlegend,
                             toplabel, leftlabel, bottomlabel,
                             withset, layout, returnplots, outdir)
-    ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
+    ggsave(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                        length(unique(data_incomp$id)),
                        "_Non_replicates_", pdfname), pl, height=pdfheight, width=pdfwidth)
 
@@ -498,7 +498,7 @@ ms_ggplotting_rep <- function(data, legenddata=NULL, levelvector=NULL, nread=10,
 calEDscore <- function(data, nread, nreplicate) {
   # Calculate euclidean distance metrics
   data <- data[order(data$condition), ]
-  dm <- as.matrix(dist(data[,c(3:(nread+2))]))
+  dm <- as.matrix(stats::dist(data[,c(3:(nread+2))]))
   if (nreplicate==2) {
     Intra1<-dm[1,3]
     Intra2<-dm[2,4]

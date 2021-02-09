@@ -4,10 +4,20 @@
 \alias{ms_ITTR_filter}
 \title{ms_ITTR_filter}
 \usage{
-ms_ITTR_filter(data, nread = 10, checkpointposition = NULL,
-  fcthreshold = 0.3, R2threshold = 0.8, baselineMAD = 0,
-  nbaseline = 3, nMAD = 2.5, checkreplicate = TRUE,
-  treatcondition = NULL, PSMcutoff = TRUE, PSMthreshold = 3)
+ms_ITTR_filter(
+  data,
+  nread = 10,
+  checkpointposition = NULL,
+  fcthreshold = 0.3,
+  R2threshold = 0.8,
+  baselineMAD = 0,
+  nbaseline = 3,
+  nMAD = 2.5,
+  checkreplicate = TRUE,
+  treatcondition = NULL,
+  PSMcutoff = TRUE,
+  PSMthreshold = 3
+)
 }
 \arguments{
 \item{data}{dataset to be filtered}
@@ -63,7 +73,4 @@ ITTRdata_filtered <- ms_ITTR_filter(ITTRdata_fitted, fcthreshold=0.3,
 }
 
 
-whether to exclude the NA points when counting points to check,
-default set to FALSE, when set to TRUE, the exact number of points with readings
-would be used as specified by ncheckpoint parameter
 }

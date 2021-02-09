@@ -4,9 +4,17 @@
 \alias{ms_ITDR_fitting}
 \title{ms_ITDR_fitting}
 \usage{
-ms_ITDR_fitting(data, nread = 10, calMDT = TRUE, fc = 0,
-  nbaseline = 3, baselineMAD = NULL, nMAD = 2.5,
-  writetofile = TRUE, keepfittedvalue = FALSE)
+ms_ITDR_fitting(
+  data,
+  nread = 10,
+  fc = 0.3,
+  calMDT = FALSE,
+  nbaseline = 3,
+  baselineMAD = NULL,
+  nMAD = 2.5,
+  writetofile = TRUE,
+  keepfittedvalue = FALSE
+)
 }
 \arguments{
 \item{data}{dataset to be fitted}
@@ -14,12 +22,11 @@ ms_ITDR_fitting(data, nread = 10, calMDT = TRUE, fc = 0,
 \item{nread}{number of reading channels or sample treatements,
 default value 10}
 
+\item{fc}{short for fold change, indicate the response level the fitting
+function used to back-calculate the corresponding effective concentration}
+
 \item{calMDT}{whether to calculate the Mininal Dose Threshold(MDT), this is
 useful when do follow-up analysis such as R2-AUC plot}
-
-\item{fc}{short for fold change, indicate the response level the fitting
-function used to back-calculate the corresponding effective concentration,
-the set fc value is used only when calMDT=FALSE}
 
 \item{baselineMAD}{MAD of baseline variation, default value is 0; if not
 provided, it will be calculated based on the readings from the lowest few

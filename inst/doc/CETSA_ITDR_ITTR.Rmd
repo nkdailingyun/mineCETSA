@@ -23,18 +23,6 @@ The main tasks include:
 
 --------------------------------------------------------------------------------------------
 
-## Prerequisites
-* R version > 3.3.0 
-* Rstudio version > 1.0
-* Dependent packages:  
-"readr", "drc", "plyr", "tibble", "tidyr", "grid", "gtools", "gridExtra", "scales", "RColorBrewer", "dplyr", 
-"ggplot2", "VennDiagram", "Nozzle.R1", "ggrepel", "Biobase", "limma", "arrayQualityMetrics"  
-Note: during the package installation, when the dependent packages are not available, complains would rise; 
-the user can use `install.packges()` command to manually install the required packages (as specified in the 
-warning message), till there is no more complain.  
-
---------------------------------------------------------------------------------------------
-
 
 ## Proceessing
 1. For better organization of data analysisk, it is __highly recommended__ to use the [Project management feature](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) in Rstudio.   
@@ -51,7 +39,7 @@ library("mineCETSA")
 ```
 
 3. Read in data from result files, `ms_ITDR_rawread()` is designed for read in one or many files in a vector of file names.  
-By default, `PD21=TRUE` assume the data is searched using PD2.1; otherwise, specify `PD21=FALSE` if data originated from PD2.0  
+By default, `PDversion=21` assume the data is searched using PD2.1; otherwise, specify the exact PD version used.  
 Refer to Slides "Data searching using PD2.1" for how-to.  
 Note that for simplicity, always use channel __126__ as control channel for data search in PD, regardless of the labelling arrangement.  
 You need to specify a `dose` vector of the compound concentration used in the same order (could be descending or ascending) as the sample being labeled from TMT channel 126 up to 131, of which the function default is `dose=c(400,100,25,6.25,1.56,0.391,0.098,0.0245,0.006,0)`.  

@@ -124,8 +124,10 @@ ms_isoform_resolve <- function(data) {
 #' @export
 #' @return a dataframe
 #' @examples \dontrun{
-#' data_cleaned2 <- ms_isoform_consolidate(data_cleaned1, matchtable="./subfolder/tobe_consolidated.txt")
-#' data_cleaned2 <- ms_isoform_consolidate(data_cleaned1, matchtable="./subfolder/tobe_consolidated.txt", withabd=TRUE)
+#' data_cleaned2 <- ms_isoform_consolidate(data_cleaned1,
+#'               matchtable="./subfolder/tobe_consolidated.txt")
+#' data_cleaned2 <- ms_isoform_consolidate(data_cleaned1,
+#'               matchtable="./subfolder/tobe_consolidated.txt", withabd=TRUE)
 #' }
 #'
 #'

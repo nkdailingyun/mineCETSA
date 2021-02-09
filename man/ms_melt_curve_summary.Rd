@@ -4,8 +4,7 @@
 \alias{ms_melt_curve_summary}
 \title{ms_melt_curve_summary}
 \usage{
-ms_melt_curve_summary(data, nread = 10, contrast = NULL,
-  writetofile = TRUE)
+ms_melt_curve_summary(data, nread = 10, contrast = NULL, writetofile = TRUE)
 }
 \arguments{
 \item{data}{dataset after ms_fitting() function}

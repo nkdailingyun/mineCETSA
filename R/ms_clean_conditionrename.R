@@ -104,7 +104,9 @@ ms_clean <- function(data, nread=10, remkeratin=TRUE, remserum=TRUE, remtrypsin=
 #' @export
 #' @return a dataframe after condition name customization
 #' @examples \dontrun{
-#'  ITDRdata <- ms_conditionrename(ITDRdata, incondition=c("staurosporine.3","staurosporine.4"), outcondition=c("ST.1","ST.2"))
+#'  ITDRdata <- ms_conditionrename(ITDRdata,
+#'           incondition=c("staurosporine.3","staurosporine.4"),
+#'           outcondition=c("ST.1","ST.2"))
 #' }
 #'
 #'

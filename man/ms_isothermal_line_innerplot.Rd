@@ -4,11 +4,31 @@
 \alias{ms_isothermal_line_innerplot}
 \title{ms_isothermal_line_innerplot}
 \usage{
-ms_isothermal_line_innerplot(data, legenddata, levelvector, nread,
-  robustfitting, minireplicate, withset, witherrorbar, loess, dotconnect,
-  xtransform, xinterval, presetcolor, colorpanel, layout, toplabel,
-  leftlabel, bottomlabel, shadearea, shadeoutlinecolor, shadefillcolor,
-  returnplots, outdir)
+ms_isothermal_line_innerplot(
+  data,
+  legenddata,
+  levelvector,
+  nread,
+  robustfitting,
+  minireplicate,
+  withset,
+  witherrorbar,
+  loess,
+  dotconnect,
+  xtransform,
+  xinterval,
+  presetcolor,
+  colorpanel,
+  layout,
+  toplabel,
+  leftlabel,
+  bottomlabel,
+  shadearea,
+  shadeoutlinecolor,
+  shadefillcolor,
+  returnplots,
+  outdir
+)
 }
 \arguments{
 \item{data}{isothermal dataset to plot}

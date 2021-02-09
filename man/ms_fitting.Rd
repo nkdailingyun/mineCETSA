@@ -4,8 +4,14 @@
 \alias{ms_fitting}
 \title{ms_fitting}
 \usage{
-ms_fitting(data, nread = 10, topasone = TRUE, halforiginal = TRUE,
-  writetofile = TRUE, keepfittedvalue = FALSE)
+ms_fitting(
+  data,
+  nread = 10,
+  topasone = TRUE,
+  halforiginal = TRUE,
+  writetofile = TRUE,
+  keepfittedvalue = FALSE
+)
 }
 \arguments{
 \item{data}{dataset to be fitted}

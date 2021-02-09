@@ -85,9 +85,9 @@ ms_innerplotbox <- function(data, filename, xlabel, ylabel, isratio, isothermals
       theme(text=element_text(size=20), axis.text.x = element_text(angle=45,hjust=1), aspect.ratio=1)
   }
   if (length(outdir)) {
-    ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),filename), q, height=12, width=12)
+    ggsave(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),filename), q, height=12, width=12)
   } else {
-    ggsave(file=paste0(format(Sys.time(), "%y%m%d_%H%M_"),filename), q, height=12, width=12)
+    ggsave(filename=paste0(format(Sys.time(), "%y%m%d_%H%M_"),filename), q, height=12, width=12)
   }
 }
 
@@ -148,8 +148,8 @@ ms_innerplotmedian <- function(mediandata, filename, xlabel, ylabel, isothermals
     theme(text=element_text(size=20), axis.text.x = element_text(angle=45,hjust=1),
           aspect.ratio=1, legend.position="bottom")
   if (length(outdir)) {
-    ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),filename), q, height=6, width=12)
+    ggsave(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),filename), q, height=6, width=12)
   } else {
-    ggsave(file=paste0(format(Sys.time(), "%y%m%d_%H%M_"),filename), q, height=6, width=12)
+    ggsave(filename=paste0(format(Sys.time(), "%y%m%d_%H%M_"),filename), q, height=6, width=12)
   }
 }

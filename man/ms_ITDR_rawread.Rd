@@ -4,10 +4,16 @@
 \alias{ms_ITDR_rawread}
 \title{ms_ITDR_rawread}
 \usage{
-ms_ITDR_rawread(filevector, fchoose = FALSE, dose = c(4, 1, 0.25,
-  0.0625, 0.015625, 0.00391, 0.00098, 0.000245, 6e-05, 0), nread = 10,
-  abdread = TRUE, PD21 = TRUE, PD22 = FALSE, refchannel = "126",
-  channels = NULL)
+ms_ITDR_rawread(
+  filevector,
+  fchoose = FALSE,
+  dose = c(4, 1, 0.25, 0.0625, 0.015625, 0.00391, 0.00098, 0.000245, 6e-05, 0),
+  nread = 10,
+  abdread = TRUE,
+  PDversion = 21,
+  refchannel = "126",
+  channels = NULL
+)
 }
 \arguments{
 \item{filevector}{a file name or a vector of filenems to import}
@@ -20,7 +26,7 @@ ms_ITDR_rawread(filevector, fchoose = FALSE, dose = c(4, 1, 0.25,
 
 \item{abdread}{whether to read in protein abundance data, default set to TRUE}
 
-\item{PD21}{whether the data is searched using Proteome Discoverer 2.1, default set to TRUE}
+\item{PDversion}{which version of Proteome Discoverer the data is searched, possible values 20,21,22,24}
 
 \item{refchannel}{names of reference channel used in Proteome Discoverer search, default value 126}
 
@@ -35,7 +41,7 @@ Function to parse and read in ITDR data from tab delimited files exported from P
 }
 \examples{
 \dontrun{
- ITDRdata <- ms_ITDR_rawread(c("SN1.txt", "SN2.txt", "ST1.txt", "ST2.txt"), PD21=TRUE,
+ ITDRdata <- ms_ITDR_rawread(c("SN1.txt", "SN2.txt", "ST1.txt", "ST2.txt"), PDversion=21,
  dose=c(20,5,1.25,0.3123,0.078125,0.019531,0.004883,0.001221,0.000305,0))
 }
 

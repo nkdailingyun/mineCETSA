@@ -4,8 +4,14 @@
 \alias{ms_clean}
 \title{ms_clean}
 \usage{
-ms_clean(data, nread = 10, remkeratin = TRUE, remserum = TRUE,
-  remtrypsin = TRUE, remsinglecondprot = FALSE)
+ms_clean(
+  data,
+  nread = 10,
+  remkeratin = TRUE,
+  remserum = TRUE,
+  remtrypsin = TRUE,
+  remsinglecondprot = FALSE
+)
 }
 \arguments{
 \item{data}{dataset to be cleaned up}

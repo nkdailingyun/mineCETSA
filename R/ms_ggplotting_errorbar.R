@@ -378,7 +378,7 @@ ms_ggplotting_errorbar <- function(data, extradata=NULL, legenddata=NULL, levelv
   })
 
   class(pl) <- c("arrangelist", "ggplot", class(pl))
-  ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
+  ggsave(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),
                      length(unique(cdata$id)), "_", pdfname),
                      pl, height=pdfheight, width=pdfwidth)
 

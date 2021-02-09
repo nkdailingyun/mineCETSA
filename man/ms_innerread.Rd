@@ -4,8 +4,16 @@
 \alias{ms_innerread}
 \title{ms_innerread}
 \usage{
-ms_innerread(file, fchoose, treatment, nread, abdread, PD21, PD22,
-  refchannel, channels)
+ms_innerread(
+  file,
+  fchoose,
+  treatment,
+  nread,
+  abdread,
+  PDversion,
+  refchannel,
+  channels
+)
 }
 \arguments{
 \item{file}{file name to import}
@@ -18,7 +26,7 @@ ms_innerread(file, fchoose, treatment, nread, abdread, PD21, PD22,
 
 \item{abdread}{whether to read in protein abundance data}
 
-\item{PD21}{whether the data is searched using Proteome Discoverer 2.1}
+\item{PDversion}{which version of Proteome Discoverer the data is searched, possible values 20,21,22,24}
 
 \item{refchannel}{names of reference channel used in Proteome Discoverer search, such as 126}
 

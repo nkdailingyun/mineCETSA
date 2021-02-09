@@ -4,9 +4,16 @@
 \alias{ms_ITTR_rawread}
 \title{ms_ITTR_rawread}
 \usage{
-ms_ITTR_rawread(filevector, fchoose = FALSE, time = c(0, 10, 20, 30,
-  45, 60, 90, 120, 150, 180), nread = 10, abdread = TRUE,
-  PD21 = TRUE, PD22 = FALSE, refchannel = "126", channels = NULL)
+ms_ITTR_rawread(
+  filevector,
+  fchoose = FALSE,
+  time = c(0, 10, 20, 30, 45, 60, 90, 120, 150, 180),
+  nread = 10,
+  abdread = TRUE,
+  PDversion = 21,
+  refchannel = "126",
+  channels = NULL
+)
 }
 \arguments{
 \item{filevector}{a file name or a vector of filenems to import}
@@ -19,7 +26,7 @@ ms_ITTR_rawread(filevector, fchoose = FALSE, time = c(0, 10, 20, 30,
 
 \item{abdread}{whether to read in protein abundance data, default set to TRUE}
 
-\item{PD21}{whether the data is searched using Proteome Discoverer 2.1, default set to TRUE}
+\item{PDversion}{which version of Proteome Discoverer the data is searched, possible values 20,21,22,24}
 
 \item{refchannel}{names of reference channel used in Proteome Discoverer search, default value 126}
 
@@ -34,7 +41,7 @@ Function to parse and read in ITTR data from tab delimited files exported from P
 }
 \examples{
 \dontrun{
- ITTRdata <- ms_ITTR_rawread(c("file1.txt", "file2.txt", "file3.txt", "file4.txt"), PD21=TRUE,
+ ITTRdata <- ms_ITTR_rawread(c("file1.txt", "file2.txt", "file3.txt", "file4.txt"), PDversion=21,
  time=c(0,5,10,15,20,30,45,60,90,120))
 }
 

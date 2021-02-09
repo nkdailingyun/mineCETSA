@@ -4,9 +4,15 @@
 \alias{ms_remove_outlier_replicate}
 \title{ms_remove_outlier_replicate}
 \usage{
-ms_remove_outlier_replicate(data, nread = 10, minrep = NULL,
-  nsignificance = 2, mode = c("SD", "MAD"), abscutoff = NULL,
-  remoutlier = TRUE)
+ms_remove_outlier_replicate(
+  data,
+  nread = 10,
+  minrep = NULL,
+  nsignificance = 2,
+  mode = c("SD", "MAD"),
+  abscutoff = NULL,
+  remoutlier = TRUE
+)
 }
 \arguments{
 \item{data}{dataset to clean up from extreme outlier measurement}

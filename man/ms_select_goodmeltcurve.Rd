@@ -4,10 +4,19 @@
 \alias{ms_select_goodmeltcurve}
 \title{ms_select_goodmeltcurve}
 \usage{
-ms_select_goodmeltcurve(data, nread = 10, ctrlcondition = NULL,
-  checkTm = TRUE, stableplateau = TRUE, topCVcutoff = 0.1,
-  bottomCVcutoff = 0.1, topcutoff = NULL, bottomcutoff = NULL,
-  nMAD = 2.5, reverse = FALSE)
+ms_select_goodmeltcurve(
+  data,
+  nread = 10,
+  ctrlcondition = NULL,
+  checkTm = TRUE,
+  stableplateau = TRUE,
+  topCVcutoff = 0.1,
+  bottomCVcutoff = 0.1,
+  topcutoff = NULL,
+  bottomcutoff = NULL,
+  nMAD = 2.5,
+  reverse = FALSE
+)
 }
 \arguments{
 \item{data}{dataset to look for complete set}

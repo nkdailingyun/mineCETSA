@@ -4,8 +4,18 @@
 \alias{ms_complex_melt_innerplot}
 \title{ms_complex_melt_innerplot}
 \usage{
-ms_complex_melt_innerplot(data, nread, topasone, printpvalue, colorpanel,
-  bycondition, toplabel, leftlabel, bottomlabel, layout)
+ms_complex_melt_innerplot(
+  data,
+  nread,
+  topasone,
+  printpvalue,
+  colorpanel,
+  bycondition,
+  toplabel,
+  leftlabel,
+  bottomlabel,
+  layout
+)
 }
 \arguments{
 \item{data}{melt curve dataset with complex information to plot}

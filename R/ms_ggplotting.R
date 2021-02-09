@@ -273,10 +273,10 @@ ms_ggplotting <- function(data, legenddata=NULL, nread=10, remsinglecondprot=TRU
   else { pdfname=paste("fitted",pdfname,sep="_") }
 
   if (length(outdir)){
-    ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"), pdfname),
+    ggsave(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"), pdfname),
            pl, height=pdfheight, width=pdfwidth)
   } else {
-    ggsave(file=paste0(format(Sys.time(), "%y%m%d_%H%M_"), pdfname),
+    ggsave(filename=paste0(format(Sys.time(), "%y%m%d_%H%M_"), pdfname),
            pl, height=pdfheight, width=pdfwidth)
   }
 

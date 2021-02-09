@@ -4,10 +4,18 @@
 \alias{ms_ITTR_scaling}
 \title{ms_ITTR_scaling}
 \usage{
-ms_ITTR_scaling(data, nread = 10, abdnorm = TRUE, reftolowest = TRUE,
-  remloadc = FALSE, loadcname = "C", numcharmix = FALSE,
-  writefactortofile = TRUE, bottomlabel = "Treatment time",
-  filename = "ITTR_normalization_factors.txt")
+ms_ITTR_scaling(
+  data,
+  nread = 10,
+  abdnorm = TRUE,
+  reftolowest = TRUE,
+  remloadc = FALSE,
+  loadcname = "C",
+  numcharmix = FALSE,
+  writefactortofile = TRUE,
+  bottomlabel = "Treatment time",
+  filename = "ITTR_normalization_factors.txt"
+)
 }
 \arguments{
 \item{data}{dataset to be scaled}

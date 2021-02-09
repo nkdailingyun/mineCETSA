@@ -4,8 +4,12 @@
 \alias{ms_reproducible_replicate}
 \title{ms_reproducible_replicate}
 \usage{
-ms_reproducible_replicate(data, nread = 10, variancecutoff = TRUE,
-  nMAD_var = 2.5)
+ms_reproducible_replicate(
+  data,
+  nread = 10,
+  variancecutoff = TRUE,
+  nMAD_var = 2.5
+)
 }
 \arguments{
 \item{data}{dataset to subset reproducible replicates}

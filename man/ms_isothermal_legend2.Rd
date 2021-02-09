@@ -4,8 +4,14 @@
 \alias{ms_isothermal_legend2}
 \title{ms_isothermal_legend2}
 \usage{
-ms_isothermal_legend2(legenddata, levelvector, nread, nsample, presetcolor,
-  colorpanel)
+ms_isothermal_legend2(
+  legenddata,
+  levelvector,
+  nread,
+  nsample,
+  presetcolor,
+  colorpanel
+)
 }
 \arguments{
 \item{legenddata}{dataset used for condition extraction, at least one protein

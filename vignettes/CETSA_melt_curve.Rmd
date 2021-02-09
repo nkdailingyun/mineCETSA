@@ -21,18 +21,6 @@ heating temperature range should follow a sigmoidal trend
 
 --------------------------------------------------------------------------------------------
 
-## Prerequisites
-* R version > 3.3.0  
-* Rstudio version > 1.0  
-* Dependent packages:  
-"readr", "drc", "plyr", "tibble", "tidyr", "grid", "gtools", "gridExtra", "scales", "RColorBrewer", "dplyr", 
-"ggplot2", "VennDiagram", "Nozzle.R1", "ggrepel", "Biobase", "limma", "arrayQualityMetrics"  
-Note: during the package installation, when the dependent packages are not available, complains would rise; 
-the user can use `install.packges()` command to manually install the required packages (as specified in the 
-warning message), till there is no more complain.  
-
---------------------------------------------------------------------------------------------
-
 
 ## Proceessing
 1. For better organization of data analysisk, it is __highly recommended__ to use the [Project management feature](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) in Rstudio.  
@@ -49,7 +37,7 @@ library("mineCETSA")
 ```
 
 3. Read in data from result files, `ms_rawread()` is designed for read in one or many files in a vector of file names.  
-By default, `PD21=TRUE` assume the data is searched using PD2.1; otherwise, specify `PD21=FALSE` if data is originated from PD2.0  
+By default, `PDversion=21` assume the data is searched using PD2.1; otherwise, specify the exact PD version used.  
 Refer to Slides "Data searching using PD2.1" for how-to.  
 Note that for simplicity, always use channel __126__ as control channel for data search in PD, regardless of the labelling arrangement, which would be resolved in the downstream processing as shown below.  
 You need to specify a `temp` (short for temperature) vector that was the heat challenge the samples/cells were exposed to in CETSA treatment, corresponding to the labelling done from 126 up to 131, of which the function default is `temp=c(37,40,43,46,49,52,55,58,61,64)`.  

@@ -4,9 +4,16 @@
 \alias{ms_rawread}
 \title{ms_rawread}
 \usage{
-ms_rawread(filevector, fchoose = FALSE, temp = c(37, 40, 43, 46, 49,
-  52, 55, 58, 61, 64), nread = 10, abdread = FALSE, PD21 = TRUE,
-  PD22 = FALSE, refchannel = "126", channels = NULL)
+ms_rawread(
+  filevector,
+  fchoose = FALSE,
+  temp = c(37, 40, 43, 46, 49, 52, 55, 58, 61, 64),
+  nread = 10,
+  abdread = FALSE,
+  PDversion = 21,
+  refchannel = "126",
+  channels = NULL
+)
 }
 \arguments{
 \item{filevector}{a file name or a vector of filenems to import}
@@ -21,8 +28,7 @@ used, default value 10}
 
 \item{abdread}{whether to read in protein abundance data, default set to FALSE}
 
-\item{PD21}{whether the data is searched using Proteome Discoverer 2.1,
-default set to TRUE}
+\item{PDversion}{which version of Proteome Discoverer the data is searched, possible values 20,21,22,24}
 
 \item{refchannel}{names of reference channel used in Proteome Discoverer
 search, default value 126}

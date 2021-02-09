@@ -4,8 +4,14 @@
 \alias{ms_innerplotmedian}
 \title{ms_innerplotmedian}
 \usage{
-ms_innerplotmedian(mediandata, filename, xlabel, ylabel, isothermalstyle,
-  outdir = NULL)
+ms_innerplotmedian(
+  mediandata,
+  filename,
+  xlabel,
+  ylabel,
+  isothermalstyle,
+  outdir = NULL
+)
 }
 \arguments{
 \item{mediandata}{pre-scaling and post-scaling median data, generated from

@@ -108,9 +108,9 @@ ms_ITDR_filter <- function(data, nread=10, checkpointposition=NULL,
   }
   for (i in 1:nrowdata) {
     # if (excludeNA) {
-    #' whether to exclude the NA points when counting points to check,
-    #' default set to FALSE, when set to TRUE, the exact number of points with readings
-    #' would be used as specified by ncheckpoint parameter
+    # whether to exclude the NA points when counting points to check,
+    # default set to FALSE, when set to TRUE, the exact number of points with readings
+    # would be used as specified by ncheckpoint parameter
     #   data_to_check <- na.omit(as.numeric(data_good_tem[i,c(4:(nread+3))]))
     #   npoint <- length(data_to_check)
     #   highest <- max(data_to_check[c((npoint-ncheckpoint+1):npoint)], na.rm=T)

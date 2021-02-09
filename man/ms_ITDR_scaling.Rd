@@ -4,10 +4,18 @@
 \alias{ms_ITDR_scaling}
 \title{ms_ITDR_scaling}
 \usage{
-ms_ITDR_scaling(data, nread = 10, abdnorm = TRUE, reftolowest = TRUE,
-  remloadc = FALSE, loadcname = "C", numcharmix = FALSE,
-  writefactortofile = TRUE, bottomlabel = "Compound dose",
-  filename = "ITDR_normalization_factors.txt")
+ms_ITDR_scaling(
+  data,
+  nread = 10,
+  abdnorm = TRUE,
+  reftolowest = TRUE,
+  remloadc = FALSE,
+  loadcname = "C",
+  numcharmix = FALSE,
+  writefactortofile = TRUE,
+  bottomlabel = "Compound dose",
+  filename = "ITDR_normalization_factors.txt"
+)
 }
 \arguments{
 \item{data}{dataset to be scaled}

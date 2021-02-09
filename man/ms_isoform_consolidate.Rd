@@ -4,8 +4,13 @@
 \alias{ms_isoform_consolidate}
 \title{ms_isoform_consolidate}
 \usage{
-ms_isoform_consolidate(data, matchtable, nread = 10, withabd = FALSE,
-  weightbycountnum = TRUE)
+ms_isoform_consolidate(
+  data,
+  matchtable,
+  nread = 10,
+  withabd = FALSE,
+  weightbycountnum = TRUE
+)
 }
 \arguments{
 \item{data}{dataset to be clead-up from isoform ambiguity}
@@ -33,8 +38,10 @@ otherwise the mock named columns should be provided.
 }
 \examples{
 \dontrun{
-data_cleaned2 <- ms_isoform_consolidate(data_cleaned1, matchtable="./subfolder/tobe_consolidated.txt")
-data_cleaned2 <- ms_isoform_consolidate(data_cleaned1, matchtable="./subfolder/tobe_consolidated.txt", withabd=TRUE)
+data_cleaned2 <- ms_isoform_consolidate(data_cleaned1,
+              matchtable="./subfolder/tobe_consolidated.txt")
+data_cleaned2 <- ms_isoform_consolidate(data_cleaned1,
+              matchtable="./subfolder/tobe_consolidated.txt", withabd=TRUE)
 }
 
 

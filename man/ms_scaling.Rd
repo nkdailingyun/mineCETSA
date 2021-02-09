@@ -4,9 +4,14 @@
 \alias{ms_scaling}
 \title{ms_scaling}
 \usage{
-ms_scaling(data, nread = 10, reordertemp = FALSE,
-  writefactortofile = TRUE, bottomlabel = "Temperature",
-  filename = "CETSA_normalization_factors.txt")
+ms_scaling(
+  data,
+  nread = 10,
+  reordertemp = FALSE,
+  writefactortofile = TRUE,
+  bottomlabel = "Temperature",
+  filename = "CETSA_normalization_factors.txt"
+)
 }
 \arguments{
 \item{data}{dataset to be scaled}

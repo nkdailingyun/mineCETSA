@@ -4,10 +4,27 @@
 \alias{ms_melt_innerplot}
 \title{ms_melt_innerplot}
 \usage{
-ms_melt_innerplot(data, nread, topasone, dotconnect, printcount, PSM_annod,
-  Pep_annod, annotypos, annotyinterval, colorpanel, plotlegend,
-  commonlegend, toplabel, leftlabel, bottomlabel, withset, layout,
-  returnplots, outdir)
+ms_melt_innerplot(
+  data,
+  nread,
+  topasone,
+  dotconnect,
+  printcount,
+  PSM_annod,
+  Pep_annod,
+  annotypos,
+  annotyinterval,
+  colorpanel,
+  plotlegend,
+  commonlegend,
+  toplabel,
+  leftlabel,
+  bottomlabel,
+  withset,
+  layout,
+  returnplots,
+  outdir
+)
 }
 \arguments{
 \item{data}{melt curve dataset to plot}

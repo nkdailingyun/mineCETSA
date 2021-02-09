@@ -4,7 +4,8 @@
 \name{NADPH_scaled}
 \alias{NADPH_scaled}
 \title{Scaled dataset of NADPH treated K562 cell lysate in ITDR format.}
-\format{A data frame with 12,248 rows and 16 variables:
+\format{
+A data frame with 12,248 rows and 16 variables:
 \describe{
   \item{id}{Protein Uniprot ID}
   \item{description}{Protein description}
@@ -13,7 +14,8 @@
   \item{sumPSMs}{Number of total Peptide Spectrum Matches}
   \item{countNum}{Number of Quantifying PSMs}
   ...
-}}
+}
+}
 \source{
 \url{https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0208273}
 }

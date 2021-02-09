@@ -4,8 +4,14 @@
 \alias{ms_subsetting}
 \title{ms_subsetting}
 \usage{
-ms_subsetting(data, hitidlist, isfile = TRUE, pfdatabase = FALSE,
-  allisoform = TRUE, revsel = FALSE)
+ms_subsetting(
+  data,
+  hitidlist,
+  isfile = TRUE,
+  pfdatabase = FALSE,
+  allisoform = TRUE,
+  revsel = FALSE
+)
 }
 \arguments{
 \item{data}{dataset to be subsetted}

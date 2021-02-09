@@ -1,60 +1,97 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Dai Lingyun" />
 
-<meta name="date" content="2019-09-24" />
+<meta name="date" content="2021-02-10" />
 
 <title>Analyze MS-CETSA melt curves</title>
 
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 
 </style>
 <script>
@@ -70,7 +107,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -81,7 +118,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
 
 
 
@@ -95,7 +133,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Analyze MS-CETSA melt curves</h1>
 <h4 class="author">Dai Lingyun</h4>
-<h4 class="date">2019-09-24</h4>
+<h4 class="date">2021-02-10</h4>
 
 
 
@@ -110,19 +148,6 @@ The main tasks include:<br />
 5. Visualize the data using customizable plot layout, for either all the data or a subset</p>
 <hr />
 </div>
-<div id="prerequisites" class="section level2">
-<h2>Prerequisites</h2>
-<ul>
-<li>R version &gt; 3.3.0<br />
-</li>
-<li>Rstudio version &gt; 1.0<br />
-</li>
-<li>Dependent packages:<br />
-“readr”, “drc”, “plyr”, “tibble”, “tidyr”, “grid”, “gtools”, “gridExtra”, “scales”, “RColorBrewer”, “dplyr”, “ggplot2”, “VennDiagram”, “Nozzle.R1”, “ggrepel”, “Biobase”, “limma”, “arrayQualityMetrics”<br />
-Note: during the package installation, when the dependent packages are not available, complains would rise; the user can use <code>install.packges()</code> command to manually install the required packages (as specified in the warning message), till there is no more complain.</li>
-</ul>
-<hr />
-</div>
 <div id="proceessing" class="section level2">
 <h2>Proceessing</h2>
 <ol style="list-style-type: decimal">
@@ -133,15 +158,15 @@ At the right upper corner of RStudio, click Project -&gt; New Project -&gt; Exis
 By establishing a specfic project for each experiment, all the data content and execution history will be saved in the project for future re-analysis even when R session is terminated.</p></li>
 <li><p>Activate <code>mineCETSA</code> package by library it.</p></li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;mineCETSA&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;mineCETSA&quot;</span>)</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
 <li>Read in data from result files, <code>ms_rawread()</code> is designed for read in one or many files in a vector of file names.<br />
-By default, <code>PD21=TRUE</code> assume the data is searched using PD2.1; otherwise, specify <code>PD21=FALSE</code> if data is originated from PD2.0<br />
+By default, <code>PDversion=21</code> assume the data is searched using PD2.1; otherwise, specify the exact PD version used.<br />
 Refer to Slides “Data searching using PD2.1” for how-to.<br />
 Note that for simplicity, always use channel <strong>126</strong> as control channel for data search in PD, regardless of the labelling arrangement, which would be resolved in the downstream processing as shown below.<br />
 You need to specify a <code>temp</code> (short for temperature) vector that was the heat challenge the samples/cells were exposed to in CETSA treatment, corresponding to the labelling done from 126 up to 131, of which the function default is <code>temp=c(37,40,43,46,49,52,55,58,61,64)</code>.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LY &lt;-<span class="st"> </span><span class="kw">ms_rawread</span>(<span class="kw">c</span>(<span class="st">&quot;LY_K562_Ctrl_rep1_PD21_Proteins.txt&quot;</span>,<span class="st">&quot;LY_K562_Ctrl_rep2_PD21_Proteins.txt&quot;</span>,<span class="st">&quot;LY_K562_Treatment_rep1_PD21_Proteins.txt&quot;</span>,<span class="st">&quot;LY_K562_Treatment_rep2_PD21_Proteins.txt&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>LY <span class="ot">&lt;-</span> <span class="fu">ms_rawread</span>(<span class="fu">c</span>(<span class="st">&quot;LY_K562_Ctrl_rep1_PD21_Proteins.txt&quot;</span>,<span class="st">&quot;LY_K562_Ctrl_rep2_PD21_Proteins.txt&quot;</span>,<span class="st">&quot;LY_K562_Treatment_rep1_PD21_Proteins.txt&quot;</span>,<span class="st">&quot;LY_K562_Treatment_rep2_PD21_Proteins.txt&quot;</span>))</span></code></pre></div>
 <ol start="4" style="list-style-type: decimal">
 <li>Customize the condition names in dataset using <code>ms_conditionrename()</code>.<br />
 When read in multiple files, a number suffix is added to the condition of each data file in sequence. This feature seems redundanct but could allow retrieval of file read in sequence and more inportantly make sure the condition names are always unique and distinguishable.<br />
@@ -149,20 +174,20 @@ For proper assignment of condition names, a format of <em>“Experimental condit
 __It is recommended that you should try to omit using dot in the experimental condition names, you can segregate your long condition name with underline (_) if necessary.__<br />
 The argument <code>incondition</code> corresponses to the vector of current condition naming, whereas <code>outcondition</code> correponses to vector of new condition naming, both order and length should match exactly.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LY1 &lt;-<span class="st"> </span><span class="kw">ms_conditionrename</span>(LY, <span class="dt">incondition=</span><span class="kw">c</span>(<span class="st">&quot;Treatmentrep1.3&quot;</span>, <span class="st">&quot;Treatmentrep2.4&quot;</span>), <span class="dt">outcondition=</span><span class="kw">c</span>(<span class="st">&quot;Treatment.1&quot;</span>,<span class="st">&quot;Treatment.2&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>LY1 <span class="ot">&lt;-</span> <span class="fu">ms_conditionrename</span>(LY, <span class="at">incondition=</span><span class="fu">c</span>(<span class="st">&quot;Treatmentrep1.3&quot;</span>, <span class="st">&quot;Treatmentrep2.4&quot;</span>), <span class="at">outcondition=</span><span class="fu">c</span>(<span class="st">&quot;Treatment.1&quot;</span>,<span class="st">&quot;Treatment.2&quot;</span>))</span></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>Remove proteins without quantitative information by default using <code>ms_clean()</code>.<br />
 By default the Keratin family proteins are also removed.<br />
 By default the orphan proteins that only appear in one of the datasets are not removed, however you can specify <code>remsinglecondprot=TRUE</code>, these orphan proteins will be excluded from downstream analysis.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LY_cleaned &lt;-<span class="st"> </span><span class="kw">ms_clean</span>(LY1)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>LY_cleaned <span class="ot">&lt;-</span> <span class="fu">ms_clean</span>(LY1)</span></code></pre></div>
 <ol start="6" style="list-style-type: decimal">
 <li>Resolve isoform ambiguity from multiple runs of searches using <code>ms_isoform_resolve()</code>.<br />
 When two or more isoforms of the same parental proteins are present in the combined datasets but within each individual condition, only one isoform is identified, according to the principle of parsimony, the minor isoforms will be automatically adjusted to be the corresponding major or more frequent oberserved isoform. At the same time, a match table will be suggested to further consolidate the cases that when two or more isoforms of the same parental proteins are identified within the same individual conditioned dataset, which could then be achieved by using <code>ms_isoform_consolidate()</code>.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LY_cleaned1 &lt;-<span class="st"> </span><span class="kw">ms_isoform_resolve</span>(LY_cleaned)
-<span class="co"># The next isoform cleaning step is optional. You are encouraged to double check and adjust the match table entries. </span>
-LY_cleaned2 &lt;-<span class="st"> </span><span class="kw">ms_isoform_consolidate</span>(LY_cleaned1, <span class="dt">matchtable=</span><span class="st">&quot;./subfolder/tobe_consolidated.txt&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>LY_cleaned1 <span class="ot">&lt;-</span> <span class="fu">ms_isoform_resolve</span>(LY_cleaned)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The next isoform cleaning step is optional. You are encouraged to double check and adjust the match table entries. </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>LY_cleaned2 <span class="ot">&lt;-</span> <span class="fu">ms_isoform_consolidate</span>(LY_cleaned1, <span class="at">matchtable=</span><span class="st">&quot;./subfolder/tobe_consolidated.txt&quot;</span>)</span></code></pre></div>
 <ol start="7" style="list-style-type: decimal">
 <li>Apply systematic scaling to the dataset using either <code>ms_scaling()</code> or <code>ms_forcescaling()</code>.<br />
 The <code>ms_scaling()</code> function achieves: The medians of soluble protein ratios are fitted into a sigmoidal function of the temperature range<br />
@@ -176,10 +201,10 @@ Output in working directory:<br />
 </li>
 <li>The distribution of soluble protein ratio pre- and post- normalization is plotted</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LY_scaled &lt;-<span class="st"> </span><span class="kw">ms_scaling</span>(LY_cleaned2)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>LY_scaled <span class="ot">&lt;-</span> <span class="fu">ms_scaling</span>(LY_cleaned2)</span></code></pre></div>
 <p>The <code>ms_forcescaling()</code> fucntion achieves a systematic scaling by force scaling the medians to be same as the medians from a reference subset/data. However, make sure you have enough good reason to perform forcescaling.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LY_fs_all &lt;-<span class="st"> </span><span class="kw">ms_forcescaling</span>(LY_cleaned, <span class="dt">refcondition=</span><span class="st">&quot;all&quot;</span>)
-LY_fs &lt;-<span class="st"> </span><span class="kw">ms_forcescaling</span>(LY_cleaned, <span class="dt">refcondition=</span><span class="kw">c</span>(<span class="st">&quot;Ctrl.1&quot;</span>, <span class="st">&quot;Ctrl.2&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>LY_fs_all <span class="ot">&lt;-</span> <span class="fu">ms_forcescaling</span>(LY_cleaned, <span class="at">refcondition=</span><span class="st">&quot;all&quot;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>LY_fs <span class="ot">&lt;-</span> <span class="fu">ms_forcescaling</span>(LY_cleaned, <span class="at">refcondition=</span><span class="fu">c</span>(<span class="st">&quot;Ctrl.1&quot;</span>, <span class="st">&quot;Ctrl.2&quot;</span>))</span></code></pre></div>
 <ol start="8" style="list-style-type: decimal">
 <li>Try the temperature-response function fitting to generate fitting parameters for each entry/curve using <code>ms_fitting()</code>.<br />
 The returned data contains the input scaled data plus fitting parameters (including <code>Tm</code>, <code>R2</code>, <code>Slope</code>, <code>Plateau</code>(bottom plateau)).<br />
@@ -189,13 +214,13 @@ Output in working directory:<br />
 <ul>
 <li>A copy of the fitted dataset are written into a local file</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">LY_fitted &lt;-<span class="st"> </span><span class="kw">ms_fitting</span>(LY_scaled)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>LY_fitted <span class="ot">&lt;-</span> <span class="fu">ms_fitting</span>(LY_scaled)</span></code></pre></div>
 <ol start="9" style="list-style-type: decimal">
 <li>Plot out melt curves using <code>ms_ggplotting()</code>.<br />
 This function is previously designed for single replicated experiment, mainly for the simplicity and generality.<br />
 The resulting plots were sorted based on the difference of AUCs of the same protein under different experimental conditions, i.e., the proteins showing most significant “shift”/change would be ranked at the top of the file. However, it has been observed that noisy readings tend to mess up the rankings.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ms_ggplotting</span>(LY_scaled)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_ggplotting</span>(LY_scaled)</span></code></pre></div>
 <ol start="10" style="list-style-type: decimal">
 <li>Plot out replicated melt curves using <code>ms_ggplotting_rep()</code>.<br />
 This function mainly cater for the (technical or biological) replicated runs of CETSA melt curves, the ranking system not only considers the apparent shifts between different experimental conditions, but also the internal reproducibility among the replicated runs.<br />
@@ -220,21 +245,21 @@ The arguments and its default value include:
 <li><code>pdfwidth=12</code>, set the width of pdf file</li>
 </ul></li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ms_ggplotting_rep</span>(LY_scaled, <span class="dt">levelvector=</span><span class="kw">c</span>(<span class="st">&quot;Ctrl.1&quot;</span>, <span class="st">&quot;Ctrl.2&quot;</span>, <span class="st">&quot;Treatment.1&quot;</span>,<span class="st">&quot;Treatment.2&quot;</span>))
-<span class="kw">ms_ggplotting_rep</span>(LY_fitted, <span class="dt">levelvector=</span><span class="kw">c</span>(<span class="st">&quot;Ctrl.1&quot;</span>, <span class="st">&quot;Ctrl.2&quot;</span>, <span class="st">&quot;Treatment.1&quot;</span>,<span class="st">&quot;Treatment.2&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_ggplotting_rep</span>(LY_scaled, <span class="at">levelvector=</span><span class="fu">c</span>(<span class="st">&quot;Ctrl.1&quot;</span>, <span class="st">&quot;Ctrl.2&quot;</span>, <span class="st">&quot;Treatment.1&quot;</span>,<span class="st">&quot;Treatment.2&quot;</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_ggplotting_rep</span>(LY_fitted, <span class="at">levelvector=</span><span class="fu">c</span>(<span class="st">&quot;Ctrl.1&quot;</span>, <span class="st">&quot;Ctrl.2&quot;</span>, <span class="st">&quot;Treatment.1&quot;</span>,<span class="st">&quot;Treatment.2&quot;</span>))</span></code></pre></div>
 <ol start="11" style="list-style-type: decimal">
 <li>Export the dataset (in the current working space) using <code>ms_filewrite()</code> to a local txt file.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ms_filewrite</span>(LY_scaled, <span class="st">&quot;CETSA_data_scaled.txt&quot;</span>)
-<span class="kw">ms_filewrite</span>(LY_fitted, <span class="st">&quot;CETSA_data_with_fitting_parameters.txt&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_filewrite</span>(LY_scaled, <span class="st">&quot;CETSA_data_scaled.txt&quot;</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ms_filewrite</span>(LY_fitted, <span class="st">&quot;CETSA_data_with_fitting_parameters.txt&quot;</span>)</span></code></pre></div>
 <ol start="12" style="list-style-type: decimal">
 <li>Read in the dataset using <code>ms_fileread()</code> from a saved txt file.</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">MyCETSAdata &lt;-<span class="st"> </span><span class="kw">ms_fileread</span>(<span class="st">&quot;./subfolder_name/myCETSAdata_to_readin.txt&quot;</span>)
-<span class="co"># . indicate the current working directory</span>
-<span class="co"># Here the subfolder_name refer to a first level folder name directly under current working directory</span>
-<span class="co"># Remember that typically now you are still working in the main working directory</span>
-<span class="co"># The subfolder should contain the data file to read in</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>MyCETSAdata <span class="ot">&lt;-</span> <span class="fu">ms_fileread</span>(<span class="st">&quot;./subfolder_name/myCETSAdata_to_readin.txt&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># . indicate the current working directory</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Here the subfolder_name refer to a first level folder name directly under current working directory</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Remember that typically now you are still working in the main working directory</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The subfolder should contain the data file to read in</span></span></code></pre></div>
 <ol start="13" style="list-style-type: decimal">
 <li>Focus on a list of target proteins to study using <code>ms_subsetting()</code>.<br />
 You need to first make an excel file with a list of Uniprot IDs you want to study (for example, P00000, P12345-6) under the header “<strong>id</strong>”, then save as txt file in working directory, say under the name “hit_list.txt”. The alternative for a short Uniprot ID list, you can simply provide a vector of Uniprot IDs.<br />
@@ -247,10 +272,13 @@ The arguments and its default value include:
 <li><code>revsel=FALSE</code>, short for reverse selection, when set to TRUE, the output is the dataset after removing the targets, default set to FALSE</li>
 </ul></li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">CETSAdata_subset &lt;-<span class="st"> </span><span class="kw">ms_subsetting</span>(LY_fitted, <span class="dt">hitidlist=</span><span class="st">&quot;hit_list.txt&quot;</span>, <span class="dt">isfile=</span><span class="ot">TRUE</span>)
-CETSAdata_subset &lt;-<span class="st"> </span><span class="kw">ms_subsetting</span>(LY_fitted, <span class="dt">hitidlist=</span><span class="kw">c</span>(<span class="st">&quot;P00000&quot;</span>, <span class="st">&quot;P12345-6&quot;</span>), <span class="dt">isfile=</span><span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>CETSAdata_subset <span class="ot">&lt;-</span> <span class="fu">ms_subsetting</span>(LY_fitted, <span class="at">hitidlist=</span><span class="st">&quot;hit_list.txt&quot;</span>, <span class="at">isfile=</span><span class="cn">TRUE</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>CETSAdata_subset <span class="ot">&lt;-</span> <span class="fu">ms_subsetting</span>(LY_fitted, <span class="at">hitidlist=</span><span class="fu">c</span>(<span class="st">&quot;P00000&quot;</span>, <span class="st">&quot;P12345-6&quot;</span>), <span class="at">isfile=</span><span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

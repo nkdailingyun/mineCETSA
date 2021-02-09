@@ -22,7 +22,9 @@ make sure both order and length of \code{incondition} and \code{outcondition} sh
 }
 \examples{
 \dontrun{
- ITDRdata <- ms_conditionrename(ITDRdata, incondition=c("staurosporine.3","staurosporine.4"), outcondition=c("ST.1","ST.2"))
+ ITDRdata <- ms_conditionrename(ITDRdata,
+          incondition=c("staurosporine.3","staurosporine.4"),
+          outcondition=c("ST.1","ST.2"))
 }
 
 

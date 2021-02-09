@@ -1,7 +1,7 @@
 Package: mineCETSA
 Type: Package
 Title: Processing and Visualization of Proteome-wide MS-CETSA data
-Version: 1.1.0
+Version: 1.1.1
 Author: Lingyun Dai
 Maintainer: Lingyun Dai <nkdailingyun@gmail.com>
 Description: This package is designed to process MS-CETSA result from TMT10 labelling and quantification scheme.
@@ -14,23 +14,33 @@ Imports:
   drc (>= 3.0),
   fdrtool,
   ggpubr,
-  ggrepel (>= 0.7.0),
+  ggrepel (>= 0.8.0),
+  graphics,
   grid,
+  grDevices,
   gridExtra,
+  gridSVG,
   gtools,
   limma,
+  MESS,
+  methods,
   Nozzle.R1,
   plyr (>= 1.8.0),
   RColorBrewer,
-  scales, 
+  scales,
+  stats,
+  XML,
+  utils,
   VennDiagram
 Depends: 
-  R (>= 3.3),
-  dplyr (>= 0.7.0),
-  ggplot2 (>= 3.0.0),
-  readr (>= 1.2.0),
-  tidyr (>= 0.8.1)
-RoxygenNote: 6.1.1
+  R (>= 4.0.0),
+  dplyr (>= 1.0.0),
+  ggplot2 (>= 3.2.0),
+  readr (>= 1.3.0),
+  reshape2 (>= 1.4.0),
+  tibble (>= 3.0.0),
+  tidyr (>= 1.0.0)
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Suggests: knitr,
     rmarkdown

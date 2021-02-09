@@ -4,9 +4,16 @@
 \alias{ms_IDIT_QC}
 \title{ms_IDIT_QC}
 \usage{
-ms_IDIT_QC(data, foldername = NULL, reportname = NULL, nread = 10,
-  simpleAUC = TRUE, PSMcutoff = TRUE, PSMthreshold = 3,
-  isdatafitted = TRUE)
+ms_IDIT_QC(
+  data,
+  foldername = NULL,
+  reportname = NULL,
+  nread = 10,
+  simpleAUC = TRUE,
+  PSMcutoff = TRUE,
+  PSMthreshold = 3,
+  isdatafitted = TRUE
+)
 }
 \arguments{
 \item{data}{ITDR or ITTR dataset to perform QC analysis}

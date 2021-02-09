@@ -204,10 +204,10 @@ ms_ITTR_ggplotting <- function(data, legenddata=NULL, levelvector=NULL, nread=10
     return(pl)
   }
   if (length(outdir)) {
-    ggsave(file=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"), pdfname),
+    ggsave(filename=paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"), pdfname),
            pl, height=pdfheight, width=pdfwidth)
   } else {
-    ggsave(file=paste0(format(Sys.time(), "%y%m%d_%H%M_"), pdfname),
+    ggsave(filename=paste0(format(Sys.time(), "%y%m%d_%H%M_"), pdfname),
            pl, height=pdfheight, width=pdfwidth)
   }
 

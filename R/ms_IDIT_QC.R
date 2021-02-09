@@ -77,7 +77,7 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10, simpleA
       scaled = TRUE,
       height = 8,
       width = 8,
-      unit = "in",
+      units = "in",
       resolution = 500,
       filename = NULL,
       lwd = 1,
@@ -87,7 +87,7 @@ ms_IDIT_QC <- function(data, foldername=NULL, reportname=NULL, nread=10, simpleA
       fill = brewer.pal(8,"Set2")[c(1:numberofgroup)],
       margin = 0.1
     )
-    png(paste0(outdir,"/",foldername,"/",plotname), width=8, height=8, units="in", res=200)
+    grDevices::png(paste0(outdir,"/",foldername,"/",plotname), width=8, height=8, units="in", res=200)
     grid::grid.draw(vennplot)
     dev.off()
   }

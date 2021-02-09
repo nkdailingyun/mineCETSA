@@ -4,9 +4,17 @@
 \alias{ms_ITTR_fitting}
 \title{ms_ITTR_fitting}
 \usage{
-ms_ITTR_fitting(data, nread = 10, calMTT = TRUE, fc = 0,
-  nbaseline = 3, baselineMAD = NULL, nMAD = 2.5,
-  writetofile = TRUE, keepfittedvalue = FALSE)
+ms_ITTR_fitting(
+  data,
+  nread = 10,
+  fc = 0.3,
+  calMTT = FALSE,
+  nbaseline = 3,
+  baselineMAD = NULL,
+  nMAD = 2.5,
+  writetofile = TRUE,
+  keepfittedvalue = FALSE
+)
 }
 \arguments{
 \item{data}{dataset to be fitted}
@@ -14,12 +22,11 @@ ms_ITTR_fitting(data, nread = 10, calMTT = TRUE, fc = 0,
 \item{nread}{number of reading channels or sample treatements,
 default value 10}
 
+\item{fc}{short for fold change, indicate the response level the fitting
+function used to back-calculate the corresponding effective concentration}
+
 \item{calMTT}{whether to calculate the Mininal Time Threshold(MTT), this is
 useful when do follow-up analysis such as R2-AUC plot}
-
-\item{fc}{short for fold change, indicate the response level the fitting
-function used to back-calculate the corresponding effective time,
-the set fc value is used only when calMTT=FALSE}
 
 \item{baselineMAD}{MAD of baseline variation, default value is 0; if not
 provided, it will be calculated based on the readings from the lowest few
