@@ -239,13 +239,25 @@ ms_isothermal_line_innerplot <- function(data, legenddata, levelvector, nread,
         # print(colorpanel[j])
         q <- q + geom_point(data=d1_list[[j]], aes(x=treatment, y=reading), colour=colorpanel[j], shape=20, size=2)
         d1_list[[j]] <- na.omit(d1_list[[j]])
-        if (robustfitting) {
-          model.drm <- try(drm(reading~treatment, data=d1_list[[j]], fct=LL.4(), robust="median", na.action=na.omit,
-                               control = drmc(noMessage=TRUE)), silent=TRUE, outFile=zz)
+
+        if (grepl("3.3",R.version.string)) {
+          if (robustfitting) {
+            model.drm <- try(drm(reading~treatment, data=d1_list[[j]], fct=LL.4(), robust="median", na.action=na.omit,
+                                 control = drmc(noMessage=TRUE)), silent=FALSE)
+          } else {
+            model.drm <- try(drm(reading~treatment, data=d1_list[[j]], fct=LL.4(), na.action=na.omit,
+                                 control = drmc(noMessage=TRUE)), silent=FALSE)
+          }
         } else {
-          model.drm <- try(drm(reading~treatment, data=d1_list[[j]], fct=LL.4(), na.action=na.omit,
-                               control = drmc(noMessage=TRUE)), silent=TRUE, outFile=zz)
+          if (robustfitting) {
+            model.drm <- try(drm(reading~treatment, data=d1_list[[j]], fct=LL.4(), robust="median", na.action=na.omit,
+                                 control = drmc(noMessage=TRUE)), silent=FALSE, outFile=zz)
+          } else {
+            model.drm <- try(drm(reading~treatment, data=d1_list[[j]], fct=LL.4(), na.action=na.omit,
+                                 control = drmc(noMessage=TRUE)), silent=FALSE, outFile=zz)
+          }
         }
+
         if(class(model.drm) != "try-error"){
           if (xtransform %in% c("xsqrt","xcubert","xlinear")) {
             mda <- data.frame(treatment=seq(treat_min,treat_max,length.out=100))
@@ -352,13 +364,25 @@ ms_isothermal_line_innerplot <- function(data, legenddata, levelvector, nread,
         # use levels of conditions, but not length of condition for individual proteins (length(d1_list))
         q <- q + geom_point(data=d1_list[[j]], aes(x=treatment, y=mean), colour=colorpanel[j], shape=20, size=2)
         d1_list[[j]] <- na.omit(d1_list[[j]])
-        if (robustfitting) {
-          model.drm <- try(drm(mean~treatment, data=d1_list[[j]], fct=LL.4(), robust="median", na.action=na.omit,
-                               control = drmc(noMessage=TRUE)), silent=TRUE, outFile=zz)
+
+        if (grepl("3.3",R.version.string)) {
+          if (robustfitting) {
+            model.drm <- try(drm(mean~treatment, data=d1_list[[j]], fct=LL.4(), robust="median", na.action=na.omit,
+                                 control = drmc(noMessage=TRUE)), silent=FALSE)
+          } else {
+            model.drm <- try(drm(mean~treatment, data=d1_list[[j]], fct=LL.4(), na.action=na.omit,
+                                 control = drmc(noMessage=TRUE)), silent=FALSE)
+          }
         } else {
-          model.drm <- try(drm(mean~treatment, data=d1_list[[j]], fct=LL.4(), na.action=na.omit,
-                                control = drmc(noMessage=TRUE)), silent=TRUE, outFile=zz)
+          if (robustfitting) {
+            model.drm <- try(drm(mean~treatment, data=d1_list[[j]], fct=LL.4(), robust="median", na.action=na.omit,
+                                 control = drmc(noMessage=TRUE)), silent=FALSE, outFile=zz)
+          } else {
+            model.drm <- try(drm(mean~treatment, data=d1_list[[j]], fct=LL.4(), na.action=na.omit,
+                                 control = drmc(noMessage=TRUE)), silent=FALSE, outFile=zz)
+          }
         }
+
         if (class(model.drm) != "try-error") {
           if (xtransform %in% c("xsqrt","xcubert","xlinear")) {
             mda <- data.frame(treatment=seq(treat_min,treat_max,length.out=100))

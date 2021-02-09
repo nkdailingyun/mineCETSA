@@ -202,8 +202,6 @@ ms_isoform_consolidate <- function(data, matchtable, nread=10, withabd=FALSE, we
 #' @param data dataset to be matched to reference dataset to relieve the problem of isoform ambiguity
 #' @param refdata dataset used as the check reference, typically the IMPRINTS dataset
 #'
-#' @keywords internal
-#'
 #' @import dplyr
 #' @export
 #' @return a dataframe
@@ -233,11 +231,13 @@ ms_isoform_match <- function(data, refdata) {
 
   refdata$uniid <- gsub("-[0-9]+", "", refdata$id)
   refdata1 <- subset(refdata, uniid%in%ambiuniqueid2)
+  # when there is multiple matches, keep the one with maximal countNum
+  refdata1 <- refdata1 %>% group_by(uniid) %>% top_n(1, countNum) %>% top_n(1, sumPSMs) %>% ungroup()
   #print(nrow(refdata1))
   data$uniid <- gsub("-[0-9]+", "", data$id)
   data1 <- subset(data, uniid%in%ambiuniqueid2)
   # when there is multiple matches, keep the one with maximal countNum
-  data1 <- data1 %>% group_by(uniid) %>% top_n(1, countNum) %>% ungroup()
+  data1 <- data1 %>% group_by(uniid) %>% top_n(1, countNum) %>% top_n(1, sumPSMs) %>% ungroup()
   #print(nrow(data1))
 
   matchtable <- merge(data1[,c("id","description","uniid")],refdata1[,c("id","description","uniid")],by="uniid")
@@ -250,7 +250,7 @@ ms_isoform_match <- function(data, refdata) {
   for (i in seq_len(nrow(matchtable))) {
     names <- matchtable[i,c(1:5)]
     id <- names[2]
-    data[grep(paste0("^", id), data$id), c(1,2)] <- names[c(4,5)]
+    data[grep(paste0("^",id,"$"), data$id), c(1,2)] <- names[c(4,5)]
   }
   data$uniid <- NULL
   if (length(attr(data,"outdir"))==0 & length(outdir)>0) {

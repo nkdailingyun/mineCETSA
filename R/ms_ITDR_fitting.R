@@ -6,11 +6,10 @@
 #' @param data dataset to be fitted
 #' @param nread number of reading channels or sample treatements,
 #' default value 10
+#' @param fc short for fold change, indicate the response level the fitting
+#' function used to back-calculate the corresponding effective concentration
 #' @param calMDT whether to calculate the Mininal Dose Threshold(MDT), this is
 #' useful when do follow-up analysis such as R2-AUC plot
-#' @param fc short for fold change, indicate the response level the fitting
-#' function used to back-calculate the corresponding effective concentration,
-#' the set fc value is used only when calMDT=FALSE
 #' @param baselineMAD MAD of baseline variation, default value is 0; if not
 #' provided, it will be calculated based on the readings from the lowest few
 #' dose points, specified by an integer `nbaseline``
@@ -30,7 +29,7 @@
 #'
 #'
 
-ms_ITDR_fitting <- function(data, nread=10, calMDT=TRUE, fc=0,
+ms_ITDR_fitting <- function(data, nread=10, fc=0.3, calMDT=FALSE,
                             nbaseline=3, baselineMAD=NULL, nMAD=2.5,
                             writetofile=TRUE, keepfittedvalue=FALSE) {
 
@@ -73,22 +72,36 @@ ms_ITDR_fitting <- function(data, nread=10, calMDT=TRUE, fc=0,
   message("Curve fitting in progress...")
   # seems the control in drc doesnot work, so write error message to a file
   zz <- file(paste0(outdir,"/",format(Sys.time(), "%y%m%d_%H%M_"),"curve_fitting_record.txt"), open="wt")
-  sink(zz, type = "message")
+  sink(zz, type="message")
   on.exit(sink(type="message"))
   for (i in seq_len(nrowdata)) {
     message(paste0("row ",i," protein ",data$id[i]))
     y <- as.numeric(data[i,c(4:(nread+3))])
     x <- numtempvector
     valueindex = which(!is.na(y))
-    if (forcestart & mean(y,na.rm=T) > 1.0) {
-      fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(fixed=c(NA,1,NA,NA)), na.action=na.omit,
-                         control = drmc(noMessage=TRUE)), silent=TRUE, outFile=zz)
-    } else if (forcestart & mean(y,na.rm=T) <= 1.0) {
-      fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(fixed=c(NA,NA,1,NA)), na.action=na.omit,
-                         control = drmc(noMessage=TRUE)), silent=TRUE, outFile=zz)
+
+    if (grepl("3.3",R.version.string)) {
+      if (forcestart & mean(y,na.rm=T) > 1.0) {
+        fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(fixed=c(NA,1,NA,NA)), na.action=na.omit,
+                                control = drmc(noMessage=TRUE)), silent=FALSE)
+      } else if (forcestart & mean(y,na.rm=T) <= 1.0) {
+        fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(fixed=c(NA,NA,1,NA)), na.action=na.omit,
+                                control = drmc(noMessage=TRUE)), silent=FALSE)
+      } else {
+        fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(), na.action=na.omit,
+                                control = drmc(noMessage=TRUE)), silent=FALSE)
+      }
     } else {
-      fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(), na.action=na.omit,
-                         control = drmc(noMessage=TRUE)), silent=TRUE, outFile=zz)
+      if (forcestart & mean(y,na.rm=T) > 1.0) {
+        fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(fixed=c(NA,1,NA,NA)), na.action=na.omit,
+                                control = drmc(noMessage=TRUE)), silent=FALSE, outFile=zz)
+      } else if (forcestart & mean(y,na.rm=T) <= 1.0) {
+        fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(fixed=c(NA,NA,1,NA)), na.action=na.omit,
+                                control = drmc(noMessage=TRUE)), silent=FALSE, outFile=zz)
+      } else {
+        fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(), na.action=na.omit,
+                                control = drmc(noMessage=TRUE)), silent=FALSE, outFile=zz)
+      }
     }
 
     if (class(fit.dat) != "try-error") {
@@ -119,7 +132,11 @@ ms_ITDR_fitting <- function(data, nread=10, calMDT=TRUE, fc=0,
       y1 <- na.omit(y)
       R2 <- 1 - sum((residuals(fit.dat)^2))/sum((y1-mean(y1))^2)
     } else {
-      fit.dat <- try(lm(formula = y ~ x, na.action=na.omit), silent=TRUE, outFile=zz)
+      if (grepl("3.3",R.version.string)) {
+        fit.dat <- try(lm(formula = y ~ x, na.action=na.omit), silent=FALSE)
+      } else {
+        fit.dat <- try(lm(formula = y ~ x, na.action=na.omit), silent=FALSE, outFile=zz)
+      }
       if (class(fit.dat) != "try-error") {
         fitted_y[i, valueindex] <- fitted.values(fit.dat)
         R2 <- summary(fit.dat)$r.squared

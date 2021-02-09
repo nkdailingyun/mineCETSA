@@ -19,7 +19,8 @@ getGeneName <- function(x) {
 
 getProteinName <- function(x, pfdatabase=FALSE) {
   if (pfdatabase) {
-    protein=gsub("product=", "", strsplit(x, "\\|")[[1]][2])
+    # protein=gsub("product=", "", strsplit(x, "\\|")[[1]][2])
+    protein=gsub("gene_product=", "", strsplit(x, "\\|")[[1]][4])
   } else {
     protein=strsplit(x, " OS=")[[1]][1]
   }

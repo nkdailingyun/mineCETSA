@@ -6,11 +6,10 @@
 #' @param data dataset to be fitted
 #' @param nread number of reading channels or sample treatements,
 #' default value 10
+#' @param fc short for fold change, indicate the response level the fitting
+#' function used to back-calculate the corresponding effective concentration
 #' @param calMTT whether to calculate the Mininal Time Threshold(MTT), this is
 #' useful when do follow-up analysis such as R2-AUC plot
-#' @param fc short for fold change, indicate the response level the fitting
-#' function used to back-calculate the corresponding effective time,
-#' the set fc value is used only when calMTT=FALSE
 #' @param baselineMAD MAD of baseline variation, default value is 0; if not
 #' provided, it will be calculated based on the readings from the lowest few
 #' dose points, specified by an integer `nbaseline``
@@ -30,7 +29,7 @@
 #'
 #'
 
-ms_ITTR_fitting <- function(data, nread=10, calMTT=TRUE, fc=0,
+ms_ITTR_fitting <- function(data, nread=10, fc=0.3, calMTT=FALSE,
                             nbaseline=3, baselineMAD=NULL, nMAD=2.5,
                             writetofile=TRUE, keepfittedvalue=FALSE) {
 
@@ -80,15 +79,29 @@ ms_ITTR_fitting <- function(data, nread=10, calMTT=TRUE, fc=0,
     y <- as.numeric(data[i,c(4:(nread+3))])
     x <- numtempvector
     valueindex = which(!is.na(y))
-    if (forcestart & mean(y,na.rm=T) > 1.0) {
-      fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(fixed=c(NA,1,NA,NA)), na.action=na.omit,
-                              control = drmc(noMessage=TRUE)), silent=TRUE, outFile=zz)
-    } else if (forcestart & mean(y,na.rm=T) <= 1.0) {
-      fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(fixed=c(NA,NA,1,NA)), na.action=na.omit,
-                              control = drmc(noMessage=TRUE)), silent=TRUE, outFile=zz)
+
+    if (grepl("3.3",R.version.string)) {
+      if (forcestart & mean(y,na.rm=T) > 1.0) {
+        fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(fixed=c(NA,1,NA,NA)), na.action=na.omit,
+                                control = drmc(noMessage=TRUE)), silent=FALSE)
+      } else if (forcestart & mean(y,na.rm=T) <= 1.0) {
+        fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(fixed=c(NA,NA,1,NA)), na.action=na.omit,
+                                control = drmc(noMessage=TRUE)), silent=FALSE)
+      } else {
+        fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(), na.action=na.omit,
+                                control = drmc(noMessage=TRUE)), silent=FALSE)
+      }
     } else {
-      fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(), na.action=na.omit,
-                              control = drmc(noMessage=TRUE)), silent=TRUE, outFile=zz)
+      if (forcestart & mean(y,na.rm=T) > 1.0) {
+        fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(fixed=c(NA,1,NA,NA)), na.action=na.omit,
+                                control = drmc(noMessage=TRUE)), silent=FALSE, outFile=zz)
+      } else if (forcestart & mean(y,na.rm=T) <= 1.0) {
+        fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(fixed=c(NA,NA,1,NA)), na.action=na.omit,
+                                control = drmc(noMessage=TRUE)), silent=FALSE, outFile=zz)
+      } else {
+        fit.dat <- try(drc::drm(formula = y ~ x, fct = LL.4(), na.action=na.omit,
+                                control = drmc(noMessage=TRUE)), silent=FALSE, outFile=zz)
+      }
     }
 
     if (class(fit.dat) != "try-error") {
@@ -119,7 +132,11 @@ ms_ITTR_fitting <- function(data, nread=10, calMTT=TRUE, fc=0,
       y1 <- na.omit(y)
       R2 <- 1 - sum((residuals(fit.dat)^2))/sum((y1-mean(y1))^2)
     } else {
-      fit.dat <- try(lm(formula = y ~ x, na.action=na.omit), silent=TRUE, outFile=zz)
+      if (grepl("3.3",R.version.string)) {
+        fit.dat <- try(lm(formula = y ~ x, na.action=na.omit), silent=FALSE)
+      } else {
+        fit.dat <- try(lm(formula = y ~ x, na.action=na.omit), silent=FALSE, outFile=zz)
+      }
       if (class(fit.dat) != "try-error") {
         fitted_y[i, valueindex] <- fitted.values(fit.dat)
         R2 <- summary(fit.dat)$r.squared

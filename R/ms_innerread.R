@@ -7,7 +7,7 @@
 #' @param treatment names of treatments (temperature, dose, time) applied to samples
 #' @param nread number of reading channels, should match the number of channels used
 #' @param abdread whether to read in protein abundance data
-#' @param PD21 whether the data is searched using Proteome Discoverer 2.1
+#' @param PDversion which version of Proteome Discoverer the data is searched, possible values 20,21,22,24
 #' @param refchannel names of reference channel used in Proteome Discoverer search, such as 126
 #' @param channels names of the read-in channels
 #' @param ... other arguments ignored (for compatibility with generic)
@@ -23,7 +23,7 @@
 #'
 #'
 #'
-ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, PD22, refchannel, channels) {
+ms_innerread <- function(file, fchoose, treatment, nread, abdread, PDversion, refchannel, channels) {
 
   # Treatment and channel check
   if (length(treatment) != nread | length(channels) != nread) {
@@ -64,28 +64,29 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, PD22, r
     colnames <- names(data)
   }
 
+  pattern <- grep("Grouped CV", names(data), value=FALSE)
+  if (length(pattern) > 0) {
+    data <- data[ ,-pattern]
+    colnames <- names(data)
+  }
+
   # create condition vector
   #conditionchannel <- setdiff(channels, refchannel)[1]
-  if (PD21) {
-    conditions <- grep(pattern=paste0("^Abundance Ratio [A-z0-9,. -]+ / ", refchannel, "[A-z0-9,. -]+$"), colnames, value=TRUE)
-    conditions <- gsub(pattern=paste0("^Abundance Ratio [A-z0-9,. -]+ / ", refchannel, ", "), "", conditions)
-  } else {
-    # create condition vector
-    conditions <- grep(pattern=paste0("^[A-z0-9,. -]+ / ", refchannel, "[A-z0-9,. -]+$"), colnames, value=TRUE)
-    conditions <- gsub(pattern=paste0("^[A-z0-9,. -]+ / ", refchannel,", "), "", conditions)
-  }
+  # create condition vector
+  conditions <- grep(pattern=paste0("^[A-z0-9,. -]+ / ", refchannel, "[A-z0-9,. -]+$"), colnames, value=TRUE)
+  conditions <- gsub(pattern=paste0("^[A-z0-9,. -]+ / ", refchannel,", "), "", conditions)
   conditions <- unique(conditions)
   # print(conditions)
 
   # Move Accession
   tmppos <- grep(pattern="^Accession$", names(data), value=FALSE)
   collength <- length(names(data))
-  data <- data[ ,c(tmppos,1:collength)]
+  data <- data[ ,c(tmppos,1:(tmppos-1),(tmppos+1):collength)]
 
   # Move Description
   tmppos <- grep(pattern="^Description$", names(data), value=FALSE)
   collength <- length(names(data))
-  data <- data[ ,c(1,tmppos,2:collength)]
+  data <- data[ ,c(1,tmppos,2:(tmppos-1),(tmppos+1):collength)]
 
   # Condition row
   if (length(conditions) == 1) {
@@ -99,42 +100,36 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, PD22, r
   # Move reading values and rename them to correct position
   j = 1
   for (i in seq_len(nread)) {
-    if (PD21) {
-      tmppos <- grep(pattern=paste0("^Abundance Ratio ",channels[i],", ",conditions," / ",refchannel,", ",conditions), names(data), value=FALSE)
-    } else {
-      tmppos <- grep(pattern=paste0(channels[i],", ",conditions," / ",refchannel,", ",conditions), names(data), value=FALSE)
-    }
+    tmppos <- grep(pattern=paste0(channels[i],", ",conditions," / ",refchannel,", ",conditions), names(data), value=FALSE)
     if (length(tmppos)) {
       collength <- length(names(data))
-      data <- data[ ,c(1:(j+2),tmppos,(j+3):collength)]
+      data <- data[ ,c(1:(j+2),tmppos,(j+3):(tmppos-1),(tmppos+1):collength)]
       j = j + 1
     } else if (channels[i] == refchannel) {
       # Set up start reference channel
       data$Reference <- rep(1.0, nrowdata)
       collength <- length(names(data))
-      data <- data[ ,c(1:(j+2),(collength),(j+3):(collength-1))]
+      data <- data[ ,c(1:(j+2),collength,(j+3):(collength-1))]
       j = j + 1
     }
   }
 
   # to read in protein abundance raw data
-  if (PD21 & abdread) {
+  if (PDversion>=21 & abdread) { # PD2.0 dont contain abundacne data
     for (i in seq_len(nread)) {
       #get column for each channel and move it to correct position:
-      if (PD22) {
-        tmppos <- grep(pattern=paste0("^Abundances Grouped ",channels[i],"[A-z0-9,. -]+$"), names(data), value=FALSE)
-      } else {
-        tmppos <- grep(pattern=paste0("^Abundance F[0-9]+ ",channels[i],"[A-z0-9,. -]+$"), names(data), value=FALSE)
-      }
+      tmppos1 <- grep(pattern=paste0("^Abundances Grouped ",channels[i],"[A-z0-9,. -]+$"), names(data), value=FALSE)
+      tmppos2 <- grep(pattern=paste0("^Abundance F[0-9]+ ",channels[i],"[A-z0-9,. -]+$"), names(data), value=FALSE)
+      tmppos <- unique(c(tmppos1,tmppos2))
       collength <- length(names(data))
-      data <- data[ ,c(1:(nread+2+i),tmppos,(nread+3+i):collength)]
+      data <- data[ ,c(1:(nread+2+i),tmppos,(nread+3+i):(tmppos-1),(tmppos+1):collength)]
     }
   }
 
   # Unique Peptides & PSMs
   tmppos <- grep(pattern="^# Unique Peptides$", names(data), value=FALSE)
   collength <- length(names(data))
-  if (PD21 & abdread) {
+  if (PDversion>=21 & abdread) {
     data <- data[,c(1:(2*nread+3),tmppos,(2*nread+4):collength)]
   } else {
     data <- data[,c(1:(nread+3),tmppos,(nread+4):collength)]
@@ -142,7 +137,7 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, PD22, r
 
   tmppos <- grep(pattern="^# PSMs$", names(data), value=FALSE)
   collength <- length(names(data))
-  if (PD21 & abdread) {
+  if (PDversion>=21 & abdread) {
     data <- data[ ,c(1:(2*nread+4),tmppos,(2*nread+5):collength)]
   } else {
     data <- data[ ,c(1:(nread+4),tmppos,(nread+5):collength)]
@@ -152,18 +147,21 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, PD22, r
   tmppos <- grep(pattern=paste0("^Abundances Count [A-z0-9,. -]+",refchannel,"[A-z0-9,. -]+$"), names(data), value=FALSE)
   if (length(tmppos)) {
     collength <- length(names(data))
-    if (PD21 & abdread) {
+    if (PDversion>=21 & abdread) {
       data <- data[ ,c(1:(2*nread+5),tmppos)]
     } else {
       data <- data[ ,c(1:(nread+5),tmppos)]
     }
   } else {
+    print("There is no protein abundance count information in the data")
     collength <- length(names(data))
-    if (PD21 & abdread) {
+    if (PDversion>=21 & abdread) {
       data <- data[ ,c(1:(2*nread+5))]
     } else {
       data <- data[ ,c(1:(nread+5))]
     }
+    print("Set a default number for the protein abundance count to 2")
+    data$countNum <- 2
   }
 
   # Rename the channel to correct treatment
@@ -171,7 +169,7 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, PD22, r
     names(data)[i] <- treatment[i-3]
   }
 
-  if (PD21 & abdread) {
+  if (PDversion>=21 & abdread) {
     for (i in (nread+4):(2*nread+3)) {
       names(data)[i] <- paste0("Abundance_",treatment[i-(nread+3)])
     }
@@ -183,7 +181,6 @@ ms_innerread <- function(file, fchoose, treatment, nread, abdread, PD21, PD22, r
   names(data) <- gsub(pattern="^# PSMs$","sumPSMs", names(data))
   names(data) <- gsub(pattern=paste0("^Abundances Count [A-z0-9,. -]+",refchannel,"[A-z0-9,. -]+$"),"countNum", names(data))
   names(data) <- gsub(pattern="^Accession$","id", names(data))
-  if (PD22) { data$countNum <- 2 }
 
   # data$id <- as.character(data$id)
   # data$description <- as.character(data$description)
