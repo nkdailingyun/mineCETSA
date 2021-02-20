@@ -86,7 +86,7 @@ ms_ITD/TR_filter() function, however this is an added-on selection feature
 in this R2AUC plot, and applied to the averaged (and/or normalized) data,
 so default value is 0}
 
-\item{checkpointposition}{refering to the positions of dose points to check
+\item{checkpointposition}{referring to the positions of dose points to check
 whether their readings surpass fcthreshold, default value is NULL, which
 would automatically check the highest 3 dose points}
 
@@ -97,7 +97,7 @@ means only keep the full replicates, ie, same as keepfullrep=TRUE}
 
 \item{keepfullrep}{whether to only keep the curves that are measured with
 all replicates under all experimental conditions, default set to FALSE, this
-is useful for the dataset containing more than one experimental condtion}
+is useful for the dataset containing more than one experimental condition}
 
 \item{stableref}{whether to only keep the curves with stable/flat reference
 (most of the time, 37C) curves, default set to FALSE}

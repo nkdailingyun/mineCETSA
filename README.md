@@ -19,7 +19,8 @@ Depending on the configuration of the R environment in the user computer, a few 
 
 >R (>= 4.0), arrayQualityMetrics, Biobase, dplyr (>= 1.0.0), drc (>= 3.0), fdrtool, ggplot2 (>= 3.0.0), ggpubr, ggrepel (>= 0.7.0), grid, gridExtra, gtools, limma, MESS, Nozzle.R1, plyr (>= 1.8.0), RColorBrewer, readr (>=1.2.0), scales, tidyr (>= 1.0.0), VennDiagram
 
-For the ones in bioconductor, the package installation is as follows:
+For the ones in bioconductor, the package installation is as follows:  
+
 *if (!requireNamespace("BiocManager", quietly = TRUE))*
 *install.packages("BiocManager")*
 
